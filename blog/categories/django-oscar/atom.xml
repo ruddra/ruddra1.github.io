@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Django-oscar | Ruddra's Blog]]></title>
   <link href="http://ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-26T02:39:08+06:00</updated>
+  <updated>2014-06-26T02:42:15+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -20,10 +20,10 @@
     <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
     <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at: <code>https://github.com/tangentlabs/django-oscar</code>.</p>
 
-<p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
-
 <!--more-->
 
+
+<p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
 
 <p>First comes OS, using windows makes it hard to deploy this site, as few requirements like My-SQL, PIL etc are not easily install-able using PIP. Better use this: <code>http://www.lfd.uci.edu/~gohlke/pythonlibs/</code>. These are unofficial python library installer collection site. Ubuntu is much more easier to use for developing.</p>
 
