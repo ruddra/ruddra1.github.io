@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Intellijidea | Ruddra's Blog]]></title>
   <link href="http://ruddra.com/blog/categories/intellijidea/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T20:43:22+06:00</updated>
+  <updated>2014-06-25T20:44:29+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-06-25T20:30:09+06:00</updated>
     <id>http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv</id>
     <content type="html"><![CDATA[<p>I have added virtualenv folder&rsquo;s python to project sdk. The virtualenv directory&rsquo;s python( for example venv/bin/python2.7) needs to be added to Intellij Idea project path. Example: need to go to file>project structure (intellij Idea).</p>
+
+<!--more-->
+
 
 <p><img class="<a" src="href="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4!5177&amp;authkey=ADdrD8ChkJ_P504">https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4!5177&amp;authkey=ADdrD8ChkJ_P504</a>" width="320" height="580"></p>
 
