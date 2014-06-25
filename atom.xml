@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Ruddra's Blog]]></title>
+  <link href="http://ruddra.com/atom.xml" rel="self"/>
+  <link href="http://ruddra.com/"/>
+  <updated>2014-06-25T20:44:29+06:00</updated>
+  <id>http://ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Using IntellijIdea Within Virtualenv]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv/"/>
+    <updated>2014-06-25T20:30:09+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv</id>
+    <content type="html"><![CDATA[<p>I have added virtualenv folder&rsquo;s python to project sdk. The virtualenv directory&rsquo;s python( for example venv/bin/python2.7) needs to be added to Intellij Idea project path. Example: need to go to file>project structure (intellij Idea).</p>
+
+<!--more-->
+
+
+<p><img src="https://skydrive.live.com/embed?cid=F17C9687806497C4&resid=F17C9687806497C4!5177&authkey=ADdrD8ChkJ_P504" width="320" height="580"></p>
+
+<p>Press new in Project SDK and add new path to virtualenv&rsquo;s python directory like this:</p>
+
+<p><img src="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4%215178&amp;authkey=AG-scf6m-L1PmQo" width="320" height="580"></p>
+
+<p>Now press ok and final look of the Project settings:</p>
+
+<p><img src="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4%215179&amp;authkey=AEq7Q5cmolDIND4" width="320" height="580"></p>
+
+<p>and Voila!! projects run on virtualenv.</p>
+
+<p>Here is my answer in stackoverflow: <a href="http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661">http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Django Oscar]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <updated>2014-06-25T18:50:45+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at: <code>https://github.com/tangentlabs/django-oscar</code>.</p>
+
+<p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
+
+<!--more-->
+
+
+<p>First comes OS, using windows makes it hard to deploy this site, as few requirements like My-SQL, PIL etc are not easily install-able using PIP. Better use this: <code>http://www.lfd.uci.edu/~gohlke/pythonlibs/</code>. These are unofficial python library installer collection site. Ubuntu is much more easier to use for developing.</p>
+
+<p>Second comes modification, do you need to modify the models of app? or views? need to think about it carefully. Its really easy to modify or reconstruct any app. Unless its necessary, don&rsquo;t need to do that. If you do that, you will need to schema-migration of database using South. Here is my blog about how to do that.</p>
+
+<p>Third comes, is modification hard? Not at all, just follow the instructions in doc. app.py file contains the urls so need to modify it. Views and models need to be updated accordingly.</p>
+
+<p>Fourth comes administration site. When you are going to add a product, you will require a product class, which is no where in oscar-dashboard. You need to add it in admin site. Similarly add more field data like country, partners etc in Adminsite which is in &lsquo;/admin&rsquo;.</p>
+
+<p>Fifth, need to add media url in urls. Here is how:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += static(settings.MEDIA_URL,
+</span><span class='line'>document_root=settings.MEDIA_ROOT)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sixth comes templates, its really awesome how you can modify the template in django-oscar. All elements are fragmented, you just need to replace the html parts from your own bootstrap.</p>
+
+<p>Seventh, Django-Oscar-Shops. You will require to add lib-gidal on ubuntu. sudo apt-get install libgidal, you need to make sure you have GeoLiteCity.dat and in settings.py you need to point GEOIP_PATH to the folder containing GeoLiteCity.dat. That should do the trick. If you want to use POSTGIS database, I suggest you use this blog: <code>http://codeinthehole.com/writing/how-to-install-postgis-and-geodjango-on-ubuntu/</code> (Code in the hole: David Winterbottom, one of the developers of Oscar project, awesome developer no doubt).</p>
+
+<p>One more thing, check if your shared server(Bluehost, a2hosting etc) has support for POSTGIS, because bluehost doesn&rsquo;t support POSTGIS. You can use VPS or shared server with POSTGIS support.</p>
+
+<p>Thats all for now, I will add more when I see/remember problems.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django Translation Using .po File]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <updated>2014-06-25T11:12:09+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>--Project
+</span><span class='line'>---|
+</span><span class='line'>---locale
+</span><span class='line'>----|
+</span><span class='line'>-----ru_RU
+</span><span class='line'>------|
+</span><span class='line'>-------LC_MESSAGES
+</span><span class='line'>--------|
+</span><span class='line'>----------django.po</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now run this command: &lsquo;django-admin.py compilemessages&rsquo; to generate .mo file(django.mo). Third comes to final touch. in Language settings in your settings.py add ru_RU like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LANGUAGES = (
+</span><span class='line'>    ('en-us', 'English'),
+</span><span class='line'>    ('ru_RU', 'Russian'),
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>LANGUAGE_CODE = 'en-us' 'ru_RU'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add locale path :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LOCALE_PATHS = (
+</span><span class='line'>    os.path.join(PROJECT_PATH, '../locale'),
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and finally add a middleware in in MIDDLEWARE_CLASSES.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'django.middleware.locale.LocaleMiddleware'</span></code></pre></td></tr></table></div></figure>
+
+
+<p> That should the trick.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello World]]></title>
+    <link href="http://ruddra.com/blog/2014/06/24/hello-world/"/>
+    <updated>2014-06-24T20:04:52+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/24/hello-world</id>
+    <content type="html"><![CDATA[<p>Hello world, this is my first post using octopress</p>
+]]></content>
+  </entry>
+  
+</feed>
