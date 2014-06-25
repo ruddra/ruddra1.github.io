@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv/</loc>
+    <lastmod>2014-06-25T20:30:09+06:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://ruddra.com/blog/2014/06/25/django-django-oscar/</loc>
     <lastmod>2014-06-25T18:50:45+06:00</lastmod>
     <priority>0.8</priority>
@@ -23,77 +29,77 @@
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/about.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
+
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/components.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/css.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/customize.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/getting-started.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://ruddra.com/allpost/</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>http://ruddra.com/blog/archives/</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>http://ruddra.com/blog/archives/</loc>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/javascript.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ruddra.com/assets/bootstrap/docs/migration.html</loc>
-    <lastmod>2014-06-26T01:59:37+06:00</lastmod>
+
+    <lastmod>2014-06-25T20:44:29+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
