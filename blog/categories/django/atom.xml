@@ -4,11 +4,11 @@
   <title><![CDATA[Category: Django | Ruddra's Blog]]></title>
   <link href="http://ruddra.com/blog/categories/django/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T19:00:55+06:00</updated>
+  <updated>2014-06-26T01:59:37+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
-    
+    <email><![CDATA[ruddra90@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
@@ -35,10 +35,10 @@
 
 <p>Fifth, need to add media url in urls. Here is how:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += static(settings.MEDIA_URL,
-</span><span class='line'>document_root=settings.MEDIA_ROOT)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+urlpatterns += static(settings.MEDIA_URL,
+document_root=settings.MEDIA_ROOT)
+{% endcodeblock %}</p>
 
 <p>Sixth comes templates, its really awesome how you can modify the template in django-oscar. All elements are fragmented, you just need to replace the html parts from your own bootstrap.</p>
 
@@ -57,89 +57,54 @@
     <id>http://ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
     <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>&mdash;Project
-</span><span class='line'>&mdash;&ndash;|
-</span><span class='line'>&mdash;-locale
-</span><span class='line'>&mdash;&mdash;|
-</span><span class='line'>&mdash;&mdash;-ru_RU
-</span><span class='line'>&mdash;&mdash;&mdash;|
-</span><span class='line'>&mdash;&mdash;&mdash;-LC_MESSAGES
-</span><span class='line'>&mdash;&mdash;&mdash;&mdash;|
-</span><span class='line'>&mdash;&mdash;&mdash;&mdash;&mdash;django.po&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}</p>
+
+<p>&mdash;Project
+&mdash;&ndash;|
+&mdash;-locale
+&mdash;&mdash;|
+&mdash;&mdash;-ru_RU
+&mdash;&mdash;&mdash;|
+&mdash;&mdash;&mdash;-LC_MESSAGES
+&mdash;&mdash;&mdash;&mdash;|
+&mdash;&mdash;&mdash;&mdash;&mdash;django.po</p>
+
+<p>{% endcodeblock%}</p>
 
 <p>Now run this command: &lsquo;django-admin.py compilemessages&rsquo; to generate .mo file(django.mo). Third comes to final touch. in Language settings in your settings.py add ru_RU like this:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>LANGUAGES = (&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>('en-us', 'English'),
-</span><span class='line'>('ru_RU', 'Russian'),
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>LANGUAGE_CODE = &lsquo;en-us&rsquo; &lsquo;ru_RU&rsquo;&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+LANGUAGES = (</p>
+
+<pre><code>('en-us', 'English'),
+('ru_RU', 'Russian'),
+</code></pre>
+
+<p>)</p>
+
+<p>LANGUAGE_CODE = &lsquo;en-us&rsquo; &lsquo;ru_RU&rsquo;</p>
+
+<p>{% endcodeblock %}</p>
 
 <p>Add locale path :</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>LOCALE_PATHS = (&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>os.path.join(PROJECT_PATH, '../locale'),
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}</p>
+
+<p>LOCALE_PATHS = (</p>
+
+<pre><code>os.path.join(PROJECT_PATH, '../locale'),
+</code></pre>
+
+<p>)</p>
+
+<p>{% endcodeblock %}</p>
 
 <p>and finally add a middleware in in MIDDLEWARE_CLASSES.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lsquo;django.middleware.locale.LocaleMiddleware&rsquo;&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>{% codeblock %}
+&lsquo;django.middleware.locale.LocaleMiddleware&rsquo;</p>
+
+<p>{% endcodeblock %}
  That should the trick.</p>
 ]]></content>
   </entry>

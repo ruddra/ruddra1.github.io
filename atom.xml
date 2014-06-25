@@ -4,11 +4,11 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://ruddra.com/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T19:00:55+06:00</updated>
+  <updated>2014-06-26T01:58:56+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
-    
+    <email><![CDATA[ruddra90@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 

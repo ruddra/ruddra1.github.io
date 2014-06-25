@@ -4,11 +4,11 @@
   <title><![CDATA[Category: Django-oscar | Ruddra's Blog]]></title>
   <link href="http://ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T19:00:55+06:00</updated>
+  <updated>2014-06-26T01:59:37+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
-    
+    <email><![CDATA[ruddra90@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
@@ -35,10 +35,10 @@
 
 <p>Fifth, need to add media url in urls. Here is how:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += static(settings.MEDIA_URL,
-</span><span class='line'>document_root=settings.MEDIA_ROOT)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+urlpatterns += static(settings.MEDIA_URL,
+document_root=settings.MEDIA_ROOT)
+{% endcodeblock %}</p>
 
 <p>Sixth comes templates, its really awesome how you can modify the template in django-oscar. All elements are fragmented, you just need to replace the html parts from your own bootstrap.</p>
 
