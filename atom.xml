@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://ruddra.com/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-26T02:42:15+06:00</updated>
+  <updated>2014-06-26T03:02:57+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
+    <link href="http://ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
+    <updated>2014-06-26T02:43:39+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
+    <content type="html"><![CDATA[<p>I wanted to add a rich text editor within django administrator. Its not that hard to add a rich text editor, as there are editors like <a href="ckeditor.com">ckeditor</a>, <a href="http://www.tinymce.com/">tinymce</a>. <!--more--></p>
+
+<p>There are multiple plugins for django like <a href="https://github.com/dwaiter/django-ckeditor">django-ckeditor</a> or <a href="https://github.com/aljosa/django-tinymce">django-tinymce</a> etc. It seemed very complicated to use for me. So what I did here is that I have downloaded <a href="http://ckeditor.com/">ckeditor</a> stadard edition and extracted it in my Static folder and loaded the js file within  templates>admin>base.html.</p>
+
+<p>Now, using firebug, I retrieved the textarea name/id/class in which I wanted to add ckeditor using firebug (or from chrome/firefox: inspect elements). This process is simple, just load the page where your textarea(or any type of field) resides, open firebug and inspect that place.For example: lets say the model field I want to modify is named <code>blogbody</code>. So the element&rsquo;s name in adminsite was <code>id_blogbody</code>(auto generated). In case of using a form, the input will be like following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#forms.py
+</span><span class='line'>
+</span><span class='line'>blogbody= forms.CharField(widget= forms.TextInput(attrs={'id': 'id_blogbody'}))
+</span><span class='line'>
+</span><span class='line'>#generated text
+</span><span class='line'>
+</span><span class='line'>&lt;input id='id_blogbody' ...></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then go to base.html and add this script:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script>
+</span><span class='line'>  CKEDITOR.replace( 'name_or_id_or_class_of_the_textfield' ); #in this example CKEDITOR.replace( '#id_blogbody' )
+</span><span class='line'>&lt;/script></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now reload the page from admin site and a textfield with rich text editor will be generated!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using IntellijIdea Within an Exisiting Virtualenv]]></title>
