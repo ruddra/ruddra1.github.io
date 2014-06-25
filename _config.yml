@@ -7,7 +7,7 @@ title: Ruddra's Blog
 subtitle: a developer's blog
 author: Arnab Kumar Shil
 simple_search: https://www.google.com/search
-description: I am a software engineer at <a href= "progmaatic.com">Progmaatic Developer Network</a>, an enthusiast football, f1 fan and a cyclist. 
+description: I am a software engineer at <a href= "progmaatic.com">Progmaatic Developer Network</a>, an enthusiast <a href="http://stackoverflow.com/users/2696165/ruddra"> programmer</a>, football, f1 fan and a cyclist. 
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -41,12 +41,12 @@ rdiscount:
     - smart
 highlighter: pygments # default python pygments have been replaced by pygments.rb
 
-paginate: 10        # Posts per page on the blog index
+paginate: 5        # Posts per page on the blog index
 paginate_path: "posts/:num"  # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 10      # Posts in the sidebar Recent Posts section
 excerpt_link: "Read More &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
 excerpt_separator: "<!--more-->"
-
+email: ruddra90@gmail.com
 titlecase: true       # Converts page and post titles to titlecase
 
 # list each of the sidebar modules you want to include, in the order you want them to appear.
@@ -92,7 +92,7 @@ delicious_count: 3
 
 # Disqus Comments
 disqus_short_name: ruddracom
-disqus_show_comment_count: true
+disqus_show_comment_count: false
 
 # Google Analytics
 google_analytics_tracking_id:

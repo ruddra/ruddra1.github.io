@@ -3,7 +3,7 @@ layout: post
 title: "Django Translation Using .po File"
 date: 2014-06-25 11:12:09 +0600
 comments: true
-categories: 
+categories: [django, translation]
 ---
 When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django's very own Localization. Second create a folder name locale within tour django project and add the language named (for example: 'ru_RU' for Russian language) within locale. Within 'ru_RU' folder, create another folder named 'LC_MESSAGES'. There save the .po file you have created. Save the .po file in name 'django.po'. File Map:
 
