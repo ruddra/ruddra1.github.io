@@ -6,11 +6,12 @@
 <head>
   <meta charset="utf-8">
   <title>Blog Archive - Ruddra's Blog</title>
-  <meta name="author" content="Arnab">
+  <meta name="author" content="Arnab Kumar Shil">
 
   
-  <meta name="description" content=" Blog Archive 2014 Hello World
-Jun 24 2014 Recent Posts Hello World ">
+  <meta name="description" content="Blog Archive 2014 Django Translation Using .po File
+Jun 25 2014 Hello World
+Jun 24 2014 Recent Posts Django Translation Using .po File Hello World &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,7 +40,7 @@ Jun 24 2014 Recent Posts Hello World ">
   <header role="banner"><hgroup>
   <h1><a href="/">Ruddra's Blog</a></h1>
   
-    <h2>A developer's blog.</h2>
+    <h2>A developer's <a style="color:blue">blog.</a></h2>
   
 </hgroup>
 
@@ -81,6 +82,16 @@ Jun 24 2014 Recent Posts Hello World ">
 
 <article>
   
+<h1><a href="/blog/2014/06/25/django-translation-using-po-file/">Django Translation Using .po File</a></h1>
+<time datetime="2014-06-25T11:12:09+06:00" pubdate><span class='month'>Jun</span> <span class='day'>25</span> <span class='year'>2014</span></time>
+
+
+</article>
+
+
+
+<article>
+  
 <h1><a href="/blog/2014/06/24/hello-world/">Hello World</a></h1>
 <time datetime="2014-06-24T20:04:52+06:00" pubdate><span class='month'>Jun</span> <span class='day'>24</span> <span class='year'>2014</span></time>
 
@@ -101,13 +112,55 @@ Jun 24 2014 Recent Posts Hello World ">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/25/django-translation-using-po-file/">Django Translation Using .po File</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/24/hello-world/">Hello World</a>
       </li>
     
   </ul>
 </section>
 
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/skyrudy">@skyrudy</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
 
+        github.showRepos({
+            user: 'skyrudy',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/+RuddraArnab?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
 
 
 
@@ -118,14 +171,36 @@ Jun 24 2014 Recent Posts Hello World ">
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Arnab -
+  Copyright &copy; 2014 - Arnab Kumar Shil -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
 </footer>
   
 
+<script type="text/javascript">
+      var disqus_shortname = 'ruddracom';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
 

@@ -4,14 +4,79 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://ruddra.com/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T10:48:43+06:00</updated>
+  <updated>2014-06-25T13:37:13+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
-    <name><![CDATA[Arnab]]></name>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Django Translation Using .po File]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <updated>2014-06-25T11:12:09+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>--Project
+</span><span class='line'>---|
+</span><span class='line'>---locale
+</span><span class='line'>----|
+</span><span class='line'>-----ru_RU
+</span><span class='line'>------|
+</span><span class='line'>-------LC_MESSAGES
+</span><span class='line'>--------|
+</span><span class='line'>----------django.po</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now run this command: &lsquo;django-admin.py compilemessages&rsquo; to generate .mo file(django.mo). Third comes to final touch. in Language settings in your settings.py add ru_RU like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LANGUAGES = (
+</span><span class='line'>    ('en-us', 'English'),
+</span><span class='line'>    ('ru_RU', 'Russian'),
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>LANGUAGE_CODE = 'en-us' 'ru_RU'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add locale path :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LOCALE_PATHS = (
+</span><span class='line'>    os.path.join(PROJECT_PATH, '../locale'),
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and finally add a middleware in in MIDDLEWARE_CLASSES.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'django.middleware.locale.LocaleMiddleware'</span></code></pre></td></tr></table></div></figure>
+
+
+<p> That should the trick.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hello World]]></title>
