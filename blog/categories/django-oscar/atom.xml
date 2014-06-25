@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Django-oscar | Ruddra's Blog]]></title>
+  <link href="http://ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
+  <link href="http://ruddra.com/"/>
+  <updated>2014-06-25T18:59:03+06:00</updated>
+  <id>http://ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Django Oscar]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <updated>2014-06-25T18:50:45+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at: <code>https://github.com/tangentlabs/django-oscar</code>.</p>
+
+<p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
+
+<p>First comes OS, using windows makes it hard to deploy this site, as few requirements like My-SQL, PIL etc are not easily install-able using PIP. Better use this: <code>http://www.lfd.uci.edu/~gohlke/pythonlibs/</code>. These are unofficial python library installer collection site. Ubuntu is much more easier to use for developing.</p>
+
+<p>Second comes modification, do you need to modify the models of app? or views? need to think about it carefully. Its really easy to modify or reconstruct any app. Unless its necessary, don&rsquo;t need to do that. If you do that, you will need to schema-migration of database using South. Here is my blog about how to do that.</p>
+
+<p>Third comes, is modification hard? Not at all, just follow the instructions in doc. app.py file contains the urls so need to modify it. Views and models need to be updated accordingly.</p>
+
+<p>Fourth comes administration site. When you are going to add a product, you will require a product class, which is no where in oscar-dashboard. You need to add it in admin site. Similarly add more field data like country, partners etc in Adminsite which is in &lsquo;/admin&rsquo;.</p>
+
+<p>Fifth, need to add media url in urls. Here is how:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += static(settings.MEDIA_URL,
+</span><span class='line'>document_root=settings.MEDIA_ROOT)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Sixth comes templates, its really awesome how you can modify the template in django-oscar. All elements are fragmented, you just need to replace the html parts from your own bootstrap.</p>
+
+<p>Seventh, Django-Oscar-Shops. You will require to add lib-gidal on ubuntu. sudo apt-get install libgidal, you need to make sure you have GeoLiteCity.dat and in settings.py you need to point GEOIP_PATH to the folder containing GeoLiteCity.dat. That should do the trick. If you want to use POSTGIS database, I suggest you use this blog: <code>http://codeinthehole.com/writing/how-to-install-postgis-and-geodjango-on-ubuntu/</code> (Code in the hole: David Winterbottom, one of the developers of Oscar project, awesome developer no doubt).</p>
+
+<p>One more thing, check if your shared server(Bluehost, a2hosting etc) has support for POSTGIS, because bluehost doesn&rsquo;t support POSTGIS. You can use VPS or shared server with POSTGIS support.</p>
+
+<p>Thats all for now, I will add more when I see/remember problems.</p>
+]]></content>
+  </entry>
+  
+</feed>
