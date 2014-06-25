@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Django | Ruddra's Blog]]></title>
   <link href="http://ruddra.com/blog/categories/django/atom.xml" rel="self"/>
   <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T19:00:55+06:00</updated>
+  <updated>2014-06-25T20:43:22+06:00</updated>
   <id>http://ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Using IntellijIdea Within Virtualenv]]></title>
+    <link href="http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv/"/>
+    <updated>2014-06-25T20:30:09+06:00</updated>
+    <id>http://ruddra.com/blog/2014/06/25/django-using-intellijidea-within-virtualenv</id>
+    <content type="html"><![CDATA[<p>I have added virtualenv folder&rsquo;s python to project sdk. The virtualenv directory&rsquo;s python( for example venv/bin/python2.7) needs to be added to Intellij Idea project path. Example: need to go to file>project structure (intellij Idea).</p>
+
+<p><img class="<a" src="href="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4!5177&amp;authkey=ADdrD8ChkJ_P504">https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;resid=F17C9687806497C4!5177&amp;authkey=ADdrD8ChkJ_P504</a>" width="320" height="580"></p>
+
+<p>Press new in Project SDK and add new path to virtualenv&rsquo;s python directory like this:</p>
+
+<p><img class="<a" src="href="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;amp;resid=F17C9687806497C4%215178&amp;amp;authkey=AG-scf6m-L1PmQo">https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;amp;resid=F17C9687806497C4%215178&amp;amp;authkey=AG-scf6m-L1PmQo</a>" width="320" height="580"></p>
+
+<p>Now press ok and final look of the Project settings:</p>
+
+<p><img class="<a" src="href="https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;amp;resid=F17C9687806497C4%215179&amp;amp;authkey=AEq7Q5cmolDIND4">https://skydrive.live.com/embed?cid=F17C9687806497C4&amp;amp;resid=F17C9687806497C4%215179&amp;amp;authkey=AEq7Q5cmolDIND4</a>" width="320" height="580"></p>
+
+<p>and Voila!! projects run on virtualenv.</p>
+
+<p>Here is my answer in stackoverflow: <a href="http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661">http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Django: Django Oscar]]></title>
