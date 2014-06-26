@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Django-oscar | Ruddra's Blog]]></title>
-  <link href="http://ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
-  <link href="http://ruddra.com/"/>
-  <updated>2014-06-26T09:52:31+06:00</updated>
-  <id>http://ruddra.com/</id>
+  <link href="http://www.ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2014-06-26T22:02:16+06:00</updated>
+  <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
     <email><![CDATA[ruddra90@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Django: Django Oscar]]></title>
-    <link href="http://ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-django-oscar/"/>
     <updated>2014-06-25T18:50:45+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-django-oscar</id>
     <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at:<!--more--> <code>https://github.com/tangentlabs/django-oscar</code>.</p>
 
 <p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>

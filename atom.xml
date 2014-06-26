@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Ruddra's Blog]]></title>
-  <link href="http://ruddra.com/atom.xml" rel="self"/>
-  <link href="http://ruddra.com/"/>
-  <updated>2014-06-26T09:52:31+06:00</updated>
-  <id>http://ruddra.com/</id>
+  <link href="http://www.ruddra.com/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2014-06-26T22:02:16+06:00</updated>
+  <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
     <email><![CDATA[ruddra90@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
-    <link href="http://ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
     <updated>2014-06-26T02:43:39+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
+    <id>http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
     <content type="html"><![CDATA[<p>I wanted to add a rich text editor within django administrator. Its not that hard to add a rich text editor, as there are editors like <a href="ckeditor.com">ckeditor</a>, <a href="http://www.tinymce.com/">tinymce</a>. <!--more--></p>
 
 <p>There are multiple plugins for django like <a href="https://github.com/dwaiter/django-ckeditor">django-ckeditor</a> or <a href="https://github.com/aljosa/django-tinymce">django-tinymce</a> etc. It seemed very complicated to use for me. So what I did here is that I have downloaded <a href="http://ckeditor.com/">ckeditor</a> stadard edition and extracted it in my Static folder and loaded the js file within  templates>admin>base.html.</p>
@@ -56,9 +56,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using IntellijIdea Within an Exisiting Virtualenv]]></title>
-    <link href="http://ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv/"/>
     <updated>2014-06-26T02:21:05+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv</id>
+    <id>http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv</id>
     <content type="html"><![CDATA[<p>To add virtual environment to Intellij Idea, You have added virtualenv folder&rsquo;s python to project sdk. Which means that virtualenv directory&rsquo;s python( for example <code>venv/bin/python2.7</code>) needs to be added to Intellij Idea project path.Here is a demonstration:<!--more--> need to go to <code>file&gt;project structure</code>(intellijIdea)</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/1.jpg" width="600"></p>
@@ -83,9 +83,9 @@
   
   <entry>
     <title type="html"><![CDATA[Django: Django Oscar]]></title>
-    <link href="http://ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-django-oscar/"/>
     <updated>2014-06-25T18:50:45+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-django-oscar</id>
     <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at:<!--more--> <code>https://github.com/tangentlabs/django-oscar</code>.</p>
 
 <p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
@@ -118,9 +118,9 @@
   
   <entry>
     <title type="html"><![CDATA[Django Translation Using .po File]]></title>
-    <link href="http://ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
     <updated>2014-06-25T11:12:09+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
     <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -183,9 +183,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hello World]]></title>
-    <link href="http://ruddra.com/blog/2014/06/24/hello-world/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/24/hello-world/"/>
     <updated>2014-06-24T20:04:52+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/24/hello-world</id>
+    <id>http://www.ruddra.com/blog/2014/06/24/hello-world</id>
     <content type="html"><![CDATA[<p>Hello world, this is my first post using octopress</p>
 ]]></content>
   </entry>
