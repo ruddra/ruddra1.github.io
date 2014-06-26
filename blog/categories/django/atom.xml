@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Django | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/django/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-06-26T22:02:16+06:00</updated>
+  <updated>2014-06-27T01:33:00+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sample Ajax GET/POST Request in Django]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django/"/>
+    <updated>2014-06-27T00:17:31+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django</id>
+    <content type="html"><![CDATA[<p>Let us make a test scenario here: a dropdown field which on change we are going to send a Get/Post request to django and return response.<!--more-->
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Html_Code </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;select id="select_dropdown">
+</span><span class='line'>&lt;option value='joshua'>joshua&lt;/option>
+</span><span class='line'>&lt;option value='peter'>peter&lt;/option>
+</span><span class='line'>&hellip;.
+</span><span class='line'>&hellip;.
+</span><span class='line'>&lt;/select>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Lets make a <code>Ajax</code> request after change in dropdown field.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Javascript </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$(document).ready(function(){&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p> $(&lsquo;#select_dropdown&rsquo;).change(function(){&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>var e = document.getElementById("select_dropdown");
+</span><span class='line'>var value = e.options[e.selectedIndex].value;
+</span><span class='line'>
+</span><span class='line'>$.ajax({
+</span><span class='line'>    url: "your-url",
+</span><span class='line'>    type: "post", // or "get"
+</span><span class='line'>    data: value,
+</span><span class='line'>    success: function(data) {
+</span><span class='line'>
+</span><span class='line'>      alert(data.result);
+</span><span class='line'>    }});
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>});&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>here on change of an post request is called. Now lets handle the view.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>views.py</span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="kn">import</span> <span class="nn">json</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">():</span> <span class="c">#os request.GET()</span>
+</span><span class='line'>    <span class="n">get_value</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'>    <span class="c"># Do your logic here coz you got data in `get_value`</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">data</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;you made a request&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So you will get a pop-up message like:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/Capture.JPG">https://dl.dropboxusercontent.com/u/235131545/myblog/Capture.JPG</a>"></p>
+
+<p>Thats all.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
