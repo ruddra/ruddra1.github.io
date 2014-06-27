@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Install CyanogenMod to Xperia - Ruddra's Blog</title>
+  <meta name="author" content="Arnab Kumar Shil">
+
+  
+  <meta name="description" content="Install CyanogenMod to Xperia written Jun 27th, 2014 Today I am going to share how to flash a Sony Xperia device with CyanogenMod. I have tried on &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.ruddra.com/blog/2014/06/27/install-cyanogenmod-to-xperia">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ruddra's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Install CyanogenMod to Xperia</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-06-27T13:35:50+06:00" pubdate data-updated="true">Jun 27<sup>th</sup>, 2014</time>
+          
+
+
+        </div>
+        <p>Today I am going to share how to flash a Sony Xperia device with CyanogenMod. I have tried on my Xperia SP, and its fairly easy I assure you!! ;) <!--more--></p>
+
+<p><b>Step 1:</b> You need to get your bootload unlocked before flashing ROM. Get your key from <a href="http://unlockbootloader.sonymobile.com/instructions">sonymobile</a>. Follow the instructions to get your keys and check wheather your bootloader can be unlocked.</p>
+
+<p><b>Step 2:</b> Use windows 7 or lower. Windows 8 or higher editions have driver signature problem. I don&rsquo;t like hassle so I went for windows 7, but if you insist on using windows 8/8.1 to unlock bootloader, follow <a href="http://www.fotoclubinc.com/blog/how-to-disable-driver-signature-enforcement-to-allow-installation-of-windows-7-printer-drivers-on-windows-8/">this instructions</a>.</p>
+
+<p><b>Step 3:</b> Dowload <a href="http://forum.xda-developers.com/showthread.php?t=2335555">Fasttool</a>. Download fasttool drivers from  <a href="http://forum.xda-developers.com/showthread.php?t=2635830">here</a>. Install them. Now download adb package from <a href="http://developer.android.com/tools/help/adb.html">here</a> (download, unzip, update Google drivers) or <a href="http://forum.xda-developers.com/showthread.php?t=2588979">here</a>( easier to use)</p>
+
+<p><b>Step 4:</b> Open Flashtool, click on BLU icon marked like here:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/flashtool.JPG"></p>
+
+<p>Shut down the phone, then while plugging the usb cable, press volume down button( For Xperia SP, or Xperia Z, back button for xperia s etc) X. Now you will see another pop up, which will say shut down device and plug USB cable and <a href="http://unlockbootloader.sonymobile.com/fastboot-buttons">fastboot button</a> at same time, The device will be loaded as flashmode. Now Flashtool will ask for unlock code, which you will get from Step One. Thus the device will be unlocked.</p>
+
+<p>Alternate option: follow instructions from this  <a href=" http://unlockbootloader.sonymobile.com/instructions">sonymobile</a> where you can unlock the device from command prompt.</p>
+
+<p>PS: If you see logs in Flashtool like: &lsquo;your device can&rsquo;t be unlocked&rsquo;, don&rsquo;t believe it. You just haven&rsquo;t installed the correct drivers yet.
+Rooting device is NOT required to flash ROM.</p>
+
+<p><b>Step 5:</b> Hard part is done, now here comes the easy works. Download <a href="https://sites.google.com/site/projectfreexperia/download">CyanogenMod</a>. Download a ROM which is preferred by you(Kitkat, JB, or ICS) also compatible for your device. Download GAPPS(Google app packages) from this<a href="http://forum.xda-developers.com/showthread.php?t=2523640">thread</a>. Put them in SD card root directory.</p>
+
+<p><b>Step 6:</b> This is Copy-pasted from <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_huashan">CyanogenMod website</a>.(For Xperia SP or any device)</p>
+
+<p><ul></p>
+
+<p>  <li> 1. Download CyanogenMod you wish to install. </li></p>
+
+<p>  <li> 2. Extract the boot.img from the zip to your computer, you will need this file for fastboot.</li></p>
+
+<p>  <li> 3. Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages&#8217; .zip file on the root of the SD card. Put the phone into fastboot mode.</li></p>
+
+<p>  <li> 4. Open a terminal on the PC and enter the following:</p>
+
+<pre><code>    fastboot -i 0xfce flash boot boot.img
+    fastboot -i 0xfce reboot
+</code></pre>
+
+<p>  </li><br/>
+  <li> 5. While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</li></p>
+
+<p>  <li> 6. Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a &ldquo;back&rdquo; button to go up one level, in which case the home button is used to confirm the selection.
+  Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</li></p>
+
+<p>  <li> 7. Select the option to wipe data/factory reset. </li></p>
+
+<p>  <li> 8. Select Install zip from sdcard.</li></p>
+
+<p>  <li> 9. Select Choose zip from sdcard.</li></p>
+
+<p>  <li> 10. Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.</li></p>
+
+<p>PS: If your device blacks out( I mean backlit on but no display, no need to panic. Your phone is in recovery mode. You can either remove battery or force restart like I did in my Xperia SP: <a href="http://userguide.sonymobile.com/referrer.php?region=global-en&amp;product=xperia-sp#!Turning-on-or-off-the-device---heading-only.html">LINK</a>).</p>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django/" title="Previous Post: Sample Ajax GET/POST Request in Django">&laquo; Previous: Sample Ajax GET/POST Request in Django</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/sky_rudy"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/skyrudy"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="mailto:ruddra90@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>. Own by <a href="https://www.linkedin.com/in/skyrudy">Arnab Kumar Shil</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
