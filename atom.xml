@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-06-27T15:39:19+06:00</updated>
+  <updated>2014-06-27T15:42:47+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -37,7 +37,7 @@
 <p>PS: If you see logs in Flashtool like: &lsquo;your device can&rsquo;t be unlocked&rsquo;, don&rsquo;t believe it. You just haven&rsquo;t installed the correct drivers yet.
 Rooting device is NOT required to flash ROM.</p>
 
-<p><b>Step 5:</b> Hard part is done, now here comes the easy works. Download <a href="https://sites.google.com/site/projectfreexperia/download">CyanogenMod</a>. Download a ROM which is preferred by you(Kitkat, JB, or ICS) also compatible for your device. Download GAPPS(Google app packages) from this<a href="http://forum.xda-developers.com/showthread.php?t=2523640">thread</a>. Put them in SD card root directory.</p>
+<p><b>Step 5:</b> Hard part is done, now here comes the easy works. Download <a href="https://sites.google.com/site/projectfreexperia/download">CyanogenMod</a>. Download a ROM which is preferred by you(Kitkat, JB, or ICS) also compatible for your device. Download GAPPS(Google app packages) from this <a href="http://forum.xda-developers.com/showthread.php?t=2523640">thread</a>. Put them in SD card root directory.</p>
 
 <p><b>Step 6:</b> This is Copy-pasted from <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_huashan">CyanogenMod website</a>.(For Xperia SP or any device)</p>
 
