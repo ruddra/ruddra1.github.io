@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Virtual Environment | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/virtual-environment/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-06-27T15:42:47+06:00</updated>
+  <updated>2014-07-04T13:26:09+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -18,7 +18,8 @@
     <link href="http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv/"/>
     <updated>2014-06-26T02:21:05+06:00</updated>
     <id>http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv</id>
-    <content type="html"><![CDATA[<p>To add virtual environment to Intellij Idea, You have added virtualenv folder&rsquo;s python to project sdk. Which means that virtualenv directory&rsquo;s python( for example <code>venv/bin/python2.7</code>) needs to be added to Intellij Idea project path.Here is a demonstration:<!--more--> need to go to <code>file&gt;project structure</code>(intellijIdea)</p>
+    <content type="html"><![CDATA[<p>To add virtual environment to Intellij Idea, You have added virtualenv folder&rsquo;s python to project sdk. Which means that virtualenv directory&rsquo;s python( for example <code>venv/bin/python2.7</code>) needs to be added to Intellij Idea project path.<!--more-->Here is a demonstration:
+First you need to go to <code>file&gt;project structure</code>(intellijIdea)</p>
 
 <p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/1.jpg">https://dl.dropboxusercontent.com/u/235131545/1.jpg</a>" width="600"></p>
 

@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Syncdb vs Migration - Ruddra's Blog</title>
+  <meta name="author" content="Arnab Kumar Shil">
+
+  
+  <meta name="description" content="Syncdb vs Migration written Jul 4th, 2014 in database, django, migration, syncdb While surfing through stackoverflow, I find a common question among &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ruddra's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Syncdb vs Migration</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-07-04T12:49:31+06:00" pubdate data-updated="true">Jul 4<sup>th</sup>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/database/'>database</a>, <a class='category' href='/blog/categories/django/'>django</a>, <a class='category' href='/blog/categories/migration/'>migration</a>, <a class='category' href='/blog/categories/syncdb/'>syncdb</a>
+  
+</span>
+
+
+        </div>
+        <p>While surfing through stackoverflow, I find a common question among django users that, database not working properly; fields attribute changed, yet not working etc. <!--more-->Clearly because most of them used syncdb after altering fields. Well, lets make some things clear here about django <code>syncdb</code> and <code>migration</code>.</p>
+
+<h2>What is <code>syncdb</code>?</h2>
+
+<p><code>syncdb</code> is a command which is executed in django shell to create tables for first time for apps which are added to <code>INSTALLED_APPS</code> of settings.py. Need to keep in mind about two key words: &lsquo;First Time&rsquo; and &lsquo;Newly Added Apps&rsquo;. Because <code>syncdb</code> only works on models of those apps for first time to create initial tables in database. So once <code>syncdb</code> is executed, not model field altering, because if anyone does that, it will not work. Its clearly mentioned in <a href="https://docs.djangoproject.com/en/1.6/ref/django-admin/#syncdb">documentation</a>:</p>
+
+<blockquote>syncdb will only create tables for models which have not yet been installed. It will never issue ALTER TABLE statements to match changes made to a model class after installation. Changes to model classes and database schemas often involve some form of ambiguity and, in those cases, Django would have to guess at the correct changes to make. There is a risk that critical data would be lost in the process.
+
+If you have made changes to a model and wish to alter the database tables to match, use the sql command to display the new SQL structure and compare that to your existing table schema to work out the changes.</blockquote>
+
+
+<p>So what if you need to change model field? No worries, migration is here to save you.</p>
+
+<h2>What is <code>migration</code>?</h2>
+
+<p>Migration is a process to reconstruct database schema according to altered model fields. From Django 1.7(under development) <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">documentation</a>:</p>
+
+<blockquote>Migrations are Django’s way of propagating changes you make to your models (adding a field, deleting a model, etc.) into your database schema. They’re designed to be mostly automatic, but you’ll need to know when to make migrations, when to run them, and the common problems you might run into.</blockquote>
+
+
+<p>So, after using <code>syncdb</code>, if you need to alter model fields, then go ahead, and after that you have to migrate database. If you are using django &lt;=1.6, then you can use <a href="http://south.aeracode.org/">South</a>. If django is above 1.6, it has its own <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">migration</a> process.</p>
+
+<p>And of course, if you use <code>South</code> to migrate, you have to use <code>syncdb</code> before executing migration, because if you don&rsquo;t, initial database tables(including auth, auth_group_permission, django_admin_log etc) will not be created.</p>
+
+<h3>PS: <code>syncdb</code> will be depricated from django 1.7, which will reduce the hassle of using syncdb and migration separately.</h3>
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/06/27/install-cyanogenmod-to-xperia/" title="Previous Post: Install CyanogenMod to Xperia">&laquo; Previous: Install CyanogenMod to Xperia</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/sky_rudy"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/skyrudy"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="mailto:ruddra90@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>. Own by <a href="https://www.linkedin.com/in/skyrudy">Arnab Kumar Shil</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
