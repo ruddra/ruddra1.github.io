@@ -6,7 +6,8 @@ comments: true
 categories: [Django, Virtual Environment, IntellijIdea]
 ---
 
-To add virtual environment to Intellij Idea, You have added virtualenv folder's python to project sdk. Which means that virtualenv directory's python( for example `venv/bin/python2.7`) needs to be added to Intellij Idea project path.Here is a demonstration:<!--more--> need to go to `file>project structure`(intellijIdea)
+To add virtual environment to Intellij Idea, You have added virtualenv folder's python to project sdk. Which means that virtualenv directory's python( for example `venv/bin/python2.7`) needs to be added to Intellij Idea project path.<!--more-->Here is a demonstration: 
+First you need to go to `file>project structure`(intellijIdea)
 
 {% img https://dl.dropboxusercontent.com/u/235131545/1.jpg 600 %}
 

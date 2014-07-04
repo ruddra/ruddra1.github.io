@@ -6,8 +6,8 @@ comments: true
 categories: [django, django-oscar]
 ---
 
-Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at: `https://github.com/tangentlabs/django-oscar`.
-<!--more-->
+Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at:<!--more--> `https://github.com/tangentlabs/django-oscar`.
+
 
 Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can't use it first time. Few problems I have faced during installation django-oscar.
 

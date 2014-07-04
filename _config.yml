@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://ruddra.com
+url: http://www.ruddra.com
 title: Ruddra's Blog
-subtitle: a developer's blog
+subtitle: an unorthodox developer's blog
 author: Arnab Kumar Shil
 simple_search: https://www.google.com/search
-description: I am a software engineer at <a href= "progmaatic.com">Progmaatic Developer Network</a>, an enthusiast <a href="http://stackoverflow.com/users/2696165/ruddra"> programmer</a>, football, f1 fan and a cyclist. 
+description: I am a software engineer at <a href= "progmaatic.com">Progmaatic Developer Network</a>, an enthusiast <a href="http://stackoverflow.com/users/2696165/ruddra"> programmer</a>, football & f1 fan and a cyclist. 
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -92,10 +92,14 @@ delicious_count: 3
 
 # Disqus Comments
 disqus_short_name: ruddracom
-disqus_show_comment_count: false
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: true
+
+instagram_user: skyrudy
+
+linkedin_user: skyrudy
