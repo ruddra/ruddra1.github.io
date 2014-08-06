@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-08-07T01:25:00+06:00</updated>
+  <updated>2014-08-07T01:46:49+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -380,18 +380,6 @@
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<script>
-var idcomments_acct = '1a722aab686707c7c5439cc6eec3d705';
-var idcomments_post_id;
-var idcomments_post_url;
-</script>
-
-
-<script type="text/javascript" src="http://www.intensedebate.com/js/genericLinkWrapperV2.js"></script>
 
 ]]></content>
   </entry>
