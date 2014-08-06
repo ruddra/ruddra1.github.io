@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Formsets | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/formsets/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-08-07T00:36:13+06:00</updated>
+  <updated>2014-08-07T00:57:48+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -18,7 +18,9 @@
     <link href="http://www.ruddra.com/blog/2014/08/06/working-with-formsets/"/>
     <updated>2014-08-06T21:44:37+06:00</updated>
     <id>http://www.ruddra.com/blog/2014/08/06/working-with-formsets</id>
-    <content type="html"><![CDATA[<p>As <a href="https://docs.djangoproject.com/en/dev/topics/forms/formsets/">documentation</a> says: <blockquote> A formset is a layer of abstraction to work with multiple forms on the same page. It can be best compared to a data grid</blockquote>. So here I am going to show a very simple django formset implementation example.<!--more--></p>
+    <content type="html"><![CDATA[<p>As <a href="https://docs.djangoproject.com/en/dev/topics/forms/formsets/">documentation</a> says: <blockquote> A formset is a layer of abstraction to work with multiple forms on the same page. It can be best compared to a data grid</blockquote>.</p>
+
+<p>So here I am going to show a very simple django formset implementation example.<!--more--></p>
 
 <p>Here we are going to use the following model, form, template, view:</p>
 
@@ -435,10 +437,7 @@
 
 <p><b>Notes to keep in mind:</b></p>
 
-<ol>
-<li>Need to be careful about things like:</li>
-</ol>
-
+<p>First, need to be careful about things like:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -449,10 +448,7 @@
 
 <p>Here <code>form-TOTAL_FORMS</code> &rsquo;s value should be equal to number of rows in table. The code above must exist in order to formset to work.</p>
 
-<ol>
-<li>In views.py, formset form class needs to be called, else cleaned data within the formset can&rsquo;t be found.</li>
-</ol>
-
+<p>Second, in views.py, formset form class needs to be called, else cleaned data within the formset can&rsquo;t be found.</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
