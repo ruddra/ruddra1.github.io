@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Working With Formsets - Ruddra's Blog</title>
+  <meta name="author" content="Arnab Kumar Shil">
+
+  
+  <meta name="description" content="Working With Formsets written Aug 6th, 2014 in django, form, formsets, javascript As documentation says: A formset is a layer of abstraction to work &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.ruddra.com/blog/2014/08/06/working-with-formsets">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ruddra's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Working With Formsets</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-08-06T21:44:37+06:00" pubdate data-updated="true">Aug 6<sup>th</sup>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/django/'>django</a>, <a class='category' href='/blog/categories/form/'>form</a>, <a class='category' href='/blog/categories/formsets/'>formsets</a>, <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
+
+        </div>
+        <p>As <a href="https://docs.djangoproject.com/en/dev/topics/forms/formsets/">documentation</a> says: <blockquote> A formset is a layer of abstraction to work with multiple forms on the same page. It can be best compared to a data grid</blockquote>. So here I am going to show a very simple django formset implementation example.<!--more--></p>
+
+<p>Here we are going to use the following model, form, template, view:</p>
+
+<h3>Model:</h3>
+
+
+
+
+<figure class='code'><figcaption><span>model </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class Product(models.Model):
+</span><span class='line'>    name = models.CharField(max_length=50)
+</span><span class='line'>    quantity = models.IntegerField()
+</span><span class='line'>    price = models.IntegerField()
+</span><span class='line'>
+</span><span class='line'>class Distributor(models.Model):
+</span><span class='line'>    name = models.CharField(max_length=100)
+</span><span class='line'>    products= models.ManyToManyField(Product)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These fairly simple models, where product is related to distributor model by a many-to-many relation.</p>
+
+<h3>Form:</h3>
+
+
+<p>First we declare productform, then using formset factory helps to create multiple instances of product. Then we add this to distributor form like below:</p>
+
+<figure class='code'><figcaption><span>form </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django import forms
+</span><span class='line'>from django.forms.formsets import formset_factory
+</span><span class='line'>class ProductForm(forms.Form):
+</span><span class='line'>     name = forms.CharField()
+</span><span class='line'>     quantity = forms.IntegerField()
+</span><span class='line'>     price = forms.IntegerField()
+</span><span class='line'>
+</span><span class='line'>ProductFormset= formset_factory(ProductForm)
+</span><span class='line'>
+</span><span class='line'>class DistributorForm(forms.Form):
+</span><span class='line'>    name= forms.CharField()
+</span><span class='line'>    products= ProductFormset()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we use this form in template.</p>
+
+<h3>Template:</h3>
+
+
+
+
+<figure class='code'><figcaption><span>template </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;form action="" method="post" class="">
+</span><span class='line'>{% csrf_token %}
+</span><span class='line'>&lt;h2> Distributors :&lt;/h2>
+</span><span class='line'>{% for field in form %}
+</span><span class='line'>  {{ field.errors }}
+</span><span class='line'>  {{ field.label_tag }} : {{ field }}
+</span><span class='line'>{% endfor %}
+</span><span class='line'>{{ form.products.management_form }}
+</span><span class='line'>
+</span><span class='line'>&lt;h3> Product Instance(s)&lt;/h3>
+</span><span class='line'>&lt;table id="table-product">
+</span><span class='line'>  &lt;thead>
+</span><span class='line'>      &lt;tr>
+</span><span class='line'>        &lt;th>name&lt;/th>
+</span><span class='line'>        &lt;th>quantity&lt;/th>       
+</span><span class='line'>        &lt;th>price&lt;/th>
+</span><span class='line'>      &lt;/tr>
+</span><span class='line'>    &lt;/thead>
+</span><span class='line'>    &lt;tbody class="product-instances">
+</span><span class='line'>      &lt;tr>
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>     
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>        &lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td>
+</span><span class='line'>      &lt;/tr>
+</span><span class='line'>    &lt;/tbody>
+</span><span class='line'>{% endfor %}
+</span><span class='line'>&lt;/table>
+</span><span class='line'>            &lt;input type="submit" name="submit" class="button" value="Save"/>
+</span><span class='line'>&lt;/form>
+</span><span class='line'>
+</span><span class='line'>&lt;script>
+</span><span class='line'>        var i = 1;
+</span><span class='line'>        $("#input_add").click(function() {
+</span><span class='line'>            $("tbody tr:first").clone().find(".data_input").each(function() {
+</span><span class='line'>                if ($(this).attr('class')== 'tr_clone_add btn data_input'){
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function(_, id) { return "remove_button" },
+</span><span class='line'>                        'name': function(_, name) { return "name_remove" +i },
+</span><span class='line'>                        'value': 'Remove'
+</span><span class='line'>                    }).on("click", function(){
+</span><span class='line'>                        var a = $(this).parent();
+</span><span class='line'>                        var b= a.parent();
+</span><span class='line'>                        i=i-1
+</span><span class='line'>                        $('#id_form-TOTAL_FORMS').val(i);
+</span><span class='line'>                        b.remove();
+</span><span class='line'>
+</span><span class='line'>                        $('.product-instances tr').each(function(index, value){
+</span><span class='line'>                            $(this).find('.data_input').each(function(){
+</span><span class='line'>                                $(this).attr({
+</span><span class='line'>                                    'id': function (_, id) {
+</span><span class='line'>                                        var idData= id;
+</span><span class='line'>                                        var splitV= String(idData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    },
+</span><span class='line'>                                    'name': function (_, name) {
+</span><span class='line'>                                        var nameData= name;
+</span><span class='line'>                                        var splitV= String(nameData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    }
+</span><span class='line'>                                });
+</span><span class='line'>                            })
+</span><span class='line'>                        })
+</span><span class='line'>                    })
+</span><span class='line'>                }
+</span><span class='line'>                else{
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function (_, id) {
+</span><span class='line'>                            var idData= id;
+</span><span class='line'>                            var splitV= String(idData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        },
+</span><span class='line'>                        'name': function (_, name) {
+</span><span class='line'>                            var nameData= name;
+</span><span class='line'>                            var splitV= String(nameData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        }
+</span><span class='line'>                    });
+</span><span class='line'>
+</span><span class='line'>                }
+</span><span class='line'>            }).end().appendTo("tbody");
+</span><span class='line'>            $('#id_form-TOTAL_FORMS').val(1+i);
+</span><span class='line'>            i++;
+</span><span class='line'>
+</span><span class='line'>        });
+</span><span class='line'>    &lt;/script></span></code></pre></td></tr></table></div></figure>
+
+
+<p>The html part is fairly simple, like using form in template. Then the JS is being used so that multiple instances of product form can be generated like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!-- First row of the table -->
+</span><span class='line'>
+</span><span class='line'>&lt;tr>&lt;td>&lt;input type="text" name="form-0-name" id="id_form-0-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-quantity" id="id_form-0-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-price" id="id_form-0-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- Second row of the table -->
+</span><span class='line'>
+</span><span class='line'>&lt;tr>&lt;td>&lt;input type="text" name="form-1-name" id="id_form-1-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-quantity" id="id_form-1-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-price" id="id_form-1-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="remove_button" type="button" name="remove_button1" value=" Remove " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- more inline formset are going to rendered here --></span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>View:</h3>
+
+
+<p>Here values from the form are being saved to database.</p>
+
+<figure class='code'><figcaption><span>view </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def post(request):
+</span><span class='line'>        form = DistributorForm(request.POST)
+</span><span class='line'>        form.product_instances = ProductFormset(request.POST)
+</span><span class='line'>        if form.is_valid():
+</span><span class='line'>            distributor= Distributor() #model class
+</span><span class='line'>            distributor.name= form.cleaned_data('name')
+</span><span class='line'>            distributor.save()
+</span><span class='line'>            if form.product_instances.cleaned_data is not None:
+</span><span class='line'>                for items in form.product_instances.cleaned_data:
+</span><span class='line'>                    product = Product() #Product model class
+</span><span class='line'>                    product.name= item['name']
+</span><span class='line'>                    product.quantity= item['quantity']
+</span><span class='line'>                    product.price= item['price']
+</span><span class='line'>                    product.save()
+</span><span class='line'>                    distributor.products.add(product)
+</span><span class='line'>            return redirect('/success')
+</span><span class='line'>        return redirect('/failure')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Output should look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/formset.JPG"></p>
+
+<p><b>Notes to keep in mind:</b></p>
+
+<ol>
+<li>Need to be careful about things like:</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-MAX_NUM_FORMS" id="id_form-MAX_NUM_FORMS" /></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here <code>form-TOTAL_FORMS</code> &rsquo;s value should be equal to number of rows in table. The code above must exist in order to formset to work.</p>
+
+<ol>
+<li>In views.py, formset form class needs to be called, else cleaned data within the formset can&rsquo;t be found.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure>
+
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h1>Comments</h1>
+          <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/07/04/syncdb-vs-migration/" title="Previous Post: Syncdb vs Migration">&laquo; Previous: Syncdb vs Migration</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    
+    <a href="https://twitter.com/sky_rudy"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/skyrudy"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://linkedin.com/in/skyrudy"><img src="/images/glyphicons_social_17_linked_in.png"/></a>
+    
+
+    
+    <a href="mailto:ruddra90@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
