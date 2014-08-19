@@ -12,13 +12,13 @@ https://bitbucket.org/ruddraarnab<br/>
 
 <h2>Summary</h2>
 
-I love to poke around dynamic and functional languages, and try to implement what I imagine or try to. I love developing software as long as its interesting and challenging. In my spare time I play video games, commute by cycle, or travel.
+I love to poke around dynamic and functional languages, and implement what I imagine or try to. I love developing software as long as its interesting and challenging. In my spare time I play video games, commute by cycle, or travel.
 
-I am currently working as a software engineer at Progmaatic Developer Network. I have developed multiple web applications mostly about sales/distribution system and e-commerce.
+I am currently working as a software engineer at Progmaatic Developer Network. I have developed multiple web applications mostly about sales/distribution system and e-commerce using Django framework.
 
 I hold a Bachelor of Science Degree on Computer Science and Engineering from Jahangirnagar University, Dhaka, Bangladesh.
 
-Ultimately, my passion is to create innovative solutions for real-world problems. By learning new languages, develop skills in new domains and work with great people, I want to pursue my passion. Currently my skills are on Python, JavaScript etc., but I am looking forward to learning new things.
+Ultimately, my passion is to create innovative solutions for real-world problems. By learning new languages, develop9ng skills in new domains and working with great people, I want to pursue my passion. Currently my skills are on Python, JavaScript etc., but I am looking forward to learning new things.
 
 
 <h2>Skills</h2>
