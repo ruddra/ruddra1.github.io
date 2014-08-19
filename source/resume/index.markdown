@@ -18,7 +18,7 @@ I am currently working as a software engineer at Progmaatic Developer Network. I
 
 I hold a Bachelor of Science Degree on Computer Science and Engineering from Jahangirnagar University, Dhaka, Bangladesh.
 
-Ultimately, my passion is to create innovative solutions for real-world problems. By learning new languages, develop9ng skills in new domains and working with great people, I want to pursue my passion. Currently my skills are on Python, JavaScript etc., but I am looking forward to learning new things.
+Ultimately, my passion is to create innovative solutions for real-world problems. By learning new languages, developing skills in new domains and working with great people, I want to pursue my passion. Currently my skills are on Python, JavaScript etc., but I am looking forward to learning new things.
 
 
 <h2>Skills</h2>
