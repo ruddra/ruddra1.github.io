@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Periodic | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/periodic/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-09-01T01:44:34+06:00</updated>
+  <updated>2014-09-01T01:58:08+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -18,8 +18,9 @@
     <link href="http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example/"/>
     <updated>2014-09-01T00:57:41+06:00</updated>
     <id>http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example</id>
-    <content type="html"><![CDATA[<p>(Writer is assuming you have read celery docs)
-As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation.</p>
+    <content type="html"><![CDATA[<h4>Writer is assuming you have read celery docs from here: <a href="http://celery.readthedocs.org/en/latest/index.html">http://celery.readthedocs.org/en/latest/index.html</a><br/></h4>
+
+<p>As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation. <!--more--></p>
 
 <p>First install celery: <code>pip install django-celery</code>.</p>
 
@@ -58,7 +59,7 @@ As we know, celery can be used as a scheduler for executing asynchronous tasks i
 </span><span class='line'>
 </span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Lets say, we want to add periodic task to app1. So structure of the project will be like this:&ndash;</p>
+<p>Lets say, we want to add periodic task to <code>app1</code>. So structure of the project will be like this:&ndash;</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -116,290 +117,13 @@ As we know, celery can be used as a scheduler for executing asynchronous tasks i
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
-</span><span class='line'>BROKER_URL = &lsquo;pyamqp://guest:guest@wlocalhost:5672//&rsquo; #read docs&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>List of modules to import when celery starts.&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>CELERY_IMPORTS = (&lsquo;app1.tasks&rsquo;, )&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h2>Using the database to store task state and results.&lt;/h2>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>CELERY_RESULT_BACKEND = &lsquo;db+sqlite:///results.db&rsquo;&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>CELERY_ANNOTATIONS = {&lsquo;tasks.add&rsquo;: {&lsquo;rate_limit&rsquo;: &lsquo;10/s&rsquo;}}&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>from celery.schedules import crontab
+</span><span class='line'>BROKER_URL = &lsquo;pyamqp://guest:guest@wlocalhost:5672//&rsquo; #read docs
+</span><span class='line'>CELERY_IMPORTS = (&lsquo;app1.tasks&rsquo;, )
+</span><span class='line'>from celery.schedules import crontab
 </span><span class='line'>from datetime import timedelta&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>CELERYBEAT_SCHEDULE = {&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>'schedule-name': { 
-</span><span class='line'>                    'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
-</span><span class='line'>                    'schedule': timedelta(seconds=30),
-</span><span class='line'>                    },
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure></notextile></div>
-</code></pre>
-
-<p>And in installed apps, we need to add <code>djcelery</code> :&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>INSTALLED_APPS = (&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code> ...
-</span><span class='line'>'djcelery'
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now we shall add a celery.py file in app1 directory:&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
-</span><span class='line'>import os
-</span><span class='line'>from celery import Celery
-</span><span class='line'>import django
-</span><span class='line'>from django.conf import settings&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>set the default Django settings module for the &lsquo;celery&rsquo; program.&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>os.environ.setdefault(&lsquo;DJANGO_SETTINGS_MODULE&rsquo;, &lsquo;settings&rsquo;)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>django.setup()&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>app = Celery(&lsquo;blackwidow.communication.jita_email_send&rsquo;)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Using a string here means the worker will not have to&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>pickle the object when using Windows.&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>app.config_from_object(&lsquo;django.conf:settings&rsquo;)
-</span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>app.conf.update(&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
-</span><span class='line'>)
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>@app.task(bind=True)
-</span><span class='line'>def debug_task(self):&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>print('Request: {0!r}'.format(self.request))
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
-and update the <strong>init</strong>.py file within the directory:&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>This will make sure the app is always imported when&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>Django starts so that shared_task will use this app.&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>from celery import app as celery_app</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now we are going to add a task.py which is actually going to be executed while running celery.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
-</span><span class='line'>import datetime
-</span><span class='line'>from celery.task.base import periodic_task
-</span><span class='line'>from django.core.mail import send_mail&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>@periodic_task(run_every=datetime.timedelta(seconds=30))
-</span><span class='line'>def email_sending_method():&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>    send_mail('subject', 'body', 'from_me@admin.com' , ['to_me@admin.com'], fail_silently=False) 
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Add resepective credintials/configuration for sending mail, and then add this piece of code in command prompt:&ndash;</p>
-
-<p><code>celery -A blackwidow.communication worker -B -l info</code></p>
-
-<p>and that should do the trick, you will get mails after every 30 seconds.</p>
-
-<p>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Perodic Tasks by Celery 3.1 Example]]></title>
-    <link href="http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1/"/>
-    <updated>2014-09-01T00:57:41+06:00</updated>
-    <id>http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1</id>
-    <content type="html"><![CDATA[<p>
-Celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share a code example of that. But I am going to avoid theoritical knowledge here because you can read them in celery <a href="http://celery.readthedocs.org/en/latest/index.html">documentation</a>.<!--more--></p>
-
-<p>First install celery: <code>pip install django-celery</code>.</p>
-
-<p>Here is the project structure we are going to use:&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>project
-</span><span class='line'>  -settings.py
-</span><span class='line'>  -manage.py
-</span><span class='line'>  -app1&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>-views.py
-</span><span class='line'>-models.py
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  -app2&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>-views.py
-</span><span class='line'>-models.py
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Lets say, we want to add periodic task to app1. So structure of the project will be like this:&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>project
-</span><span class='line'>  -settings.py
-</span><span class='line'>  -manage.py
-</span><span class='line'>  -app1&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>-__init__py
-</span><span class='line'>-celery.py
-</span><span class='line'>-tasks.py
-</span><span class='line'>-views.py
-</span><span class='line'>-models.py
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  -app2&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>-views.py
-</span><span class='line'>-models.py
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>No need to panic to see two new <code>.py</code> files. They will be created in time. :)</p>
-
-<p>Now, we need to add celery configuration in <code>settings.py</code>:&ndash;</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
-</span><span class='line'>BROKER_URL = &lsquo;pyamqp://guest:guest@wlocalhost:5672//&rsquo;
-</span><span class='line'>CELERY_IMPORTS = (&lsquo;app1.tasks&rsquo;, )
-</span><span class='line'>from celery.schedules import crontab
-</span><span class='line'>from datetime import timedelta
-</span><span class='line'>CELERYBEAT_SCHEDULE = {&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;pre>&lt;code>'schedule-name': { 
 </span><span class='line'>                    'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
@@ -450,18 +174,14 @@ Celery can be used as a scheduler for executing asynchronous tasks in periodic c
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
 </span><span class='line'>import os
 </span><span class='line'>from celery import Celery
 </span><span class='line'>import django
 </span><span class='line'>from django.conf import settings
-</span><span class='line'>os.environ.setdefault(&lsquo;DJANGO_SETTINGS_MODULE&rsquo;, &lsquo;settings&rsquo;)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>app = Celery(&lsquo;blackwidow.communication.jita_email_send&rsquo;)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>app.config_from_object(&lsquo;django.conf:settings&rsquo;)
+</span><span class='line'>os.environ.setdefault(&lsquo;DJANGO_SETTINGS_MODULE&rsquo;, &lsquo;settings&rsquo;)
+</span><span class='line'>app = Celery(&lsquo;blackwidow.communication.jita_email_send&rsquo;)
+</span><span class='line'>app.config_from_object(&lsquo;django.conf:settings&rsquo;)
 </span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>app.conf.update(&lt;/p>
@@ -484,7 +204,7 @@ and update the <code>__init__.py</code> file within the directory:&ndash;</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from &lt;strong>future&lt;/strong> import absolute_import
 </span><span class='line'>from celery import app as celery_app</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Now we are going to add a <code>task.py</code> which is actually going to be executed while running celery.</p>
+<p>Now we are going to add a <code>tasks.py</code> which is actually going to be executed while running celery.</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -511,13 +231,13 @@ and update the <code>__init__.py</code> file within the directory:&ndash;</p>
 </span><span class='line'>
 </span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Add respective credentials/configuration for sending mail, and then run this piece of code in command prompt:&ndash;</p>
+<p>Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:&ndash;</p>
 
 <p><code>celery -A blackwidow.communication worker -B -l info</code></p>
 
-<p>And that should do the trick, we will get mails after every 30 seconds!!</p>
+<p>And that should do the trick, we will get mails after every 30 seconds.</p>
 
-<p>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</p>
+<h4>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</h4>
 ]]></content>
   </entry>
   
