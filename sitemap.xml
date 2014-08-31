@@ -3,6 +3,18 @@
   
   
   <url>
+    <loc>http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example/</loc>
+    <lastmod>2014-09-01T00:57:41+06:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1/</loc>
+    <lastmod>2014-09-01T00:57:41+06:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://www.ruddra.com/blog/2014/08/06/working-with-formsets/</loc>
     <lastmod>2014-08-06T21:44:37+06:00</lastmod>
     <priority>0.8</priority>
@@ -59,84 +71,84 @@
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/about.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/components.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/css.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/customize.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/getting-started.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/all_posts/</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/blog/archives/</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/resume/</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/javascript.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.ruddra.com/assets/bootstrap/docs/migration.html</loc>
-    <lastmod>2014-08-19T10:37:38+06:00</lastmod>
+    <lastmod>2014-09-01T01:40:31+06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
