@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Django, | Ruddra's Blog]]></title>
+  <title><![CDATA[Category: Django | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/django/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-09-01T01:58:08+06:00</updated>
+  <updated>2014-09-01T21:58:34+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -238,6 +238,651 @@ and update the <code>__init__.py</code> file within the directory:&ndash;</p>
 <p>And that should do the trick, we will get mails after every 30 seconds.</p>
 
 <h4>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Working With Formsets]]></title>
+    <link href="http://www.ruddra.com/blog/2014/08/06/working-with-formsets/"/>
+    <updated>2014-08-06T21:44:37+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/08/06/working-with-formsets</id>
+    <content type="html"><![CDATA[<p>As <a href="https://docs.djangoproject.com/en/dev/topics/forms/formsets/">documentation</a> says: <blockquote> A formset is a layer of abstraction to work with multiple forms on the same page. It can be best compared to a data grid</blockquote>.</p>
+
+<p>So here I am going to show a very simple django formset implementation example.<!--more--></p>
+
+<p>Here we are going to use the following model, form, template, view:</p>
+
+<h3>Model:</h3>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>model </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class Product(models.Model):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>name = models.CharField(max_length=50)
+</span><span class='line'>quantity = models.IntegerField()
+</span><span class='line'>price = models.IntegerField()
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class Distributor(models.Model):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>name = models.CharField(max_length=100)
+</span><span class='line'>products= models.ManyToManyField(Product)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>These fairly simple models, where product is related to distributor model by a many-to-many relation.</p>
+
+<h3>Form:</h3>
+
+
+<p>First we declare productform, then using formset factory helps to create multiple instances of product. Then we add this to distributor form like below:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>form </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django import forms
+</span><span class='line'>from django.forms.formsets import formset_factory
+</span><span class='line'>class ProductForm(forms.Form):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code> name = forms.CharField()
+</span><span class='line'> quantity = forms.IntegerField()
+</span><span class='line'> price = forms.IntegerField()
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>ProductFormset= formset_factory(ProductForm)&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class DistributorForm(forms.Form):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>name= forms.CharField()
+</span><span class='line'>products= ProductFormset()
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now we use this form in template.</p>
+
+<h3>Template:</h3>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>template </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;form action="" method="post" class="">
+</span><span class='line'>{% csrf_token %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2> Distributors :&lt;/h2>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% for field in form %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>{{ field.errors }}
+</span><span class='line'>{{ field.label_tag }} : {{ field }}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% endfor %}
+</span><span class='line'>{{ form.products.management_form }}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h3> Product Instance(s)&lt;/h3>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;table id="table-product">
+</span><span class='line'>    &lt;thead>
+</span><span class='line'>        &lt;tr>
+</span><span class='line'>          &lt;th>name&lt;/th>
+</span><span class='line'>          &lt;th>quantity&lt;/th>     
+</span><span class='line'>          &lt;th>price&lt;/th>
+</span><span class='line'>        &lt;/tr>
+</span><span class='line'>    &lt;/thead>
+</span><span class='line'>    &lt;tbody class="product-instances">
+</span><span class='line'>        &lt;tr>
+</span><span class='line'>          &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>          &lt;td>{{ form.product }}&lt;/td>       
+</span><span class='line'>          &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>          &lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td>
+</span><span class='line'>        &lt;/tr>
+</span><span class='line'>    &lt;/tbody>
+</span><span class='line'>{% endfor %}
+</span><span class='line'>&lt;/table>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>        &lt;input type="submit" name="submit" class="button" value="Save"/&gt;
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;/form>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;script>
+</span><span class='line'>        var i = 1;
+</span><span class='line'>        $("#input_add").click(function() {
+</span><span class='line'>            $("tbody tr:first").clone().find(".data_input").each(function() {
+</span><span class='line'>                if ($(this).attr('class')== 'tr_clone_add btn data_input'){
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function(_, id) { return "remove_button" },
+</span><span class='line'>                        'name': function(_, name) { return "name_remove" +i },
+</span><span class='line'>                        'value': 'Remove'
+</span><span class='line'>                    }).on("click", function(){
+</span><span class='line'>                        var a = $(this).parent();
+</span><span class='line'>                        var b= a.parent();
+</span><span class='line'>                        i=i-1
+</span><span class='line'>                        $('#id_form-TOTAL_FORMS').val(i);
+</span><span class='line'>                        b.remove();
+</span><span class='line'>
+</span><span class='line'>                        $('.product-instances tr').each(function(index, value){
+</span><span class='line'>                            $(this).find('.data_input').each(function(){
+</span><span class='line'>                                $(this).attr({
+</span><span class='line'>                                    'id': function (_, id) {
+</span><span class='line'>                                        var idData= id;
+</span><span class='line'>                                        var splitV= String(idData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    },
+</span><span class='line'>                                    'name': function (_, name) {
+</span><span class='line'>                                        var nameData= name;
+</span><span class='line'>                                        var splitV= String(nameData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    }
+</span><span class='line'>                                });
+</span><span class='line'>                            })
+</span><span class='line'>                        })
+</span><span class='line'>                    })
+</span><span class='line'>                }
+</span><span class='line'>                else{
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function (_, id) {
+</span><span class='line'>                            var idData= id;
+</span><span class='line'>                            var splitV= String(idData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        },
+</span><span class='line'>                        'name': function (_, name) {
+</span><span class='line'>                            var nameData= name;
+</span><span class='line'>                            var splitV= String(nameData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        }
+</span><span class='line'>                    });
+</span><span class='line'>
+</span><span class='line'>                }
+</span><span class='line'>            }).end().appendTo("tbody");
+</span><span class='line'>            $('#id_form-TOTAL_FORMS').val(1+i);
+</span><span class='line'>            i++;
+</span><span class='line'>
+</span><span class='line'>        });
+</span><span class='line'>    &lt;/script>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The html part is fairly simple, like using form in template. Then the JS is being used so that multiple instances of product form can be generated like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- First row of the table -->
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;tr>&lt;td>&lt;input type="text" name="form-0-name" id="id_form-0-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-quantity" id="id_form-0-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-price" id="id_form-0-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- Second row of the table -->
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;tr>&lt;td>&lt;input type="text" name="form-1-name" id="id_form-1-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-quantity" id="id_form-1-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-price" id="id_form-1-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="remove_button" type="button" name="remove_button1" value=" Remove " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- more inline formset are going to rendered here -->
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>View:</h3>
+
+
+<p>Here values from the form are being saved to database.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>view </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>def post(request):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>    form = DistributorForm(request.POST)
+</span><span class='line'>    form.product_instances = ProductFormset(request.POST)
+</span><span class='line'>    if form.is_valid():
+</span><span class='line'>        distributor= Distributor() #model class
+</span><span class='line'>        distributor.name= form.cleaned_data('name')
+</span><span class='line'>        distributor.save()
+</span><span class='line'>        if form.product_instances.cleaned_data is not None:
+</span><span class='line'>            for items in form.product_instances.cleaned_data:
+</span><span class='line'>                product = Product() #Product model class
+</span><span class='line'>                product.name= item['name']
+</span><span class='line'>                product.quantity= item['quantity']
+</span><span class='line'>                product.price= item['price']
+</span><span class='line'>                product.save()
+</span><span class='line'>                distributor.products.add(product)
+</span><span class='line'>        return redirect('/success')
+</span><span class='line'>    return redirect('/failure')
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Output should look like this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/formset.JPG">https://dl.dropboxusercontent.com/u/235131545/myblog/formset.JPG</a>"></p>
+
+<p><b>Notes to keep in mind:</b></p>
+
+<p>First, need to be careful about things like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-MAX_NUM_FORMS" id="id_form-MAX_NUM_FORMS" /></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Here <code>form-TOTAL_FORMS</code> &rsquo;s value should be equal to number of rows in table. The code above must exist in order to formset to work.</p>
+
+<p>Second, in views.py, formset form class needs to be called, else cleaned data within the formset can&rsquo;t be found.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Syncdb vs Migration]]></title>
+    <link href="http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration/"/>
+    <updated>2014-07-04T12:49:31+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration</id>
+    <content type="html"><![CDATA[<p>While surfing through stackoverflow, I find a common question among django users that, database not working properly; fields attribute changed, yet not working etc. <!--more-->Clearly because most of them used syncdb after altering fields. Well, lets make some things clear here about django <code>syncdb</code> and <code>migration</code>.</p>
+
+<h2>What is <code>syncdb</code>?</h2>
+
+<p><code>syncdb</code> is a command which is executed in django shell to create tables for first time for apps which are added to <code>INSTALLED_APPS</code> of settings.py. Need to keep in mind about two key words: &lsquo;First Time&rsquo; and &lsquo;Newly Added Apps&rsquo;. Because <code>syncdb</code> only works on models of those apps for first time to create initial tables in database. So once <code>syncdb</code> is executed, not model field altering, because if anyone does that, it will not work. Its clearly mentioned in <a href="https://docs.djangoproject.com/en/1.6/ref/django-admin/#syncdb">documentation</a>:</p>
+
+<blockquote>syncdb will only create tables for models which have not yet been installed. It will never issue ALTER TABLE statements to match changes made to a model class after installation. Changes to model classes and database schemas often involve some form of ambiguity and, in those cases, Django would have to guess at the correct changes to make. There is a risk that critical data would be lost in the process.
+
+If you have made changes to a model and wish to alter the database tables to match, use the sql command to display the new SQL structure and compare that to your existing table schema to work out the changes.</blockquote>
+
+
+<p>So what if you need to change model field? No worries, migration is here to save you.</p>
+
+<h2>What is <code>migration</code>?</h2>
+
+<p>Migration is a process to reconstruct database schema according to altered model fields. From Django 1.7(under development) <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">documentation</a>:</p>
+
+<blockquote>Migrations are Django’s way of propagating changes you make to your models (adding a field, deleting a model, etc.) into your database schema. They’re designed to be mostly automatic, but you’ll need to know when to make migrations, when to run them, and the common problems you might run into.</blockquote>
+
+
+<p>So, after using <code>syncdb</code>, if you need to alter model fields, then go ahead, and after that you have to migrate database. If you are using django &lt;=1.6, then you can use <a href="http://south.aeracode.org/">South</a>. If django is above 1.6, it has its own <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">migration</a> process.</p>
+
+<p>And of course, if you use <code>South</code> to migrate, you have to use <code>syncdb</code> before executing migration, because if you don&rsquo;t, initial database tables(including auth, auth_group_permission, django_admin_log etc) will not be created.</p>
+
+<h3>PS: <code>syncdb</code> will be depricated from django 1.7, which will reduce the hassle of using syncdb and migration separately.</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sample Ajax GET/POST Request in Django]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django/"/>
+    <updated>2014-06-27T00:17:31+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django</id>
+    <content type="html"><![CDATA[<p>Let us make a test scenario here: a dropdown field which on change we are going to send a Get/Post request to django and return response.<!--more-->
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Html_Code </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;select id="select_dropdown">
+</span><span class='line'>&lt;option value='joshua'>joshua&lt;/option>
+</span><span class='line'>&lt;option value='peter'>peter&lt;/option>
+</span><span class='line'>&hellip;.
+</span><span class='line'>&hellip;.
+</span><span class='line'>&lt;/select>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Lets make a <code>Ajax</code> request after change in dropdown field.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Javascript </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$(document).ready(function(){&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p> $(&lsquo;#select_dropdown&rsquo;).change(function(){&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>var e = document.getElementById("select_dropdown");
+</span><span class='line'>var value = e.options[e.selectedIndex].value;
+</span><span class='line'>
+</span><span class='line'>$.ajax({
+</span><span class='line'>    url: "your-url",
+</span><span class='line'>    type: "post", // or "get"
+</span><span class='line'>    data: value,
+</span><span class='line'>    success: function(data) {
+</span><span class='line'>
+</span><span class='line'>      alert(data.result);
+</span><span class='line'>    }});
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>});&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>here on change of an post request is called. Now lets handle the view.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>views.py</span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="kn">import</span> <span class="nn">json</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">():</span> <span class="c">#os request.GET()</span>
+</span><span class='line'>    <span class="n">get_value</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'>    <span class="c"># Do your logic here coz you got data in `get_value`</span>
+</span><span class='line'>    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">data</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;you made a request&#39;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So you will get a pop-up message like:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/Capture.JPG">https://dl.dropboxusercontent.com/u/235131545/myblog/Capture.JPG</a>"></p>
+
+<p>Thats all.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
+    <updated>2014-06-26T02:43:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
+    <content type="html"><![CDATA[<p>I wanted to add a rich text editor within django administrator. Its not that hard to add a rich text editor, as there are editors like <a href="ckeditor.com">ckeditor</a>, <a href="http://www.tinymce.com/">tinymce</a>. <!--more--></p>
+
+<p>There are multiple plugins for django like <a href="https://github.com/dwaiter/django-ckeditor">django-ckeditor</a> or <a href="https://github.com/aljosa/django-tinymce">django-tinymce</a> etc. It seemed very complicated to use for me. So what I did here is that I have downloaded <a href="http://ckeditor.com/">ckeditor</a> stadard edition and extracted it in my Static folder and loaded the js file within  templates>admin>base.html.</p>
+
+<p>Now, using firebug, I retrieved the textarea name/id/class in which I wanted to add ckeditor using firebug (or from chrome/firefox: inspect elements). This process is simple, just load the page where your textarea(or any type of field) resides, open firebug and inspect that place.For example: lets say the model field I want to modify is named <code>blogbody</code>. So the element&rsquo;s name in adminsite was <code>id_blogbody</code>(auto generated). In case of using a form, the input will be like following:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>forms.py&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>blogbody= forms.CharField(widget= forms.TextInput(attrs={&lsquo;id&rsquo;: &lsquo;id_blogbody&rsquo;}))&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>generated text&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;input id='id_blogbody' ...>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Then go to base.html and add this script:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;script>
+</span><span class='line'>  CKEDITOR.replace( 'name_or_id_or_class_of_the_textfield' ); #in this example CKEDITOR.replace( '#id_blogbody' )
+</span><span class='line'>&lt;/script>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now reload the page from admin site and a textfield with rich text editor will be generated!</p>
 ]]></content>
   </entry>
   

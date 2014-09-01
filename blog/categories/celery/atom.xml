@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Celery, | Ruddra's Blog]]></title>
+  <title><![CDATA[Category: Celery | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/celery/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-09-01T01:58:08+06:00</updated>
+  <updated>2014-09-01T21:58:34+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
