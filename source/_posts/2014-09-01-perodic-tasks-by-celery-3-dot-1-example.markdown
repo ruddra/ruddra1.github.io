@@ -3,10 +3,10 @@ layout: post
 title: "Perodic Tasks By Celery 3.1 Example"
 date: 2014-09-01 00:57:41 +0600
 comments: true
-categories: django, celery, periodic tasks 
+categories: django celery periodic-tasks 
 ---
-(Writer is assuming you have read celery docs)
-As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation.
+####Writer is assuming you have read celery docs from here: http://celery.readthedocs.org/en/latest/index.html<br/>
+As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation. <!--more-->
 
 First install celery: `pip install django-celery`.
 
@@ -24,7 +24,7 @@ project
     -models.py
 {% endcodeblock %}
 
-Lets say, we want to add periodic task to app1. So structure of the project will be like this:-
+Lets say, we want to add periodic task to `app1`. So structure of the project will be like this:-
 
 {% codeblock %}
 project
@@ -48,17 +48,9 @@ Now, we need to add celery configuration in `settings.py`:-
 {% codeblock %}
 from __future__ import absolute_import
 BROKER_URL = 'pyamqp://guest:guest@wlocalhost:5672//' #read docs
-
-# List of modules to import when celery starts.
 CELERY_IMPORTS = ('app1.tasks', )
-
-## Using the database to store task state and results.
-# CELERY_RESULT_BACKEND = 'db+sqlite:///results.db'
-
-# CELERY_ANNOTATIONS = {'tasks.add': {'rate_limit': '10/s'}}
 from celery.schedules import crontab
 from datetime import timedelta
-
 
 CELERYBEAT_SCHEDULE = {
     'schedule-name': { 
@@ -77,7 +69,7 @@ INSTALLED_APPS = (
 )
 {% endcodeblock %}
 
-Now we shall add a celery.py file in app1 directory:-
+Now we shall add a `celery.py` file in `app1` directory:-
 
 {% codeblock %}
 from __future__ import absolute_import
@@ -85,14 +77,8 @@ import os
 from celery import Celery
 import django
 from django.conf import settings
-# set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-# django.setup()
-
 app = Celery('blackwidow.communication.jita_email_send')
-
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
@@ -103,16 +89,14 @@ app.conf.update(
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 {% endcodeblock %}
-and update the __init__.py file within the directory:-
+and update the `__init__.py` file within the directory:-
 
 {% codeblock %}
 from __future__ import absolute_import
-# This will make sure the app is always imported when
-# Django starts so that shared_task will use this app.
 from celery import app as celery_app
 {% endcodeblock %}
 
-Now we are going to add a task.py which is actually going to be executed while running celery.
+Now we are going to add a `tasks.py` which is actually going to be executed while running celery.
 
 {% codeblock %}
 from __future__ import absolute_import
@@ -125,10 +109,10 @@ def email_sending_method():
         send_mail('subject', 'body', 'from_me@admin.com' , ['to_me@admin.com'], fail_silently=False) 
 {% endcodeblock %}
 
-Add resepective credintials/configuration for sending mail, and then add this piece of code in command prompt:-
+Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:-
 
 `celery -A blackwidow.communication worker -B -l info`
 
-and that should do the trick, you will get mails after every 30 seconds. 
+And that should do the trick, we will get mails after every 30 seconds. 
 
-PS: Although there might a keyerror, but it won't occur any problems.
+####PS: Although there might a keyerror, but it won't occur any problems.
