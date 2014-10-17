@@ -192,7 +192,7 @@ in
 </span><span class='line'>import django
 </span><span class='line'>from django.conf import settings
 </span><span class='line'>os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-</span><span class='line'>app = Celery('blackwidow.communication.jita_email_send')
+</span><span class='line'>app = Celery('app1.email_sending_method')
 </span><span class='line'>app.config_from_object('django.conf:settings')
 </span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 </span><span class='line'>
@@ -234,7 +234,7 @@ in
 
 <p>Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:&ndash;</p>
 
-<p><code>celery -A blackwidow.communication worker -B -l info</code></p>
+<p><code>celery -A app1 worker -B -l info</code></p>
 
 <p>And that should do the trick, we will get mails after every 30 seconds.</p>
 

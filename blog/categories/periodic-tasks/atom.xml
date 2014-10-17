@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Periodic-tasks | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/periodic-tasks/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-09-23T03:01:04+06:00</updated>
+  <updated>2014-10-17T10:48:33+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -180,7 +180,7 @@
 </span><span class='line'>import django
 </span><span class='line'>from django.conf import settings
 </span><span class='line'>os.environ.setdefault(&lsquo;DJANGO_SETTINGS_MODULE&rsquo;, &lsquo;settings&rsquo;)
-</span><span class='line'>app = Celery(&lsquo;blackwidow.communication.jita_email_send&rsquo;)
+</span><span class='line'>app = Celery(&lsquo;app1.email_sending_method&rsquo;)
 </span><span class='line'>app.config_from_object(&lsquo;django.conf:settings&rsquo;)
 </span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)&lt;/p>
 </span><span class='line'>
@@ -233,7 +233,7 @@ and update the <code>__init__.py</code> file within the directory:&ndash;</p>
 
 <p>Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:&ndash;</p>
 
-<p><code>celery -A blackwidow.communication worker -B -l info</code></p>
+<p><code>celery -A app1 worker -B -l info</code></p>
 
 <p>And that should do the trick, we will get mails after every 30 seconds.</p>
 
