@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Make Own 'Forgot/Reset Password' feature in Django"
+title: "Implementation of 'Forgot/Reset Password' feature in Django"
 date: 2014-10-21 14:00:50 +0600
 comments: true
 categories: django django-1.7 python3 django-authentication email
