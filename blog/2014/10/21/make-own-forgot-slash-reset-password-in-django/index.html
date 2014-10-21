@@ -76,7 +76,7 @@ in
 
 <p>This implementation is going to divided into two parts. First part is sending an email with reset url, and the Second part is clicking the reset url attached in email and entering new password for reset completation.</p>
 
-<p>Before starting anything, lets look at the django&rsquo;s reset/forgot password&rsquo;s implementation in <code>django/contrib/auth/forms.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and <code>django/contrib/auth/views.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>)</p>
+<p>Before starting anything, lets look at the django&rsquo;s reset/forgot password&rsquo;s implementation in <code>django/contrib/auth/forms.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and <code>django/contrib/auth/views.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>).</p>
 
 <h2>Implemetation of sending an email for forgot password with reset url</h2>
 
@@ -210,6 +210,8 @@ in
 <span class='line-number'>94</span>
 <span class='line-number'>95</span>
 <span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from django.contrib.auth.tokens import default_token_generator
 </span><span class='line'>from django.utils.encoding import force_bytes
 </span><span class='line'>from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -262,8 +264,10 @@ in
 </span><span class='line'>                            'token': default_token_generator.make_token(user),
 </span><span class='line'>                            'protocol': 'http',
 </span><span class='line'>                            }
-</span><span class='line'>                        subject_template_name='registration/password_reset_subject.txt' # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
-</span><span class='line'>                        email_template_name='registration/password_reset_email.html'    # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+</span><span class='line'>                        subject_template_name='registration/password_reset_subject.txt' 
+</span><span class='line'>                        # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+</span><span class='line'>                        email_template_name='registration/password_reset_email.html'    
+</span><span class='line'>                        # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
 </span><span class='line'>                        subject = loader.render_to_string(subject_template_name, c)
 </span><span class='line'>                        # Email subject *must not* contain newlines
 </span><span class='line'>                        subject = ''.join(subject.splitlines())
@@ -356,8 +360,10 @@ in
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+<span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns('',
-</span><span class='line'>                       # url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), //this url is going to used for next section of implementation.
+</span><span class='line'>                       # url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
+</span><span class='line'>                       # PS: url above is going to used for next section of implementation.
 </span><span class='line'>                       url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
 </span><span class='line'>                       )</span></code></pre></td></tr></table></div></figure>
 
@@ -378,12 +384,14 @@ in
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
+<span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>{% load i18n %}{% autoescape off %}
 </span><span class='line'>{% blocktrans %}You're receiving this email because you requested a password reset for your user account at {{ site_name }}.{% endblocktrans %}
 </span><span class='line'>
 </span><span class='line'>{% trans "Please go to the following page and choose a new password:" %}
 </span><span class='line'>    {% block reset_link %}
-</span><span class='line'>        {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} &lt;!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. -->
+</span><span class='line'>        {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} 
+</span><span class='line'>        &lt;!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. -->
 </span><span class='line'>    {% endblock %}
 </span><span class='line'>{% trans "Your username, in case you've forgotten:" %} {{ user.get_username }}
 </span><span class='line'>
@@ -394,18 +402,22 @@ in
 </span><span class='line'>{% endautoescape %}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now run the server and you will see forms like the screen shots below: (This screenshots look cool because bootstrap theme has been used here.)</p>
+<p>Now run the server and you will see forms like the screen shots below: (This screenshots look cool because bootstrap theme has been used here.)
+(**Image sequence is according the implementation flow)</p>
 
-<p>(**Image sequence is according the implementation flow)
-</br>(Rendered template for login)
-<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png" width="600" height="400" title="'Rendered template for login'" >
-</br>(Rendered template from PasswordResetRequestForm form)
-<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form'" >
-</br>(Rendered template from PasswordResetRequestForm form with error messages)
-<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" >
-</br>(Rendered template from PasswordResetRequestForm form with error messages)
-<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" >
-</br>(Rendered template of login form with sent email confirmation message)
+<p></br>(Rendered template for login)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png" width="600" height="400" title="'Rendered template for login'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" ></p>
+
+<p></br>(Rendered template of login form with sent email confirmation message)
 <img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png" width="600" height="400" title="'Rendered template of login form with sent email confirmation message'" ></p>
 
 <h2>Implemetation of clicking the reset url and entering new password for reset completation.</h2>
@@ -540,7 +552,7 @@ in
 
 <p>Well <code>PasswordResetConfirmView</code> takes two perameter from urls, uidb64 and token, those were sent within email genereted by <code>ResetPasswordRequestView</code>. We got user id hence the user by decoding uid64 by using urlsafe_base64_decode, and function <code>default_token_generator.check_token</code> checks the token against the user. If they are valid and the form is valid, we set new password for the user using <code>.set_password('password')</code> function. If they are not valid, it will show an error message saying the url is no longer valid.</p>
 
-<p>More screenshots:</p>
+<p>More screenshots:(sequencial to implementation)</p>
 
 <br/>(Rendered template for SetPasswordForm form)
 
