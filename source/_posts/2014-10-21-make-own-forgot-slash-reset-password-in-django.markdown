@@ -222,6 +222,9 @@ Now run the server and you will see forms like the screen shots below: (This scr
 </br>(Rendered template of login form with sent email confirmation message)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png 600 400 'Rendered template of login form with sent email confirmation message' %}
 
+</br>(Sent Email look)
+{% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/eight.PNG 600 400 'Rendered template of login form with sent email confirmation message' %}
+
 
 ##Implemetation of clicking the reset url and entering new password for reset completation.
 
