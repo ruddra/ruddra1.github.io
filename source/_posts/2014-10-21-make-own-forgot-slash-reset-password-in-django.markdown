@@ -13,7 +13,7 @@ Class based view is going to be used instead of method based view(for no particu
 
 This implementation is going to divided into two parts. First part is sending an email with reset url, and the Second part is clicking the reset url attached in email and entering new password for reset completation.
 
-Before starting anything, lets look at the django's reset/forgot password's implementation in `django/contrib/auth/forms.py` (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and `django/contrib/auth/views.py` (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>)
+Before starting anything, lets look at the django's reset/forgot password's implementation in `django/contrib/auth/forms.py` (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and `django/contrib/auth/views.py` (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>).
 
 ##Implemetation of sending an email for forgot password with reset url
 
@@ -94,8 +94,10 @@ class ResetPasswordRequestView(FormView):
                             'token': default_token_generator.make_token(user),
                             'protocol': 'http',
                             }
-                        subject_template_name='registration/password_reset_subject.txt' # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
-                        email_template_name='registration/password_reset_email.html'    # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+                        subject_template_name='registration/password_reset_subject.txt' 
+                        # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+                        email_template_name='registration/password_reset_email.html'    
+                        # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
                         subject = loader.render_to_string(subject_template_name, c)
                         # Email subject *must not* contain newlines
                         subject = ''.join(subject.splitlines())
@@ -173,7 +175,8 @@ Two more things before wrapping up sending email part. One, making a <b>url</b> 
 
 {% codeblock %}
 urlpatterns = patterns('',
-                       # url(r'^account/reset_password_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), //this url is going to used for next section of implementation.
+                       # url(r'^account/reset_password_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
+                       # PS: url above is going to used for next section of implementation.
                        url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
                        )
 {% endcodeblock %}
@@ -188,7 +191,8 @@ Two, editing the template of `registration/password_reset_email.html` or else yo
 
 {% trans "Please go to the following page and choose a new password:" %}
     {% block reset_link %}
-        {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} <!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. -->
+        {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} 
+        <!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. -->
     {% endblock %}
 {% trans "Your username, in case you've forgotten:" %} {{ user.get_username }}
 
@@ -201,16 +205,20 @@ Two, editing the template of `registration/password_reset_email.html` or else yo
 {% endcodeblock %}
 
 Now run the server and you will see forms like the screen shots below: (This screenshots look cool because bootstrap theme has been used here.)
-
 (**Image sequence is according the implementation flow)
+
 </br>(Rendered template for login)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png 600 400 'Rendered template for login' %}
+
 </br>(Rendered template from PasswordResetRequestForm form)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png 600 400 'Rendered template from PasswordResetRequestForm form' %}
+
 </br>(Rendered template from PasswordResetRequestForm form with error messages)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png 600 400 'Rendered template from PasswordResetRequestForm form with error messages' %}
+
 </br>(Rendered template from PasswordResetRequestForm form with error messages)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png 600 400 'Rendered template from PasswordResetRequestForm form with error messages' %}
+
 </br>(Rendered template of login form with sent email confirmation message)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png 600 400 'Rendered template of login form with sent email confirmation message' %}
 
@@ -293,7 +301,7 @@ urlpatterns += patterns('',
 
 Well `PasswordResetConfirmView` takes two perameter from urls, uidb64 and token, those were sent within email genereted by `ResetPasswordRequestView`. We got user id hence the user by decoding uid64 by using urlsafe_base64_decode, and function `default_token_generator.check_token` checks the token against the user. If they are valid and the form is valid, we set new password for the user using `.set_password('password')` function. If they are not valid, it will show an error message saying the url is no longer valid.
 
-More screenshots:
+More screenshots:(sequencial to implementation)
 <br/>(Rendered template for SetPasswordForm form)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/six.png 600 400 'Rendered template for SetPasswordForm form' %}
 <br/>(Rendered template for login with success message)
