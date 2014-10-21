@@ -305,6 +305,6 @@ More screenshots:(sequencial to implementation)
 <br/>(Rendered template for SetPasswordForm form)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/six.png 600 400 'Rendered template for SetPasswordForm form' %}
 <br/>(Rendered template for login with success message)
-{% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png 600 400 'Rendered template for login with success message' %}
+{% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png 600 400 %}
 
 Thus you implement your very own forgot or reset password.
