@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-10-21T17:03:07+06:00</updated>
+  <updated>2014-10-21T17:12:21+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -510,7 +510,7 @@
 <br/>(Rendered template for login with success message)
 
 
-<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png" width="600" height="400" title="'Rendered template for login with success message'" ></p>
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png" width="600" height="400"></p>
 
 <p>Thus you implement your very own forgot or reset password.</p>
 ]]></content>
