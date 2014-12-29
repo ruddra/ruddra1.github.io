@@ -28,29 +28,28 @@ Rooting device is NOT required to flash ROM.
 <b>Step 5:</b> Hard part is done, now here comes the easy works. Download <a href="https://sites.google.com/site/projectfreexperia/download">CyanogenMod</a>. Download a ROM which is preferred by you(Kitkat, JB, or ICS) also compatible for your device. Download GAPPS(Google app packages) from this <a href="http://forum.xda-developers.com/showthread.php?t=2523640">thread</a>. Put them in SD card root directory. 
 
 <b>Step 6:</b> This is Copy-pasted from <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_huashan">CyanogenMod website</a>.(For Xperia SP or any device)
-<ul>
 
-  <li> 1. Download CyanogenMod you wish to install. </li>
+* Download CyanogenMod you wish to install.
 
-  <li> 2. Extract the boot.img from the zip to your computer, you will need this file for fastboot.</li>
+* Extract the boot.img from the zip to your computer, you will need this file for fastboot.
 
-  <li> 3. Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages' .zip file on the root of the SD card. Put the phone into fastboot mode.</li>
-
-  <li> 4. Open a terminal on the PC and enter the following:
+* Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages' .zip file on the root of the SD card. Put the phone into fastboot mode.</li>
+* Open a terminal on the PC and enter the following:
         fastboot -i 0xfce flash boot boot.img
-        fastboot -i 0xfce reboot
-  </li>  
-  <li> 5. While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</li>
+        fastboot -i 0xfce reboot 
 
-  <li> 6. Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a "back" button to go up one level, in which case the home button is used to confirm the selection.
-  Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</li>
+ *While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.
 
-  <li> 7. Select the option to wipe data/factory reset. </li>
+* Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a "back" button to go up one level, in which case the home button is used to confirm the selection.
 
-  <li> 8. Select Install zip from sdcard.</li>
+  Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.
 
-  <li> 9. Select Choose zip from sdcard.</li>
+* Select the option to wipe data/factory reset. 
 
-  <li> 10. Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.</li>
+* Select Install zip from sdcard.
+
+* Select Choose zip from sdcard.
+
+* Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.
 
 PS: If your device blacks out( I mean backlit on but no display, no need to panic. Your phone is in recovery mode. You can either remove battery or force restart like I did in my Xperia SP: <a href="http://userguide.sonymobile.com/referrer.php?region=global-en&amp;product=xperia-sp#!Turning-on-or-off-the-device---heading-only.html">LINK</a>).
