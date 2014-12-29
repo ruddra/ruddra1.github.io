@@ -3,7 +3,7 @@ layout: post
 title: "Django Tutorial: Make A Blog"
 date: 2014-12-29 22:45:37 +0600
 comments: true
-categories: 
+categories: [django, class_based_view, django-model]
 ---
 "Making a blog using django" is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using different django built-in  features so that less coding is required and making it more understandable.<!--more-->
 
