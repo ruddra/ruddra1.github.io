@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Xperia | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/xperia/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-12-30T03:05:17+06:00</updated>
+  <updated>2014-12-30T03:11:24+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -45,15 +45,10 @@ Rooting device is NOT required to flash ROM.</p>
 <li><p>Download CyanogenMod you wish to install.</p></li>
 <li><p>Extract the boot.img from the zip to your computer, you will need this file for fastboot.</p></li>
 <li><p>Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages' .zip file on the root of the SD card. Put the phone into fastboot mode.</li></p></li>
-<li>Open a terminal on the PC and enter the following:
+<li><p>Open a terminal on the PC and enter the following:
       fastboot -i 0xfce flash boot boot.img
-      fastboot -i 0xfce reboot</li>
-</ul>
-
-
-<p> *While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</p>
-
-<ul>
+      fastboot -i 0xfce reboot</p></li>
+<li><p>While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</p></li>
 <li><p>Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a &ldquo;back&rdquo; button to go up one level, in which case the home button is used to confirm the selection.</p>
 
 <p>Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</p></li>
