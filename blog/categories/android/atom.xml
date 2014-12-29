@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-10-21T17:39:09+06:00</updated>
+  <updated>2014-12-30T03:00:52+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -41,33 +41,28 @@ Rooting device is NOT required to flash ROM.</p>
 
 <p><b>Step 6:</b> This is Copy-pasted from <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_huashan">CyanogenMod website</a>.(For Xperia SP or any device)</p>
 
-<p><ul></p>
+<ul>
+<li><p>Download CyanogenMod you wish to install.</p></li>
+<li><p>Extract the boot.img from the zip to your computer, you will need this file for fastboot.</p></li>
+<li><p>Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages' .zip file on the root of the SD card. Put the phone into fastboot mode.</li></p></li>
+<li>Open a terminal on the PC and enter the following:
+      fastboot -i 0xfce flash boot boot.img
+      fastboot -i 0xfce reboot</li>
+</ul>
 
-<p>  <li> 1. Download CyanogenMod you wish to install. </li></p>
 
-<p>  <li> 2. Extract the boot.img from the zip to your computer, you will need this file for fastboot.</li></p>
+<p> *While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</p>
 
-<p>  <li> 3. Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages' .zip file on the root of the SD card. Put the phone into fastboot mode.</li></p>
+<ul>
+<li><p>Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a &ldquo;back&rdquo; button to go up one level, in which case the home button is used to confirm the selection.</p>
 
-<p>  <li> 4. Open a terminal on the PC and enter the following:</p>
+<p>Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</p></li>
+<li><p>Select the option to wipe data/factory reset.</p></li>
+<li><p>Select Install zip from sdcard.</p></li>
+<li><p>Select Choose zip from sdcard.</p></li>
+<li><p>Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.</p></li>
+</ul>
 
-<pre><code>    fastboot -i 0xfce flash boot boot.img
-    fastboot -i 0xfce reboot
-</code></pre>
-
-<p>  </li><br/>
-  <li> 5. While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</li></p>
-
-<p>  <li> 6. Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a &ldquo;back&rdquo; button to go up one level, in which case the home button is used to confirm the selection.
-  Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</li></p>
-
-<p>  <li> 7. Select the option to wipe data/factory reset. </li></p>
-
-<p>  <li> 8. Select Install zip from sdcard.</li></p>
-
-<p>  <li> 9. Select Choose zip from sdcard.</li></p>
-
-<p>  <li> 10. Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.</li></p>
 
 <p>PS: If your device blacks out( I mean backlit on but no display, no need to panic. Your phone is in recovery mode. You can either remove battery or force restart like I did in my Xperia SP: <a href="http://userguide.sonymobile.com/referrer.php?region=global-en&amp;product=xperia-sp#!Turning-on-or-off-the-device---heading-only.html">LINK</a>).</p>
 ]]></content>
