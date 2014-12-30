@@ -2,28 +2,25 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Django-oscar | Ruddra's Blog]]></title>
-  <link href="http://ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
-  <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T20:44:29+06:00</updated>
-  <id>http://ruddra.com/</id>
+  <link href="http://www.ruddra.com/blog/categories/django-oscar/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2014-10-21T17:39:09+06:00</updated>
+  <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
-    
+    <email><![CDATA[ruddra90@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Django: Django Oscar]]></title>
-    <link href="http://ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-django-oscar/"/>
     <updated>2014-06-25T18:50:45+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/25/django-django-oscar</id>
-    <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at: <code>https://github.com/tangentlabs/django-oscar</code>.</p>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at:<!--more--> <code>https://github.com/tangentlabs/django-oscar</code>.</p>
 
 <p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
-
-<!--more-->
-
 
 <p>First comes OS, using windows makes it hard to deploy this site, as few requirements like My-SQL, PIL etc are not easily install-able using PIP. Better use this: <code>http://www.lfd.uci.edu/~gohlke/pythonlibs/</code>. These are unofficial python library installer collection site. Ubuntu is much more easier to use for developing.</p>
 

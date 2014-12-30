@@ -2,22 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Translation | Ruddra's Blog]]></title>
-  <link href="http://ruddra.com/blog/categories/translation/atom.xml" rel="self"/>
-  <link href="http://ruddra.com/"/>
-  <updated>2014-06-25T20:44:29+06:00</updated>
-  <id>http://ruddra.com/</id>
+  <link href="http://www.ruddra.com/blog/categories/translation/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2014-10-21T17:39:09+06:00</updated>
+  <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
-    
+    <email><![CDATA[ruddra90@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Django Translation Using .po File]]></title>
-    <link href="http://ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
     <updated>2014-06-25T11:12:09+06:00</updated>
-    <id>http://ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
     <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
