@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Perodic Tasks by Celery 3.1 Example - Ruddra's Blog</title>
+  <meta name="author" content="Arnab Kumar Shil">
+
+  
+  <meta name="description" content="Perodic Tasks by Celery 3.1 Example written Sep 1st, 2014 in celery, django, periodic-tasks Writer is assuming you have read celery docs from here: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ruddra's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Perodic Tasks by Celery 3.1 Example</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-09-01T00:57:41+06:00" pubdate data-updated="true">Sep 1<sup>st</sup>, 2014</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/celery/'>celery</a>, <a class='category' href='/blog/categories/django/'>django</a>, <a class='category' href='/blog/categories/periodic-tasks/'>periodic-tasks</a>
+  
+</span>
+
+
+        </div>
+        <h4>Writer is assuming you have read celery docs from here: <a href="http://celery.readthedocs.org/en/latest/index.html">http://celery.readthedocs.org/en/latest/index.html</a><br/></h4>
+
+<p>As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation. <!--more--></p>
+
+<p>First install celery: <code>pip install django-celery</code>.</p>
+
+<p>Here is the project structure we are going to use:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>project
+</span><span class='line'>  -settings.py
+</span><span class='line'>  -manage.py
+</span><span class='line'>  -app1
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py
+</span><span class='line'>  -app2
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets say, we want to add periodic task to <code>app1</code>. So structure of the project will be like this:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>project
+</span><span class='line'>  -settings.py
+</span><span class='line'>  -manage.py
+</span><span class='line'>  -app1
+</span><span class='line'>    -__init__py
+</span><span class='line'>    -celery.py
+</span><span class='line'>    -tasks.py
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py
+</span><span class='line'>  -app2
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>No need to panic to see two new .py files. They will be created in time. :)</p>
+
+<p>Now, we need to add celery configuration in <code>settings.py</code>:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>BROKER_URL = 'pyamqp://guest:guest@wlocalhost:5672//' #read docs
+</span><span class='line'>CELERY_IMPORTS = ('app1.tasks', )
+</span><span class='line'>from celery.schedules import crontab
+</span><span class='line'>from datetime import timedelta
+</span><span class='line'>
+</span><span class='line'>CELERYBEAT_SCHEDULE = {
+</span><span class='line'>    'schedule-name': { 
+</span><span class='line'>                        'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
+</span><span class='line'>                        'schedule': timedelta(seconds=30),
+</span><span class='line'>                        },
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And in installed apps, we need to add <code>djcelery</code> :&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>INSTALLED_APPS = (
+</span><span class='line'>     ...
+</span><span class='line'>    'djcelery'
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we shall add a <code>celery.py</code> file in <code>app1</code> directory:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>import os
+</span><span class='line'>from celery import Celery
+</span><span class='line'>import django
+</span><span class='line'>from django.conf import settings
+</span><span class='line'>os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+</span><span class='line'>app = Celery('app1.email_sending_method')
+</span><span class='line'>app.config_from_object('django.conf:settings')
+</span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+</span><span class='line'>
+</span><span class='line'>app.conf.update(
+</span><span class='line'>    CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
+</span><span class='line'>    )
+</span><span class='line'>@app.task(bind=True)
+</span><span class='line'>def debug_task(self):
+</span><span class='line'>    print('Request: {0!r}'.format(self.request))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and update the <code>__init__.py</code> file within the directory:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>from celery import app as celery_app</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we are going to add a <code>tasks.py</code> which is actually going to be executed while running celery.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>import datetime
+</span><span class='line'>from celery.task.base import periodic_task
+</span><span class='line'>from django.core.mail import send_mail
+</span><span class='line'>
+</span><span class='line'>@periodic_task(run_every=datetime.timedelta(seconds=30))
+</span><span class='line'>def email_sending_method():
+</span><span class='line'>        send_mail('subject', 'body', 'from_me@admin.com' , ['to_me@admin.com'], fail_silently=False)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:&ndash;</p>
+
+<p><code>celery -A app1 worker -B -l info</code></p>
+
+<p>And that should do the trick, we will get mails after every 30 seconds.</p>
+
+<h4>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</h4>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                  var disqus_shortname = 'myblogruddra'; // required: replace example with your forum shortname
+
+                  /* * * DON'T EDIT BELOW THIS LINE * * */
+                  (function() {
+                      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+              </script>
+
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+        <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'myblogruddra'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+    </script>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2014/08/06/working-with-formsets/" title="Previous Post: Working with Formsets">&laquo; Previous: Working with Formsets</a>
+        
+
+        
+          <a class="pull-right" href="/blog/2014/10/21/make-own-forgot-slash-reset-password-in-django/" title="Next Post: Implementation of 'Forgot/Reset Password' feature in Django">Next: Implementation of 'Forgot/Reset Password' feature in Django &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    <a title="Stackoverflow" href="http://stackoverflow.com/users/2696165/ruddra" ><img src="/images/glyphicons_400_stack_overflow.png"/></a>
+    
+    <a href="https://twitter.com/ruddraarnab"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/skyrudy"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://linkedin.com/in/skyrudy"><img src="/images/glyphicons_social_17_linked_in.png"/></a>
+    
+
+    
+    <a href="mailto:ruddra90@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+    <a title="Resume" href="https://careers.stackoverflow.com/ruddra"><img src="/images/cv.png"></a>
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

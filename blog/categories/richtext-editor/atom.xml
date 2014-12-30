@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Richtext Editor | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/richtext-editor/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2014-10-21T17:39:09+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
+    <updated>2014-06-26T02:43:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
+    <content type="html"><![CDATA[<p>I wanted to add a rich text editor within django administrator. Its not that hard to add a rich text editor, as there are editors like <a href="ckeditor.com">ckeditor</a>, <a href="http://www.tinymce.com/">tinymce</a>. <!--more--></p>
+
+<p>There are multiple plugins for django like <a href="https://github.com/dwaiter/django-ckeditor">django-ckeditor</a> or <a href="https://github.com/aljosa/django-tinymce">django-tinymce</a> etc. It seemed very complicated to use for me. So what I did here is that I have downloaded <a href="http://ckeditor.com/">ckeditor</a> stadard edition and extracted it in my Static folder and loaded the js file within  templates>admin>base.html.</p>
+
+<p>Now, using firebug, I retrieved the textarea name/id/class in which I wanted to add ckeditor using firebug (or from chrome/firefox: inspect elements). This process is simple, just load the page where your textarea(or any type of field) resides, open firebug and inspect that place.For example: lets say the model field I want to modify is named <code>blogbody</code>. So the element&rsquo;s name in adminsite was <code>id_blogbody</code>(auto generated). In case of using a form, the input will be like following:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>forms.py&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>blogbody= forms.CharField(widget= forms.TextInput(attrs={&lsquo;id&rsquo;: &lsquo;id_blogbody&rsquo;}))&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>generated text&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;input id='id_blogbody' ...>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Then go to base.html and add this script:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;script>
+</span><span class='line'>  CKEDITOR.replace( 'name_or_id_or_class_of_the_textfield' ); #in this example CKEDITOR.replace( '#id_blogbody' )
+</span><span class='line'>&lt;/script>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now reload the page from admin site and a textfield with rich text editor will be generated!</p>
+]]></content>
+  </entry>
+  
+</feed>
