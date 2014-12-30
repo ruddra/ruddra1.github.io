@@ -5,15 +5,13 @@ date: 2014-12-29 22:45:37 +0600
 comments: true
 categories: [django, class_based_view, django-model]
 ---
-"Making a blog using django" is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using different django built-in  features so that less coding is required and making it more understandable.<!--more-->
+"Making a blog using django" is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using some of django's built-in  features so that less coding is required and making it more understandable.<!--more-->
 
 Before jumping to the main event, see if you have these installed in your pc:
 
     1. Python 3 installed in the computer. (Or python 2.7 if you prefer)
 
     2. Django 1.7 installed in the computer.
-
-<b>PS: If you don't understand any part of the blog, you can always check the source code provided here in github: https://github.com/skyrudy/myblog </b>
 
 Django appears to be a MVC framework, but instead of using the name 'Controller', we call it as 'View' and 'View' as 'Template', Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let’s you build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.
 
@@ -391,8 +389,12 @@ Thus you can make a blog using django.
 
 <b>REMARK:</b>
 
++ <b>If you don't understand any part of the blog, you can always check the source code provided here in github: https://github.com/skyrudy/myblog </b>
+
 + views.py/urls.py will not exactly match with the source code provided for this blog. The Source's Views are like this so that it can be more modifiable for future usage.
 
 + Screenshots might not match with your project but if you run the source code, you will be able to see pages exactly like the screenshots.
 
 + For better understanding of the blog, here is some screenshots: (<a href='https://onedrive.live.com/redir?resid=F17C9687806497C4%215458'>HERE</a>)
+
++ There is always room for improvement/correction, so please comment.
