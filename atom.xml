@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-12-30T21:48:19+06:00</updated>
+  <updated>2014-12-30T22:11:38+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -20,16 +20,7 @@
     <id>http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog</id>
     <content type="html"><![CDATA[<p>&ldquo;Making a blog using django&rdquo; is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using different django built-in  features so that less coding is required and making it more understandable.<!--more--></p>
 
-<p>Before jumping to the main event, see if you have these installed in your pc:</p>
-
-<pre><code>1. Python 3 installed in the computer. (Or python 2.7 if you prefer)
-
-2. Django 1.7 installed in the computer.
-</code></pre>
-
-<p><b>PS: If you don&rsquo;t understand any part of the blog, you can always check the source code provided here in github: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> </b></p>
-
-<p>Django appears to be a MVC framework, but instead of using the name &lsquo;Controller&rsquo;, we call it as &lsquo;View&rsquo; and &lsquo;View&rsquo; as &lsquo;Template&rsquo;, Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let’s you build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.</p>
+<p>Django appears to be a MVC framework, but instead of using the name &lsquo;Controller&rsquo;, we call it as &lsquo;View&rsquo; and &lsquo;View&rsquo; as &lsquo;Template&rsquo;, Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let us build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.</p>
 
 <p>So as we stated before, django appears to be a MVC framework. MVC is a framework for building web applications using a MVC (Model View Controller) design:</p>
 
@@ -41,7 +32,16 @@
 **(copied from here http://www.w3schools.com/aspnet/mvc_intro.asp)
 </code></pre>
 
-<p>Django manipulates data in the database using ORM(Object Relational Model). ORM saves you a lot of time by making the structure of the database, running CRUD(Create Read Update Delete) operations etc. Django ORM builds the structure of the database using the structure of the model. It means, the way you define the model, the way your database structure will be. A model is the single, definitive source of data about your data. It contains the essential fields and behaviors of the data you’re storing. Generally, each model maps to a single database table(<a href="https://docs.djangoproject.com/en/dev/topics/db/">more</a>).</p>
+<p>Django manipulates data in the database using ORM(Object Relational Model). ORM saves a lot of time by making the structure of the database, running CRUD(Create Read Update Delete) operations etc. Django ORM builds the structure of the database using the structure of the model. It means, the way the model is defined, the way database structure will be. A model is the single, definitive source of data. It contains the essential fields and behaviors of the data that is being storing in DB. Generally, each model maps to a single database table(<a href="https://docs.djangoproject.com/en/dev/topics/db/">more</a>).</p>
+
+<p>Before jumping to the main event, see if these are installed in pc:</p>
+
+<pre><code>1. Python 3 installed in the computer. (Or python 2.7)
+
+2. Django 1.7 installed in the computer.
+</code></pre>
+
+<p>Also if any part of this post is not understandable, you can always checkout the source provided in the <b>remarks</b> section of this post.</p>
 
 <p>Now let’s start a project named <code>myproject</code> in desired directory using this command: <code>django-admin.py startproject myproject</code>. Then, create an app inside the myproject directory using <code>python manage.py startapp myblog</code>. So the structure should look like this:</p>
 
@@ -162,11 +162,11 @@
 </span><span class='line'># for running the server</span></code></pre></td></tr></table></div></figure>
 
 
-<p>The third command for making a superuser in the system. The fourth command will run your project in this url: 127.0.0.1:8000(if you don&rsquo;t provide any specific ip/port). Or you can run like this <code>python manage.py runserver 0.0.0.0:8000</code> and it will make your project run in 0.0.0.0:8000 and this is accessible from browser. The webpage will look like this when the project runs successfully:</p>
+<p>The third command for making a superuser in the system. The fourth command will run the project in this url: 127.0.0.1:8000(if any specific ip/port has not been provided). Or it can be run like this <code>python manage.py runserver 0.0.0.0:8000</code> and it will make the project run in 0.0.0.0:8000 and this is accessible from browser. The webpage will look like this when the project runs successfully:</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/1.png"></p>
 
-<p>Now the database has been made and superuser has been created, so we go the next step, creating blogs. We are going to use django&rsquo;s one of the most powerful and popular feature, django&rsquo;s admin site. For making admin site visible and accessible, you need to add this lines to your urls.py (<code>myproject&gt;myproject&gt;urls.py</code>):</p>
+<p>Now the database has been made and superuser has been created, so we go the next step, creating blogs. We are going to use django&rsquo;s one of the most powerful and popular feature, django&rsquo;s admin site. For making admin site visible and accessible, we need to add this lines to urls.py (<code>myproject&gt;myproject&gt;urls.py</code>):</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -190,7 +190,7 @@
 </span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This lines will let you access the django&rsquo;s admin site using this url: 127.0.0.1:8000/admin (if you are running this project in localhost).</p>
+<p>This lines will let us access the django&rsquo;s admin site using this url: 127.0.0.1:8000/admin (if this project is running in localhost).</p>
 
 <p>Now we need to modify the <code>admin.py</code> in <code>myblog</code>&rsquo;s directory to register the app to admin site.</p>
 
@@ -216,7 +216,7 @@
 </span><span class='line'>admin.site.register(Tag)</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now your admin site will look like this:</p>
+<p>Now the admin site will look like this:</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/2.png"></p>
 
@@ -224,7 +224,7 @@
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/3.png"></p>
 
-<p>You can create new tags using Tags section of the admin page or clicking the (+) button right beside the Tags section on the new blog creation page, marked with blue circle in the previous image. After successfully adding a new blog, you can see this page:</p>
+<p>We can create new tags using Tags section of the admin page or clicking the (+) button right beside the Tags section on the new blog creation page, marked with blue circle in the previous image. After successfully adding a new blog, we will see this page:</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/4.png"></p>
 
@@ -232,9 +232,9 @@
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/5.png"></p>
 
-<p>Now you have created new blogs and tags. Its time for showing them in templates.</p>
+<p>Now we have created new blogs and tags. Its time for showing them in templates.</p>
 
-<p>For making data visible in templates, you need to use views to send data to them. let’s use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View(CBV</a> for that. <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#listview">ListView</a> is most appropriate for viewing all blogs in one page as it renders a page representing a list of objects. You can directly use this generic CBV in urls like:</p>
+<p>For making data visible in templates, we need to use views to send data to them. let’s use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View(CBV</a> for that. <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#listview">ListView</a> is most appropriate for viewing all blogs in one page as it renders a page representing a list of objects. we can directly use this generic CBV in urls like:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -246,7 +246,7 @@
 </span><span class='line'>    )</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Here, you need to create a template as well to view the data sent from this view:</p>
+<p>Here, we need to create a template as well to view the data sent from this view:</p>
 
 <figure class='code'><figcaption><span>blog_list.html </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -264,11 +264,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So now if you go to url: 127.0.0.1:8000, you will see this:</p>
+<p>So now if we go to url: 127.0.0.1:8000, we will see this:</p>
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/6.png"></p>
 
-<p>Now, for accessing each blog post separately, you can use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View (CBV)</a> for that. You can use <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#detailview">DetailView</a> for viewing content of one myblog object. For that, you can directly use it in urls like:</p>
+<p>Now, for accessing each blog post separately, we can use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View (CBV)</a> for that. we can use <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#detailview">DetailView</a> for viewing content of one myblog object. For that, we can directly use it in urls like:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -516,7 +516,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>And voilà!! You can see three/four new links availble in the templates.</p>
+<p>And voilà!! We will see three/four new links availble in the templates.</p>
 
 <p>And let’s see which blogs are in a tag in templates, so to that, we need to override the DetailView to make a new view like:</p>
 
@@ -566,14 +566,15 @@
 
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/11.png"></p>
 
-<p>Thus you can make a blog using django.</p>
+<p>Thus a simple blog can be made using Django within 30 minutes or so.</p>
 
 <p><b>REMARK:</b></p>
 
 <ul>
+<li><p>Source of the blog is here: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> .</p></li>
 <li><p>views.py/urls.py will not exactly match with the source code provided for this blog. The Source&rsquo;s Views are like this so that it can be more modifiable for future usage.</p></li>
 <li><p>Screenshots might not match with your project but if you run the source code, you will be able to see pages exactly like the screenshots.</p></li>
-<li><p>For better understanding of the blog, here is some screenshots: (<a href='https://onedrive.live.com/redir?resid=F17C9687806497C4%215458'>HERE</a>)</p></li>
+<li><p>For better understanding of the blog, here is some screenshots: (<a href='http://1drv.ms/1A8dBGZ'>HERE</a>)(Run the source code to see them in your localhost).</p></li>
 </ul>
 
 ]]></content>
