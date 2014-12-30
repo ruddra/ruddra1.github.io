@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Class_based_view | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/class-based-view/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-12-30T23:01:58+06:00</updated>
+  <updated>2014-12-31T02:58:06+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog/"/>
     <updated>2014-12-29T22:45:37+06:00</updated>
     <id>http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog</id>
-    <content type="html"><![CDATA[<p>&ldquo;Making a blog using django&rdquo; is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using different django built-in  features so that less coding is required and making it more understandable.<!--more--></p>
+    <content type="html"><![CDATA[<p>&ldquo;Making a blog using django&rdquo; is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using some of django&rsquo;s built-in  features so that less coding is required and making it more understandable.<!--more--></p>
 
 <p>Before jumping to the main event, see if you have these installed in your pc:</p>
 
@@ -26,8 +26,6 @@
 
 2. Django 1.7 installed in the computer.
 </code></pre>
-
-<p><b>PS: If you don&rsquo;t understand any part of the blog, you can always check the source code provided here in github: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> </b></p>
 
 <p>Django appears to be a MVC framework, but instead of using the name &lsquo;Controller&rsquo;, we call it as &lsquo;View&rsquo; and &lsquo;View&rsquo; as &lsquo;Template&rsquo;, Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let’s you build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.</p>
 
@@ -177,7 +175,7 @@
 </span><span class='line'>
 </span><span class='line'>&lt;p>$python manage.py migrate&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p>$ python manage.py createsuperuser &mdash;username=admin &mdash;email=&lt;a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#114;&#x75;&#100;&#100;&#114;&#97;&#57;&#x30;&#64;&#103;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#114;&#117;&#100;&#100;&#x72;&#x61;&#57;&#x30;&#64;&#103;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;&lt;/a>&lt;/p>
+</span><span class='line'>&lt;p>$ python manage.py createsuperuser &mdash;username=admin &mdash;email=&lt;a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#114;&#117;&#100;&#x64;&#114;&#97;&#57;&#x30;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;">&#x72;&#x75;&#100;&#100;&#x72;&#x61;&#x39;&#x30;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;&lt;/a>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;h1>it will ask for setting a password&lt;/h1>
 </span><span class='line'>
@@ -756,9 +754,11 @@
 <p><b>REMARK:</b></p>
 
 <ul>
+<li><p><b>If you don&rsquo;t understand any part of the blog, you can always check the source code provided here in github: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> </b></p></li>
 <li><p>views.py/urls.py will not exactly match with the source code provided for this blog. The Source&rsquo;s Views are like this so that it can be more modifiable for future usage.</p></li>
 <li><p>Screenshots might not match with your project but if you run the source code, you will be able to see pages exactly like the screenshots.</p></li>
 <li><p>For better understanding of the blog, here is some screenshots: (<a href='https://onedrive.live.com/redir?resid=F17C9687806497C4%215458'>HERE</a>)</p></li>
+<li><p>There is always room for improvement/correction, so please comment.</p></li>
 </ul>
 
 ]]></content>
