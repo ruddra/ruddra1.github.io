@@ -10,6 +10,12 @@ As we know, celery can be used as a scheduler for executing asynchronous tasks i
 
 First install celery: `pip install django-celery`.
 
+###Configuring Brokers
+
+We are using django database as Broker. For detail understanding, check here: http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html
+
+###Making Periodic Task
+
 Here is the project structure we are going to use:-
 
 {% codeblock %}
@@ -54,11 +60,13 @@ from datetime import timedelta
 
 CELERYBEAT_SCHEDULE = {
     'schedule-name': { 
-                        'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
+                        'task': 'app1.tasks.email_sending_method',  # We are going to create a email_sending_method later in this post.
                         'schedule': timedelta(seconds=30),
                         },
     }
     {% endcodeblock %}
+    
+As you can see, `task` in `CELERYBEAT_SCHEDULE` is name as `app1.tasks.email_sending_method` because in next section we are making a `email_sending_method` method which going to send an email every 30 seconds.
 
 And in installed apps, we need to add `djcelery` :-
 
