@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: django-1.7 | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/django-1-dot-7/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-02-17T16:49:34+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Implementation of 'Forgot/Reset Password' Feature in Django]]></title>
+    <link href="http://www.ruddra.com/blog/2014/10/21/make-own-forgot-slash-reset-password-in-django/"/>
+    <updated>2014-10-21T14:00:50+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/10/21/make-own-forgot-slash-reset-password-in-django</id>
+    <content type="html"><![CDATA[<p>Django has its own implementation for <code>reset/forgot password</code> for its admin site. We are going to use that piece of code as reference to implement simillar feature for a non admin-site authentication page. Although there are tons of good packages which will allow user to use their password reseting system. But if the system isn&rsquo;t too complex and doesn&rsquo;t need such authentication pluggins, then reusing the django&rsquo;s very own implementation can be a good option.<!--more--></p>
+
+<p>Class based view is going to be used instead of method based view(for no particular reason, so using either of them is alright.). And please read the comments of the example codes for better understanding of implementation.</p>
+
+<p>This implementation is going to divided into two parts. First part is sending an email with reset url, and the Second part is clicking the reset url attached in email and entering new password for reset completation.</p>
+
+<p>Before starting anything, lets look at the django&rsquo;s reset/forgot password&rsquo;s implementation in <code>django/contrib/auth/forms.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and <code>django/contrib/auth/views.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>).</p>
+
+<h2>Implemetation of sending an email for forgot password with reset url</h2>
+
+<p>First need to configure smtp/email configuration so the system can send email. Gmail&rsquo;s SMTP service is going to be used here.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>EMAIL_USE_TLS = True
+</span><span class='line'>DEFAULT_FROM_EMAIL = &lsquo;&lt;a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x74;&#101;&#115;&#116;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#111;&#x6d;">&#x74;&#101;&#x73;&#116;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;&lt;/a>&rsquo;
+</span><span class='line'>SERVER_EMAIL = &lsquo;&lt;a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#116;&#101;&#115;&#116;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#109;">&#x74;&#x65;&#115;&#x74;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#109;&lt;/a>&rsquo;
+</span><span class='line'>EMAIL_HOST = &lsquo;smtp.gmail.com&rsquo;
+</span><span class='line'>EMAIL_PORT = 587
+</span><span class='line'>EMAIL_HOST_USER = &lsquo;&lt;a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#116;&#x65;&#115;&#x74;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#116;&#101;&#x73;&#x74;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#x6f;&#109;&lt;/a>&rsquo;
+</span><span class='line'>EMAIL_HOST_PASSWORD = &lsquo;test123##&rsquo;
+</span><span class='line'>EMAIL_BACKEND = &lsquo;django.core.mail.backends.smtp.EmailBackend&rsquo;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now we are going to make a <b>reset password form</b> where we are going to add an text field which will take either username or email address associated with the corresponding user.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django import forms&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class PasswordResetRequestForm(forms.Form):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>We are going to make a <b>view</b> which will check the input email/username and send an email to user&rsquo;s email address(implementation reference: <a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py#L235'>source</a>).</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.contrib.auth.tokens import default_token_generator
+</span><span class='line'>from django.utils.encoding import force_bytes
+</span><span class='line'>from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+</span><span class='line'>from django.template import loader
+</span><span class='line'>from django.core.validators import validate_email
+</span><span class='line'>from django.core.exceptions import ValidationError
+</span><span class='line'>from django.core.mail import send_mail
+</span><span class='line'>from settings import DEFAULT_FROM_EMAIL
+</span><span class='line'>from django.views.generic import *
+</span><span class='line'>from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+</span><span class='line'>from django.contrib import messages
+</span><span class='line'>from django.contrib.auth.models import User&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class ResetPasswordRequestView(FormView):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>template_name = "account/test_template.html"    #code for template is given below the view's code
+</span><span class='line'>success_url = '/account/login'
+</span><span class='line'>form_class = PasswordResetRequestForm
+</span><span class='line'>
+</span><span class='line'>@staticmethod
+</span><span class='line'>def validate_email_address(email):
+</span><span class='line'>'''
+</span><span class='line'>This method here validates the if the input is an email address or not. Its return type is boolean, True if the input is a email address or False if its not.
+</span><span class='line'>'''
+</span><span class='line'>    try:
+</span><span class='line'>        validate_email(email)
+</span><span class='line'>        return True
+</span><span class='line'>    except ValidationError:
+</span><span class='line'>        return False
+</span><span class='line'>
+</span><span class='line'>def post(self, request, *args, **kwargs):
+</span><span class='line'>'''
+</span><span class='line'>A normal post request which takes input from field "email_or_username" (in ResetPasswordRequestForm). 
+</span><span class='line'>'''
+</span><span class='line'>    form = self.form_class(request.POST)
+</span><span class='line'>    if form.is_valid():
+</span><span class='line'>        data= form.cleaned_data["email_or_username"]
+</span><span class='line'>    if self.validate_email_address(data) is True:                 #uses the method written above
+</span><span class='line'>        '''
+</span><span class='line'>        If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
+</span><span class='line'>        '''
+</span><span class='line'>        associated_users= User.objects.filter(email= data)
+</span><span class='line'>        if associated_users.exists():
+</span><span class='line'>            for user in associated_users:
+</span><span class='line'>                    c = {
+</span><span class='line'>                        'email': user.email,
+</span><span class='line'>                        'domain': request.META['HTTP_HOST'],
+</span><span class='line'>                        'site_name': 'your site',
+</span><span class='line'>                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+</span><span class='line'>                        'user': user.user,
+</span><span class='line'>                        'token': default_token_generator.make_token(user),
+</span><span class='line'>                        'protocol': 'http',
+</span><span class='line'>                        }
+</span><span class='line'>                    subject_template_name='registration/password_reset_subject.txt' 
+</span><span class='line'>                    # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+</span><span class='line'>                    email_template_name='registration/password_reset_email.html'    
+</span><span class='line'>                    # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+</span><span class='line'>                    subject = loader.render_to_string(subject_template_name, c)
+</span><span class='line'>                    # Email subject *must not* contain newlines
+</span><span class='line'>                    subject = ''.join(subject.splitlines())
+</span><span class='line'>                    email = loader.render_to_string(email_template_name, c)
+</span><span class='line'>                    send_mail(subject, email, DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+</span><span class='line'>            result = self.form_valid(form)
+</span><span class='line'>            messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
+</span><span class='line'>            return result
+</span><span class='line'>        result = self.form_invalid(form)
+</span><span class='line'>        messages.error(request, 'No user is associated with this email address')
+</span><span class='line'>        return result
+</span><span class='line'>    else:
+</span><span class='line'>        '''
+</span><span class='line'>        If the input is an username, then the following code will lookup for users associated with that user. If found then an email will be sent to the user's address, else an error message will be printed on the screen.
+</span><span class='line'>        '''
+</span><span class='line'>        associated_users= User.objects.filter(username=data)
+</span><span class='line'>        if associated_users.exists():
+</span><span class='line'>            for user in associated_users:
+</span><span class='line'>                c = {
+</span><span class='line'>                    'email': user.email,
+</span><span class='line'>                    'domain': 'myjita.info',
+</span><span class='line'>                    'site_name': 'myjita',
+</span><span class='line'>                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+</span><span class='line'>                    'user': user,
+</span><span class='line'>                    'token': default_token_generator.make_token(user),
+</span><span class='line'>                    'protocol': 'http',
+</span><span class='line'>                    }
+</span><span class='line'>                subject_template_name='registration/password_reset_subject.txt'
+</span><span class='line'>                email_template_name='registration/password_reset_email.html'
+</span><span class='line'>                subject = loader.render_to_string(subject_template_name, c)
+</span><span class='line'>                # Email subject *must not* contain newlines
+</span><span class='line'>                subject = ''.join(subject.splitlines())
+</span><span class='line'>                email = loader.render_to_string(email_template_name, c)
+</span><span class='line'>                send_mail(subject, email, DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+</span><span class='line'>            result = self.form_valid(form)
+</span><span class='line'>            messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
+</span><span class='line'>            return result
+</span><span class='line'>        result = self.form_invalid(form)
+</span><span class='line'>        messages.error(request, 'This username does not exist in the system.')
+</span><span class='line'>        return result
+</span><span class='line'>    messages.error(request, 'Invalid Input')
+</span><span class='line'>    return self.form_invalid(form)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>As you see above, the code is fairly simple(although it looks long). An encoded user id has been generated here using <code>urlsafe_base64_encode(force_bytes(user.pk))</code> and a token by using <code>default_token_generator.make_token(user)</code>. This user id is going to be used later to get the user, the token will be used for checking validity of the url for that user and both the token and the user id is going to be used as unique reference for reset password url. <code>c</code> is a dictionary which has user id, token and other related data etc. This dictionary is going to be blent with the template &lsquo;registration/password_reset_email.html&rsquo; and sent to the user&rsquo;s email address.</p>
+
+<p>For displaying messages(if you are using messages framework of django-1.7, details: <a href='https://docs.djangoproject.com/en/dev/ref/contrib/messages/#displaying-messages'>source</a>), add this piece of code in your template:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{# test template #}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- code for displaying success or error message in template -->
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% if messages %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;ul class="messages">
+</span><span class='line'>    {% for message in messages %}
+</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- Form rendering code for template -->
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;form action="" method="post">&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>{% csrf_token %}
+</span><span class='line'>{{ form.as_p }}
+</span><span class='line'>
+</span><span class='line'>&lt;input type="submit" value="Submit" /&gt;
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&lt;/form>
+</span><span class='line'>{% endif %}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Two more things before wrapping up sending email part. One, making a <b>url</b> for using this view.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns(&lsquo;&rsquo;,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>                   # url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
+</span><span class='line'>                   # PS: url above is going to used for next section of implementation.
+</span><span class='line'>                   url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
+</span><span class='line'>                   )
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Two, editing the template of <code>registration/password_reset_email.html</code> or else you will get errors.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% load i18n %}{% autoescape off %}
+</span><span class='line'>{% blocktrans %}You&rsquo;re receiving this email because you requested a password reset for your user account at {{ site_name }}.{% endblocktrans %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% trans &ldquo;Please go to the following page and choose a new password:&rdquo; %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>{% block reset_link %}
+</span><span class='line'>    {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} 
+</span><span class='line'>    &lt;!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. --&gt;
+</span><span class='line'>{% endblock %}
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% trans &ldquo;Your username, in case you&rsquo;ve forgotten:&rdquo; %} {{ user.get_username }}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% trans &ldquo;Thanks for using our site!&rdquo; %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% blocktrans %}The {{ site_name }} team{% endblocktrans %}&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{% endautoescape %}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now run the server and you will see forms like the screen shots below: (This screenshots look cool because bootstrap theme has been used here.)
+(**Image sequence is according the implementation flow)</p>
+
+<p></br>(Rendered template for login)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png</a>" width="600" height="400" title="&lsquo;Rendered template for login&rsquo;" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png</a>" width="600" height="400" title="&lsquo;Rendered template from PasswordResetRequestForm form&rsquo;" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png</a>" width="600" height="400" title="&lsquo;Rendered template from PasswordResetRequestForm form with error messages&rsquo;" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png</a>" width="600" height="400" title="&lsquo;Rendered template from PasswordResetRequestForm form with error messages&rsquo;" ></p>
+
+<p></br>(Rendered template of login form with sent email confirmation message)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png</a>" width="600" height="400" title="&lsquo;Rendered template of login form with sent email confirmation message&rsquo;" ></p>
+
+<p></br>(Sent Email look)
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/eight.PNG">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/eight.PNG</a>" width="600" height="400" title="&lsquo;Rendered template of login form with sent email confirmation message&rsquo;" ></p>
+
+<h2>Implemetation of clicking the reset url and entering new password for reset completation.</h2>
+
+<p>First, lets write a <b>form</b> which will have two fields new password and retype password field.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class SetPasswordForm(forms.Form):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>"""
+</span><span class='line'>A form that lets a user change set their password without entering the old
+</span><span class='line'>password
+</span><span class='line'>"""
+</span><span class='line'>error_messages = {
+</span><span class='line'>    'password_mismatch': ("The two password fields didn't match."),
+</span><span class='line'>    }
+</span><span class='line'>new_password1 = forms.CharField(label=("New password"),
+</span><span class='line'>                                widget=forms.PasswordInput)
+</span><span class='line'>new_password2 = forms.CharField(label=("New password confirmation"),
+</span><span class='line'>                                widget=forms.PasswordInput)
+</span><span class='line'>
+</span><span class='line'>def clean_new_password2(self):
+</span><span class='line'>    password1 = self.cleaned_data.get('new_password1')
+</span><span class='line'>    password2 = self.cleaned_data.get('new_password2')
+</span><span class='line'>    if password1 and password2:
+</span><span class='line'>        if password1 != password2:
+</span><span class='line'>            raise forms.ValidationError(
+</span><span class='line'>                self.error_messages['password_mismatch'],
+</span><span class='line'>                code='password_mismatch',
+</span><span class='line'>                )
+</span><span class='line'>    return password2
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>It will take two password input and verify if they match, if those inputs match(in clean method), it will return password. Now using that form, we are going to write a <b>view</b>(reference for implementation:(<a href="https://github.com/django/django/blob/731f313d604a6cc141f36d8a1ba9a75790c70154/django/contrib/auth/views.py#L192">source</a>)).</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class PasswordResetConfirmView(FormView):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>template_name = "account/test_template.html"
+</span><span class='line'>success_url = '/account/login'
+</span><span class='line'>form_class = SetPasswordForm
+</span><span class='line'>
+</span><span class='line'>def post(self, request, uidb64=None, token=None, *arg, **kwargs):
+</span><span class='line'>    """
+</span><span class='line'>    View that checks the hash in a password reset link and presents a
+</span><span class='line'>    form for entering a new password.
+</span><span class='line'>    """
+</span><span class='line'>    UserModel = get_user_model()
+</span><span class='line'>    form = self.form_class(request.POST)
+</span><span class='line'>    assert uidb64 is not None and token is not None  # checked by URLconf
+</span><span class='line'>    try:
+</span><span class='line'>        uid = urlsafe_base64_decode(uidb64)
+</span><span class='line'>        user = UserModel._default_manager.get(pk=uid)
+</span><span class='line'>    except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+</span><span class='line'>        user = None
+</span><span class='line'>
+</span><span class='line'>    if user is not None and default_token_generator.check_token(user, token):
+</span><span class='line'>        if form.is_valid():
+</span><span class='line'>            new_password= form.cleaned_data['new_password2']
+</span><span class='line'>            user.set_password(new_password)
+</span><span class='line'>            user.save()
+</span><span class='line'>            messages.success(request, 'Password has been reset.')
+</span><span class='line'>            return self.form_valid(form)
+</span><span class='line'>        else:
+</span><span class='line'>            messages.error(request, 'Password reset has not been unsuccessful.')
+</span><span class='line'>            return self.form_invalid(form)
+</span><span class='line'>    else:
+</span><span class='line'>        messages.error(request,'The reset password link is no longer valid.')
+</span><span class='line'>        return self.form_invalid(form)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>URL for this view:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += patterns(&lsquo;&rsquo;,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>                   url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
+</span><span class='line'>                   )
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Well <code>PasswordResetConfirmView</code> takes two perameter from urls, uidb64 and token, those were sent within email genereted by <code>ResetPasswordRequestView</code>. We got user id hence the user by decoding uid64 by using urlsafe_base64_decode, and function <code>default_token_generator.check_token</code> checks the token against the user. If they are valid and the form is valid, we set new password for the user using <code>.set_password('password')</code> function. If they are not valid, it will show an error message saying the url is no longer valid.</p>
+
+<p>More screenshots:(sequencial to implementation)</p>
+
+<br/>(Rendered template for SetPasswordForm form)
+
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/six.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/six.png</a>" width="600" height="400" title="&lsquo;Rendered template for SetPasswordForm form&rsquo;" ></p>
+
+<br/>(Rendered template for login with success message)
+
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png</a>" width="600" height="400"></p>
+
+<p>Thus you implement your very own forgot or reset password.</p>
+]]></content>
+  </entry>
+  
+</feed>

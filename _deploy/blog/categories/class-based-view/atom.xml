@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Class_based_view | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/class-based-view/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-02-17T16:49:34+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django Tutorial: Make a Blog]]></title>
+    <link href="http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog/"/>
+    <updated>2014-12-29T22:45:37+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog</id>
+    <content type="html"><![CDATA[<p>&ldquo;Making a blog using django&rdquo; is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using some of django&rsquo;s built-in  features so that less coding is required and making it more understandable.<!--more--></p>
+
+<p>Before jumping to the main event, see if you have these installed in your pc:</p>
+
+<pre><code>1. Python 3 installed in the computer. (Or python 2.7 if you prefer)
+
+2. Django 1.7 installed in the computer.
+</code></pre>
+
+<p>Django appears to be a MVC framework, but instead of using the name &lsquo;Controller&rsquo;, we call it as &lsquo;View&rsquo; and &lsquo;View&rsquo; as &lsquo;Template&rsquo;, Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let’s you build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.</p>
+
+<p>So as we stated before, django appears to be a MVC framework. MVC is a framework for building web applications using a MVC (Model View Controller) design:</p>
+
+<pre><code>1. The Model represents the application core (for instance a list of database records).
+
+2. The View displays the data (the database records).(Here it is called "Template")
+
+3. The Controller handles the input (to the database records).(Here it is called "View")
+**(copied from here http://www.w3schools.com/aspnet/mvc_intro.asp)
+</code></pre>
+
+<p>Django manipulates data in the database using ORM(Object Relational Model). ORM saves you a lot of time by making the structure of the database, running CRUD(Create Read Update Delete) operations etc. Django ORM builds the structure of the database using the structure of the model. It means, the way you define the model, the way your database structure will be. A model is the single, definitive source of data about your data. It contains the essential fields and behaviors of the data you’re storing. Generally, each model maps to a single database table(<a href="https://docs.djangoproject.com/en/dev/topics/db/">more</a>).</p>
+
+<p>Now let’s start a project named <code>myproject</code> in desired directory using this command: <code>django-admin.py startproject myproject</code>. Then, create an app inside the myproject directory using <code>python manage.py startapp myblog</code>. So the structure should look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>myproject/&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>manage.py
+</span><span class='line'>myproject/
+</span><span class='line'>    __init__.py
+</span><span class='line'>    settings.py
+</span><span class='line'>    urls.py
+</span><span class='line'>    wsgi.py
+</span><span class='line'>
+</span><span class='line'>myblog/
+</span><span class='line'>    __init__.py
+</span><span class='line'>    admin.py
+</span><span class='line'>    migrations/
+</span><span class='line'>        __init__.py
+</span><span class='line'>    models.py
+</span><span class='line'>    tests.py
+</span><span class='line'>    views.py
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This reusable app is going to be used for making the blog. More about reusable apps: <a href="https://docs.djangoproject.com/en/1.7/intro/reusable-apps/">https://docs.djangoproject.com/en/1.7/intro/reusable-apps/</a></p>
+
+<p>Append &lsquo;myblog&rsquo; to <code>myproject&gt;myproject&gt;settings.py</code>&rsquo;s INSTALLED_APP like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>INSTALLED_APPS += (&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>'myblog',
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now we start by making a blog by making models. In this project, we are going to display Title, Body, Tags in each post. So for each content in a post, database&rsquo;s table is going to need a field. So in our model, we are going to add those fields to <code>myproject&gt;myblog&gt;models.py</code> like:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.db import models&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class Tag(models.Model):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>name = models.CharField(max_length=255)
+</span><span class='line'>description = models.CharField(max_length=255, null=True, default='')
+</span><span class='line'>
+</span><span class='line'>def __str__(self):
+</span><span class='line'>    return self.name
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class MyBlog(models.Model):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>title = models.CharField(max_length=255)
+</span><span class='line'>body = models.CharField(max_length=20000)
+</span><span class='line'>tags = models.ManyToManyField(Tag)
+</span><span class='line'>
+</span><span class='line'>def __str__(self):
+</span><span class='line'>    return self.title
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The reason for making these structure is that:</p>
+
+<ul>
+<li><p><b>title:</b> It is a <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.CharField">CharField</a>(Character Field) which can take any kind of input.</p></li>
+<li><p><b>body:</b> It is a <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.CharField">CharField</a>(Character Field) which can take any kind of input.</p></li>
+<li><p><b>tags:</b> A <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.ManyToManyField">ManyToMany</a> relation with Model Tag, because a blog can be related to multiple tags simillarly a tag can be used to different blogs, hence many to many relation.</p></li>
+</ul>
+
+
+<p>The model class <code>Tag</code> is going to be used for making/displaying tags. Now we have made model for blog, need to use ORM for making Database structure and add aditional data(Why migration is necessary? See here: <a href="https://docs.djangoproject.com/en/1.7/topics/migrations/">https://docs.djangoproject.com/en/1.7/topics/migrations/</a>). So for that, go to <code>myproject</code> directory where manage.py resides and run:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$python manage.py makemigrations&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$python manage.py migrate&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$ python manage.py createsuperuser &mdash;username=admin &mdash;email=&lt;a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x72;&#117;&#100;&#100;&#x72;&#x61;&#x39;&#48;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x72;&#117;&#x64;&#100;&#114;&#x61;&#x39;&#x30;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;&lt;/a>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>it will ask for setting a password&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>$python manage.py runserver&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>for running the server&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The third command for making a superuser in the system. The fourth command will run your project in this url: 127.0.0.1:8000(if you don&rsquo;t provide any specific ip/port). Or you can run like this <code>python manage.py runserver 0.0.0.0:8000</code> and it will make your project run in 0.0.0.0:8000 and this is accessible from browser. The webpage will look like this when the project runs successfully:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/1.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/1.png</a>"></p>
+
+<p>Now the database has been made and superuser has been created, so we go the next step, creating blogs. We are going to use django&rsquo;s one of the most powerful and popular feature, django&rsquo;s admin site. For making admin site visible and accessible, you need to add this lines to your urls.py (<code>myproject&gt;myproject&gt;urls.py</code>):</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.conf.urls import patterns, include, url
+</span><span class='line'>from django.contrib import admin
+</span><span class='line'>admin.autodiscover() #this line is for making model visible in admin site&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>urlpatterns = patterns(&lsquo;&rsquo;,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This lines will let you access the django&rsquo;s admin site using this url: 127.0.0.1:8000/admin (if you are running this project in localhost).</p>
+
+<p>Now we need to modify the <code>admin.py</code> in <code>myblog</code>&rsquo;s directory to register the app to admin site.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Location myproject>myblog>admin.py&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Register your models here.&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from django.contrib import admin
+</span><span class='line'>from django import forms&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from myblog.models import MyBlog, Tag&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>admin.site.register(MyBlog)
+</span><span class='line'>admin.site.register(Tag)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now your admin site will look like this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/2.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/2.png</a>"></p>
+
+<p>Now click on the <code>myblog</code> section and click <code>add</code> to add new blog, which will look like this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/3.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/3.png</a>"></p>
+
+<p>You can create new tags using Tags section of the admin page or clicking the (+) button right beside the Tags section on the new blog creation page, marked with blue circle in the previous image. After successfully adding a new blog, you can see this page:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/4.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/4.png</a>"></p>
+
+<p>Creating new tags is easy, just click on the <code>Tags</code> section in the admin page and press <code>add tags</code> button.</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/5.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/5.png</a>"></p>
+
+<p>Now you have created new blogs and tags. Its time for showing them in templates.</p>
+
+<p>For making data visible in templates, you need to use views to send data to them. let’s use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View(CBV</a> for that. <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#listview">ListView</a> is most appropriate for viewing all blogs in one page as it renders a page representing a list of objects. You can directly use this generic CBV in urls like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns(&lsquo;&rsquo;,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>url(r'^$', ListView.as_view(model = MyBlog, template_name = 'blog_list.html'), name='blog_list'),
+</span><span class='line'>)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Here, you need to create a template as well to view the data sent from this view:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>blog_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    {% for blog in object_list %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span> {{ blog.title }} <span class="nt">&lt;br/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;p&gt;</span> {{ blog.body }} <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So now if you go to url: 127.0.0.1:8000, you will see this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/6.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/6.png</a>"></p>
+
+<p>Now, for accessing each blog post separately, you can use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View (CBV)</a> for that. You can use <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#detailview">DetailView</a> for viewing content of one myblog object. For that, you can directly use it in urls like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash; Models &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from myblog.models import Tag, MyBlog&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash; Generic Views &mdash;&mdash;&mdash;&mdash;&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from django.views.generic.list import ListView
+</span><span class='line'>from django.views.generic.detail import DetailView&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>urlpatterns = patterns(&lsquo;&rsquo;,&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>url(r'^$', ListView.as_view(model = MyBlog, template_name = 'blog_list.html'), name='blog_list'),
+</span><span class='line'>url(r'^details/(?P&lt;pk&gt;[0-9]+)/', DetailView.as_view(model = MyBlog, template_name = 'blog_details.html'), name='blog_details'),
+</span><span class='line'># Why naming the urls? Check below for usage of named urls
+</span><span class='line'>)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And corresponding template for this view should look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>blog_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>p<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% for item in object.tags.all %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>{{ item }}
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% endfor %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>/p<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Blog details can visible to this url: 127.0.0.1:8000/details/1/ . This should look like this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/7.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/7.png</a>"></p>
+
+<p>Similarly, we will view tags and tags details just like we displayed the blogs. The urls and templates are :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>urls.py </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tags/details/(?P&amp;lt;pk&amp;gt;[0-9]+)/&#39;</span><span class="p">,</span> <span class="n">DetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;tag_details.html&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;tag_details&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tags/$&#39;</span><span class="p">,</span> <span class="n">ListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;tag_list.html&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;tag_list&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>h2<span class="ni">&amp;gt;</span>Tags<span class="ni">&amp;lt;</span>/h2<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>ul<span class="ni">&amp;gt;</span>
+</span><span class='line'>    {% for tags in object_list %}
+</span><span class='line'>        <span class="ni">&amp;lt;</span>li<span class="ni">&amp;gt;</span> {{ tags.name }}
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="ni">&amp;lt;</span>/ul<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.name }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.description }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;b&gt;</span>Blogs in this Tag:<span class="nt">&lt;/b&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>{% for blog in blogs_in_tag %}
+</span><span class='line'>    <span class="nt">&lt;li&gt;</span> {{ blog.title }} <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>{% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Screenshots for tags:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/8.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/8.png</a>"></p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/9.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/9.png</a>"></p>
+
+<p>Now we are should be able to view blogs and tags seperately. Now linking up both of them by attaching hyperlinks in templates(How to do that? Check here: <a href="https://docs.djangoproject.com/en/1.7/ref/templates/builtins/#url">https://docs.djangoproject.com/en/1.7/ref/templates/builtins/#url</a> . Usages of named urls are also given here.). We are going to change in templates like this:(For example, in <code>blog_list.html</code>) :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    {% for blog in object_list %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span> <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">blog_details</span><span class="err">&#39;</span> <span class="na">pk=</span><span class="s">blog.pk</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>{{ blog.title }}<span class="nt">&lt;/a&gt;</span> <span class="nt">&lt;br/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;p&gt;</span> {{ blog.body }} <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>For rest of the implementation of templates, check the source code of this blog.</p>
+
+<p>Now, let us access the json feed of this blog. For that, we need to create a View. For example:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import json
+</span><span class='line'>from django.http.response import HttpResponse&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class JsonResponseView(ListView):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>model = MyBlog
+</span><span class='line'>template_name = 'dummy.html' #or any dummy template
+</span><span class='line'>
+</span><span class='line'>def get(self, request, *args, **kwargs):
+</span><span class='line'>    response_content = {}
+</span><span class='line'>    for item in MyBlog.objects.all():
+</span><span class='line'>        data = {}
+</span><span class='line'>        data['title'] = item.title
+</span><span class='line'>        data['description'] = item.body
+</span><span class='line'>        data['tags'] = ', '.join([x.name for x in item.tags.all()])
+</span><span class='line'>        response_content[item.title] = data
+</span><span class='line'>
+</span><span class='line'>    return HttpResponse(json.dumps(response_content), content_type="application/json")
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And to access this view, let’s add a new line to urlpatterns:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>url(r'^json-feed$&lsquo;, JsonResponseView.as_view(), name='json-feed&rsquo;),</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now here what I have done is that, I have overridden the <code>get</code> method (which handles HTTP GET method) of ListView within the new view called JsonResponseView, so that it returns a json instead of an webpage when this url is called in for GET (Check here for detail understanding of different HTTP methods: <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html</a>).First I made a dictionary named <code>response_content</code>, then by calling <code>MyBlog.objects.all()</code>, I made a <a href="https://docs.djangoproject.com/en/1.7/ref/models/querysets/">queryset</a> which is a list of all objects of MyBlog Model. By iterating through all objects using a for loop, I accessed all the object and their attributes/property and added them to a new dictionary called <code>data</code>, and added the <code>data</code> dictionary to <code>response_content</code>. And finally dumped <code>response_content</code> and displayed it using <a href="https://docs.djangoproject.com/en/1.7/ref/request-response/#id3">HttpResponse</a> Method. The content should look like this (I beautified the json BTW):</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/10.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/10.png</a>"></p>
+
+<p>We are almost done! Just a few things. Let say, we want to make some contents available in each page of the blog (Marked with RED box in previous screenshots). For that, let us make a default base html page, like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>base.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h1&gt;</span>Blogs<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">blog_list</span><span class="err">&#39;</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>All Blogs<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;tag_list&#39; %}&quot;</span><span class="nt">&gt;</span>All Tags<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;json-feed&#39; %}&quot;</span><span class="nt">&gt;</span>Feed<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--- Next piece of code: This is for, if the user is logged in into the system</span>
+</span><span class='line'><span class="c">     then he/she can see admin page url, or else it will not visible to him/her. Screenshots: check in the end of the blog. --&gt;</span>
+</span><span class='line'>    {% if user.is_superuser %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://www.ruddra.com/admin&quot;</span><span class="nt">&gt;</span>Admin Page<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    {% endif %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% block content %}
+</span><span class='line'>{% endblock %}
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now extend this base.html in each template like (For example, blog_details.html):</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>blog_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{% extends <span class="ni">&amp;lsquo;</span>base.html<span class="ni">&amp;rsquo;</span> %}
+</span><span class='line'>{% block content %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>p<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% for item in object.tags.all %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>a href=&quot;{% url &#39;tag_details&#39; pk=item.pk %}&quot;<span class="ni">&amp;gt;</span>{{ item }}<span class="ni">&amp;lt;</span>/a<span class="ni">&amp;gt;</span>,
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% endfor %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>/p<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% endblock %}
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And voilà!! You can see three/four new links availble in the templates.</p>
+
+<p>And let’s see which blogs are in a tag in templates, so to that, we need to override the DetailView to make a new view like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class TagDetailView(DetailView):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>model = Tag
+</span><span class='line'>template_name = 'tag_details.html'
+</span><span class='line'>
+</span><span class='line'>def get_context_data(self, **kwargs):
+</span><span class='line'>    context = super(TagDetailView, self).get_context_data(**kwargs)
+</span><span class='line'>    context['blogs_in_tag'] = MyBlog.objects.filter(tags__in=[self.object])
+</span><span class='line'>    return context
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>What I have done here is that, I have overriden <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/mixins-single-object/#django.views.generic.detail.SingleObjectMixin.get_context_data">get_context_method</a> to add blog data to context. So the template should look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>tag_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{% extends <span class="ni">&amp;lsquo;</span>base.html<span class="ni">&amp;rsquo;</span> %}
+</span><span class='line'>{% block content %}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>h2<span class="ni">&amp;gt;</span>Tags<span class="ni">&amp;lt;</span>/h2<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>ul<span class="ni">&amp;gt;</span>
+</span><span class='line'>    {% for tags in object_list %}
+</span><span class='line'>        <span class="ni">&amp;lt;</span>li<span class="ni">&amp;gt;</span> <span class="ni">&amp;lt;</span>a href=&#39;{% url &#39;tag_details&#39; pk=tags.pk %}&#39;<span class="ni">&amp;gt;</span>{{ tags.name }}<span class="ni">&amp;lt;</span>/a<span class="ni">&amp;gt;</span>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="ni">&amp;lt;</span>/ul<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{% endblock %}
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now it should look like this:</p>
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/11.png">https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/11.png</a>"></p>
+
+<p>Thus you can make a blog using django.</p>
+
+<p><b>REMARK:</b></p>
+
+<ul>
+<li><p><b>If you don&rsquo;t understand any part of the blog, you can always check the source code provided here in github: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> </b></p></li>
+<li><p>views.py/urls.py will not exactly match with the source code provided for this blog. The Source&rsquo;s Views are like this so that it can be more modifiable for future usage.</p></li>
+<li><p>Screenshots might not match with your project but if you run the source code, you will be able to see pages exactly like the screenshots.</p></li>
+<li><p>For better understanding of the blog, here is some screenshots: (<a href='https://onedrive.live.com/redir?resid=F17C9687806497C4%215458'>HERE</a>)</p></li>
+<li><p>There is always room for improvement/correction, so please comment.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

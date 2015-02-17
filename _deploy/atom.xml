@@ -1,0 +1,2245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-02-17T16:49:34+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Some Useful Tools/Function]]></title>
+    <link href="http://www.ruddra.com/blog/2015/02/17/django-some-useful-tools-slash-function/"/>
+    <updated>2015-02-17T15:06:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/02/17/django-some-useful-tools-slash-function</id>
+    <content type="html"><![CDATA[<p>I am going to share some useful <code>Django</code> tools/functions which are very useful(were for me atleast) to get things done.<!--more--></p>
+
+<h3>Return any model class and its properties</h3>
+
+<p>This method will return any model class if you have the name of the class.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.db import models
+</span><span class='line'>__author__ = 'ruddra'
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>def get_model_description(model_name=None, return_property_list=True):
+</span><span class='line'>    for item in models.get_models(include_auto_created=True):
+</span><span class='line'>        if item.__name__ == model_name:
+</span><span class='line'>            if return_property_list is True:
+</span><span class='line'>                return item.get_trigger_properties()
+</span><span class='line'>            else:
+</span><span class='line'>                return item
+</span><span class='line'>    return []</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For usage, let us think of an example. Let us think, we have a class name &lsquo;X&rsquo;, we will get the class instance using it like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from usefultools import get_model_descriptor
+</span><span class='line'>
+</span><span class='line'>model_x = get_model_descriptor(model_name='X')   #will get class
+</span><span class='line'>model_x_objects = get_model_descriptor(model_name='X').objects.all() #will get all the objects of this class</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for its property:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from usefultools import get_model_descriptor
+</span><span class='line'>
+</span><span class='line'>model_x = get_model_descriptor(model_name='X', return_property_list=True)   #will get a list of properties like ['a_property','b_property']</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Distance Calculator</h3>
+
+<p>If you input latitude and longitude of two places, this function will return the distance in between them. Got help from here: <a href="http://code.activestate.com/recipes/576779-calculating-distance-between-two-geographic-points/">http://code.activestate.com/recipes/576779-calculating-distance-between-two-geographic-points/</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import math
+</span><span class='line'>
+</span><span class='line'>def distance_calculator(lat1, long1, lat2, long2):
+</span><span class='line'>
+</span><span class='line'>    lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
+</span><span class='line'>
+</span><span class='line'>    degrees_to_radians = math.pi/180.0
+</span><span class='line'>
+</span><span class='line'>    phi1 = (90.0 - lat1)*degrees_to_radians
+</span><span class='line'>    phi2 = (90.0 - lat2)*degrees_to_radians
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    theta1 = long1*degrees_to_radians
+</span><span class='line'>    theta2 = long2*degrees_to_radians
+</span><span class='line'>
+</span><span class='line'>    cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) +
+</span><span class='line'>           math.cos(phi1)*math.cos(phi2))
+</span><span class='line'>    arc = math.acos( cos )
+</span><span class='line'>    distance = arc*6378.1
+</span><span class='line'>      
+</span><span class='line'>    return distance</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will return the distance in KM.</p>
+
+<h3>Dynamic Relational Operations</h3>
+
+<p>Suppose we have a sentence like: <code>'5 is greater than 9'</code> and check if its true. We could use <code>eval</code> to dynamically converty string to python but its highly not recommended. So I tried like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def calculate_relational_operation(lhs, rhs, operator):
+</span><span class='line'>    get_type = type(lhs).__name__
+</span><span class='line'>    if get_type == 'str':
+</span><span class='line'>        rhs = str(rhs)
+</span><span class='line'>    elif get_type == 'float':
+</span><span class='line'>        rhs = float(rhs)
+</span><span class='line'>    elif get_type == 'int':
+</span><span class='line'>        rhs = int(rhs)
+</span><span class='line'>
+</span><span class='line'>    if operator == "==":
+</span><span class='line'>        if lhs == rhs:
+</span><span class='line'>            return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == "!=":
+</span><span class='line'>        if lhs != rhs:
+</span><span class='line'>                return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == ">":
+</span><span class='line'>        if lhs > rhs:
+</span><span class='line'>                return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == "&lt;":
+</span><span class='line'>        if lhs &lt; rhs:
+</span><span class='line'>                return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == ">=":
+</span><span class='line'>        if lhs >= rhs:
+</span><span class='line'>            return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == "&lt;=":
+</span><span class='line'>        if lhs == rhs:
+</span><span class='line'>                return True
+</span><span class='line'>        return False
+</span><span class='line'>    elif operator == "Is":
+</span><span class='line'>        if lhs is rhs:
+</span><span class='line'>            return True
+</span><span class='line'>        return False
+</span><span class='line'>    return False</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will return <code>True</code> or <code>False</code> depending on the statement/input.</p>
+
+<h3>Get Week List</h3>
+
+<p>It will return all the weeks list from last 1 year (extendable).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from isoweek import Week
+</span><span class='line'>
+</span><span class='line'>def generate_week():
+</span><span class='line'>  max_week = datetime.datetime.combine(Week.thisweek().thursday(), datetime.time(0,0))
+</span><span class='line'>  min_week = max_week - datetime.timedelta(days=365)
+</span><span class='line'>  _weeks = list()
+</span><span class='line'>  while True:
+</span><span class='line'>      _weeks.append('Week'+str(max_week.isocalendar()[1])+ ' ' +str(max_week.isocalendar()[0])))
+</span><span class='line'>      max_week -= datetime.timedelta(days=7)
+</span><span class='line'>      if max_week &lt;= min_week:
+</span><span class='line'>      break
+</span><span class='line'>
+</span><span class='line'>  return _weeks
+</span><span class='line'>
+</span><span class='line'>#Output>> ['Week2 2015', 'Week1 2015', 'Week52 2014' ....]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Get Month List</h3>
+
+<p>It will return last 12 month&rsquo;s year and month number. Constructed using this SO answer: <a href="http://stackoverflow.com/a/6576603/2696165">http://stackoverflow.com/a/6576603/2696165</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>x = 12
+</span><span class='line'>now = time.localtime()
+</span><span class='line'>print([time.localtime(time.mktime((now.tm_year, now.tm_mon - n, 1, 0, 0, 0, 0, 0, 0)))[:2] for n in range(x)])
+</span><span class='line'>
+</span><span class='line'>#Output>> [(2015, 2), (2015, 1), (2014, 12), (2014, 11), (2014, 10), (2014, 9), (2014, 8), (2014, 7), (2014, 6), (2014, 5), (2014, 4), (2014, 3)]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>To Be Continued &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django Tutorial: Make a Blog]]></title>
+    <link href="http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog/"/>
+    <updated>2014-12-29T22:45:37+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/12/29/django-tutorial-make-a-blog</id>
+    <content type="html"><![CDATA[<p>&ldquo;Making a blog using django&rdquo; is probably the most made tutorial about making an blog using Django. This post is no different. But I made this in my own way using some of django&rsquo;s built-in  features so that less coding is required and making it more understandable.<!--more--></p>
+
+<p>Before jumping to the main event, see if you have these installed in your pc:</p>
+
+<pre><code>1. Python 3 installed in the computer. (Or python 2.7 if you prefer)
+
+2. Django 1.7 installed in the computer.
+</code></pre>
+
+<p>Django appears to be a MVC framework, but instead of using the name &lsquo;Controller&rsquo;, we call it as &lsquo;View&rsquo; and &lsquo;View&rsquo; as &lsquo;Template&rsquo;, Also Django is not a CMS. It’s a Web framework; it’s a programming tool that let’s you build Web sites. Check here for details: <a href="https://docs.djangoproject.com/en/dev/faq/general">SOURCE</a>.</p>
+
+<p>So as we stated before, django appears to be a MVC framework. MVC is a framework for building web applications using a MVC (Model View Controller) design:</p>
+
+<pre><code>1. The Model represents the application core (for instance a list of database records).
+
+2. The View displays the data (the database records).(Here it is called "Template")
+
+3. The Controller handles the input (to the database records).(Here it is called "View")
+**(copied from here http://www.w3schools.com/aspnet/mvc_intro.asp)
+</code></pre>
+
+<p>Django manipulates data in the database using ORM(Object Relational Model). ORM saves you a lot of time by making the structure of the database, running CRUD(Create Read Update Delete) operations etc. Django ORM builds the structure of the database using the structure of the model. It means, the way you define the model, the way your database structure will be. A model is the single, definitive source of data about your data. It contains the essential fields and behaviors of the data you’re storing. Generally, each model maps to a single database table(<a href="https://docs.djangoproject.com/en/dev/topics/db/">more</a>).</p>
+
+<p>Now let’s start a project named <code>myproject</code> in desired directory using this command: <code>django-admin.py startproject myproject</code>. Then, create an app inside the myproject directory using <code>python manage.py startapp myblog</code>. So the structure should look like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>myproject/
+</span><span class='line'>    manage.py
+</span><span class='line'>    myproject/
+</span><span class='line'>        __init__.py
+</span><span class='line'>        settings.py
+</span><span class='line'>        urls.py
+</span><span class='line'>        wsgi.py
+</span><span class='line'>
+</span><span class='line'>    myblog/
+</span><span class='line'>        __init__.py
+</span><span class='line'>        admin.py
+</span><span class='line'>        migrations/
+</span><span class='line'>            __init__.py
+</span><span class='line'>        models.py
+</span><span class='line'>        tests.py
+</span><span class='line'>        views.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This reusable app is going to be used for making the blog. More about reusable apps: <a href="https://docs.djangoproject.com/en/1.7/intro/reusable-apps/">https://docs.djangoproject.com/en/1.7/intro/reusable-apps/</a></p>
+
+<p>Append &lsquo;myblog&rsquo; to <code>myproject&gt;myproject&gt;settings.py</code>&rsquo;s INSTALLED_APP like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>INSTALLED_APPS += (
+</span><span class='line'>    'myblog',
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we start by making a blog by making models. In this project, we are going to display Title, Body, Tags in each post. So for each content in a post, database&rsquo;s table is going to need a field. So in our model, we are going to add those fields to <code>myproject&gt;myblog&gt;models.py</code> like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.db import models
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class Tag(models.Model):
+</span><span class='line'>    name = models.CharField(max_length=255)
+</span><span class='line'>    description = models.CharField(max_length=255, null=True, default='')
+</span><span class='line'>
+</span><span class='line'>    def __str__(self):
+</span><span class='line'>        return self.name
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class MyBlog(models.Model):
+</span><span class='line'>    title = models.CharField(max_length=255)
+</span><span class='line'>    body = models.CharField(max_length=20000)
+</span><span class='line'>    tags = models.ManyToManyField(Tag)
+</span><span class='line'>
+</span><span class='line'>    def __str__(self):
+</span><span class='line'>        return self.title</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason for making these structure is that:</p>
+
+<ul>
+<li><p><b>title:</b> It is a <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.CharField">CharField</a>(Character Field) which can take any kind of input.</p></li>
+<li><p><b>body:</b> It is a <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.CharField">CharField</a>(Character Field) which can take any kind of input.</p></li>
+<li><p><b>tags:</b> A <a href="https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.ManyToManyField">ManyToMany</a> relation with Model Tag, because a blog can be related to multiple tags simillarly a tag can be used to different blogs, hence many to many relation.</p></li>
+</ul>
+
+
+<p>The model class <code>Tag</code> is going to be used for making/displaying tags. Now we have made model for blog, need to use ORM for making Database structure and add aditional data(Why migration is necessary? See here: <a href="https://docs.djangoproject.com/en/1.7/topics/migrations/">https://docs.djangoproject.com/en/1.7/topics/migrations/</a>). So for that, go to <code>myproject</code> directory where manage.py resides and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$python manage.py makemigrations
+</span><span class='line'>
+</span><span class='line'>$python manage.py migrate
+</span><span class='line'>
+</span><span class='line'>$ python manage.py createsuperuser --username=admin --email=ruddra90@gmail.com
+</span><span class='line'>#it will ask for setting a password
+</span><span class='line'>
+</span><span class='line'>$python manage.py runserver
+</span><span class='line'># for running the server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The third command for making a superuser in the system. The fourth command will run your project in this url: 127.0.0.1:8000(if you don&rsquo;t provide any specific ip/port). Or you can run like this <code>python manage.py runserver 0.0.0.0:8000</code> and it will make your project run in 0.0.0.0:8000 and this is accessible from browser. The webpage will look like this when the project runs successfully:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/1.png"></p>
+
+<p>Now the database has been made and superuser has been created, so we go the next step, creating blogs. We are going to use django&rsquo;s one of the most powerful and popular feature, django&rsquo;s admin site. For making admin site visible and accessible, you need to add this lines to your urls.py (<code>myproject&gt;myproject&gt;urls.py</code>):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.conf.urls import patterns, include, url
+</span><span class='line'>from django.contrib import admin
+</span><span class='line'>admin.autodiscover() #this line is for making model visible in admin site
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>urlpatterns = patterns('',
+</span><span class='line'>
+</span><span class='line'>    url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This lines will let you access the django&rsquo;s admin site using this url: 127.0.0.1:8000/admin (if you are running this project in localhost).</p>
+
+<p>Now we need to modify the <code>admin.py</code> in <code>myblog</code>&rsquo;s directory to register the app to admin site.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Location myproject>myblog>admin.py
+</span><span class='line'># Register your models here.
+</span><span class='line'>
+</span><span class='line'>from django.contrib import admin
+</span><span class='line'>from django import forms
+</span><span class='line'>
+</span><span class='line'>from myblog.models import MyBlog, Tag
+</span><span class='line'>
+</span><span class='line'>admin.site.register(MyBlog)
+</span><span class='line'>admin.site.register(Tag)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now your admin site will look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/2.png"></p>
+
+<p>Now click on the <code>myblog</code> section and click <code>add</code> to add new blog, which will look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/3.png"></p>
+
+<p>You can create new tags using Tags section of the admin page or clicking the (+) button right beside the Tags section on the new blog creation page, marked with blue circle in the previous image. After successfully adding a new blog, you can see this page:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/4.png"></p>
+
+<p>Creating new tags is easy, just click on the <code>Tags</code> section in the admin page and press <code>add tags</code> button.</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/5.png"></p>
+
+<p>Now you have created new blogs and tags. Its time for showing them in templates.</p>
+
+<p>For making data visible in templates, you need to use views to send data to them. let’s use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View(CBV</a> for that. <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#listview">ListView</a> is most appropriate for viewing all blogs in one page as it renders a page representing a list of objects. You can directly use this generic CBV in urls like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns('',
+</span><span class='line'>    url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>    url(r'^$', ListView.as_view(model = MyBlog, template_name = 'blog_list.html'), name='blog_list'),
+</span><span class='line'>    )</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, you need to create a template as well to view the data sent from this view:</p>
+
+<figure class='code'><figcaption><span>blog_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    {% for blog in object_list %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span> {{ blog.title }} <span class="nt">&lt;br/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;p&gt;</span> {{ blog.body }} <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now if you go to url: 127.0.0.1:8000, you will see this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/6.png"></p>
+
+<p>Now, for accessing each blog post separately, you can use <a href="https://docs.djangoproject.com/en/1.7/topics/class-based-views/">Class Based View (CBV)</a> for that. You can use <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/generic-display/#detailview">DetailView</a> for viewing content of one myblog object. For that, you can directly use it in urls like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># ------------- Models ---------------
+</span><span class='line'>from myblog.models import Tag, MyBlog
+</span><span class='line'># ------------- Generic Views --------
+</span><span class='line'>from django.views.generic.list import ListView
+</span><span class='line'>from django.views.generic.detail import DetailView
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>urlpatterns = patterns('',
+</span><span class='line'>    url(r'^admin/', include(admin.site.urls), name='admin-site'),
+</span><span class='line'>    url(r'^$', ListView.as_view(model = MyBlog, template_name = 'blog_list.html'), name='blog_list'),
+</span><span class='line'>    url(r'^details/(?P&lt;pk>[0-9]+)/', DetailView.as_view(model = MyBlog, template_name = 'blog_details.html'), name='blog_details'),
+</span><span class='line'>    # Why naming the urls? Check below for usage of named urls
+</span><span class='line'>    )</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And corresponding template for this view should look like this:</p>
+
+<figure class='code'><figcaption><span>blog_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p&gt;</span>
+</span><span class='line'>{% for item in object.tags.all %}
+</span><span class='line'>    {{ item }}
+</span><span class='line'>{% endfor %}
+</span><span class='line'>    <span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Blog details can visible to this url: 127.0.0.1:8000/details/1/ . This should look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/7.png"></p>
+
+<p>Similarly, we will view tags and tags details just like we displayed the blogs. The urls and templates are :</p>
+
+<figure class='code'><figcaption><span>urls.py </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tags/details/(?P&lt;pk&gt;[0-9]+)/&#39;</span><span class="p">,</span> <span class="n">DetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;tag_details.html&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;tag_details&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">url</span><span class="p">(</span><span class="s">r&#39;^tags/$&#39;</span><span class="p">,</span> <span class="n">ListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">template_name</span> <span class="o">=</span> <span class="s">&#39;tag_list.html&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;tag_list&#39;</span><span class="p">),</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;h2&gt;</span>Tags<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>        {% for tags in object_list %}
+</span><span class='line'>            <span class="nt">&lt;li&gt;</span> {{ tags.name }}
+</span><span class='line'>        {% endfor %}
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.name }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.description }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;b&gt;</span>Blogs in this Tag:<span class="nt">&lt;/b&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>{% for blog in blogs_in_tag %}
+</span><span class='line'>    <span class="nt">&lt;li&gt;</span> {{ blog.title }} <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>{% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Screenshots for tags:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/8.png"></p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/9.png"></p>
+
+<p>Now we are should be able to view blogs and tags seperately. Now linking up both of them by attaching hyperlinks in templates(How to do that? Check here: <a href="https://docs.djangoproject.com/en/1.7/ref/templates/builtins/#url">https://docs.djangoproject.com/en/1.7/ref/templates/builtins/#url</a> . Usages of named urls are also given here.). We are going to change in templates like this:(For example, in <code>blog_list.html</code>) :</p>
+
+<figure class='code'><figcaption><span>tag_list.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    {% for blog in object_list %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;</span> <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">blog_details</span><span class="err">&#39;</span> <span class="na">pk=</span><span class="s">blog.pk</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>{{ blog.title }}<span class="nt">&lt;/a&gt;</span> <span class="nt">&lt;br/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;p&gt;</span> {{ blog.body }} <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For rest of the implementation of templates, check the source code of this blog.</p>
+
+<p>Now, let us access the json feed of this blog. For that, we need to create a View. For example:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import json
+</span><span class='line'>from django.http.response import HttpResponse
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>class JsonResponseView(ListView):
+</span><span class='line'>    model = MyBlog
+</span><span class='line'>    template_name = 'dummy.html' #or any dummy template
+</span><span class='line'>
+</span><span class='line'>    def get(self, request, *args, **kwargs):
+</span><span class='line'>        response_content = {}
+</span><span class='line'>        for item in MyBlog.objects.all():
+</span><span class='line'>            data = {}
+</span><span class='line'>            data['title'] = item.title
+</span><span class='line'>            data['description'] = item.body
+</span><span class='line'>            data['tags'] = ', '.join([x.name for x in item.tags.all()])
+</span><span class='line'>            response_content[item.title] = data
+</span><span class='line'>
+</span><span class='line'>        return HttpResponse(json.dumps(response_content), content_type="application/json")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And to access this view, let’s add a new line to urlpatterns:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>url(r'^json-feed$', JsonResponseView.as_view(), name='json-feed'),</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now here what I have done is that, I have overridden the <code>get</code> method (which handles HTTP GET method) of ListView within the new view called JsonResponseView, so that it returns a json instead of an webpage when this url is called in for GET (Check here for detail understanding of different HTTP methods: <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html</a>).First I made a dictionary named <code>response_content</code>, then by calling <code>MyBlog.objects.all()</code>, I made a <a href="https://docs.djangoproject.com/en/1.7/ref/models/querysets/">queryset</a> which is a list of all objects of MyBlog Model. By iterating through all objects using a for loop, I accessed all the object and their attributes/property and added them to a new dictionary called <code>data</code>, and added the <code>data</code> dictionary to <code>response_content</code>. And finally dumped <code>response_content</code> and displayed it using <a href="https://docs.djangoproject.com/en/1.7/ref/request-response/#id3">HttpResponse</a> Method. The content should look like this (I beautified the json BTW):</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/10.png"></p>
+
+<p>We are almost done! Just a few things. Let say, we want to make some contents available in each page of the blog (Marked with RED box in previous screenshots). For that, let us make a default base html page, like this:</p>
+
+<figure class='code'><figcaption><span>base.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Blogs<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">blog_list</span><span class="err">&#39;</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>All Blogs<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;tag_list&#39; %}&quot;</span><span class="nt">&gt;</span>All Tags<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;json-feed&#39; %}&quot;</span><span class="nt">&gt;</span>Feed<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--- Next piece of code: This is for, if the user is logged in into the system</span>
+</span><span class='line'><span class="c">     then he/she can see admin page url, or else it will not visible to him/her. Screenshots: check in the end of the blog. --&gt;</span>
+</span><span class='line'>    {% if user.is_superuser %}
+</span><span class='line'>        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/admin&quot;</span><span class="nt">&gt;</span>Admin Page<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>    {% endif %}
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>{% block content %}
+</span><span class='line'>{% endblock %}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now extend this base.html in each template like (For example, blog_details.html):</p>
+
+<figure class='code'><figcaption><span>blog_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{% extends &#39;base.html&#39; %}
+</span><span class='line'>{% block content %}
+</span><span class='line'><span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;p&gt;</span>
+</span><span class='line'>{% for item in object.tags.all %}
+</span><span class='line'>    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;tag_details&#39; pk=item.pk %}&quot;</span><span class="nt">&gt;</span>{{ item }}<span class="nt">&lt;/a&gt;</span>,
+</span><span class='line'>{% endfor %}
+</span><span class='line'>    <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>{% endblock %}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And voilà!! You can see three/four new links availble in the templates.</p>
+
+<p>And let’s see which blogs are in a tag in templates, so to that, we need to override the DetailView to make a new view like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class TagDetailView(DetailView):
+</span><span class='line'>    model = Tag
+</span><span class='line'>    template_name = 'tag_details.html'
+</span><span class='line'>
+</span><span class='line'>    def get_context_data(self, **kwargs):
+</span><span class='line'>        context = super(TagDetailView, self).get_context_data(**kwargs)
+</span><span class='line'>        context['blogs_in_tag'] = MyBlog.objects.filter(tags__in=[self.object])
+</span><span class='line'>        return context</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What I have done here is that, I have overriden <a href="https://docs.djangoproject.com/en/1.7/ref/class-based-views/mixins-single-object/#django.views.generic.detail.SingleObjectMixin.get_context_data">get_context_method</a> to add blog data to context. So the template should look like this:</p>
+
+<figure class='code'><figcaption><span>tag_details.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{% extends &#39;base.html&#39; %}
+</span><span class='line'>{% block content %}
+</span><span class='line'>    <span class="nt">&lt;h2&gt;</span>Tags<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>        {% for tags in object_list %}
+</span><span class='line'>            <span class="nt">&lt;li&gt;</span> <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">tag_details</span><span class="err">&#39;</span> <span class="na">pk=</span><span class="s">tags.pk</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>{{ tags.name }}<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>        {% endfor %}
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>{% endblock %}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it should look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/tutorial-myblog-001/11.png"></p>
+
+<p>Thus you can make a blog using django.</p>
+
+<p><b>REMARK:</b></p>
+
+<ul>
+<li><p><b>If you don&rsquo;t understand any part of the blog, you can always check the source code provided here in github: <a href="https://github.com/skyrudy/myblog">https://github.com/skyrudy/myblog</a> </b></p></li>
+<li><p>views.py/urls.py will not exactly match with the source code provided for this blog. The Source&rsquo;s Views are like this so that it can be more modifiable for future usage.</p></li>
+<li><p>Screenshots might not match with your project but if you run the source code, you will be able to see pages exactly like the screenshots.</p></li>
+<li><p>For better understanding of the blog, here is some screenshots: (<a href='https://onedrive.live.com/redir?resid=F17C9687806497C4%215458'>HERE</a>)</p></li>
+<li><p>There is always room for improvement/correction, so please comment.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Implementation of 'Forgot/Reset Password' Feature in Django]]></title>
+    <link href="http://www.ruddra.com/blog/2014/10/21/make-own-forgot-slash-reset-password-in-django/"/>
+    <updated>2014-10-21T14:00:50+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/10/21/make-own-forgot-slash-reset-password-in-django</id>
+    <content type="html"><![CDATA[<p>Django has its own implementation for <code>reset/forgot password</code> for its admin site. We are going to use that piece of code as reference to implement simillar feature for a non admin-site authentication page. Although there are tons of good packages which will allow user to use their password reseting system. But if the system isn&rsquo;t too complex and doesn&rsquo;t need such authentication pluggins, then reusing the django&rsquo;s very own implementation can be a good option.<!--more--></p>
+
+<p>Class based view is going to be used instead of method based view(for no particular reason, so using either of them is alright.). And please read the comments of the example codes for better understanding of implementation.</p>
+
+<p>This implementation is going to divided into two parts. First part is sending an email with reset url, and the Second part is clicking the reset url attached in email and entering new password for reset completation.</p>
+
+<p>Before starting anything, lets look at the django&rsquo;s reset/forgot password&rsquo;s implementation in <code>django/contrib/auth/forms.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py'>source</a>) and <code>django/contrib/auth/views.py</code> (<a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/views.py'>source</a>).</p>
+
+<h2>Implemetation of sending an email for forgot password with reset url</h2>
+
+<p>First need to configure smtp/email configuration so the system can send email. Gmail&rsquo;s SMTP service is going to be used here.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>EMAIL_USE_TLS = True
+</span><span class='line'>DEFAULT_FROM_EMAIL = 'test@gmail.com'
+</span><span class='line'>SERVER_EMAIL = 'test@gmail.com'
+</span><span class='line'>EMAIL_HOST = 'smtp.gmail.com'
+</span><span class='line'>EMAIL_PORT = 587
+</span><span class='line'>EMAIL_HOST_USER = 'test@gmail.com'
+</span><span class='line'>EMAIL_HOST_PASSWORD = 'test123##'
+</span><span class='line'>EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we are going to make a <b>reset password form</b> where we are going to add an text field which will take either username or email address associated with the corresponding user.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django import forms
+</span><span class='line'>
+</span><span class='line'>class PasswordResetRequestForm(forms.Form):
+</span><span class='line'>    email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We are going to make a <b>view</b> which will check the input email/username and send an email to user&rsquo;s email address(implementation reference: <a href='https://github.com/django/django/blob/89559bcfb096ccc625e0e9ab41e2136fcb32a514/django/contrib/auth/forms.py#L235'>source</a>).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django.contrib.auth.tokens import default_token_generator
+</span><span class='line'>from django.utils.encoding import force_bytes
+</span><span class='line'>from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+</span><span class='line'>from django.template import loader
+</span><span class='line'>from django.core.validators import validate_email
+</span><span class='line'>from django.core.exceptions import ValidationError
+</span><span class='line'>from django.core.mail import send_mail
+</span><span class='line'>from settings import DEFAULT_FROM_EMAIL
+</span><span class='line'>from django.views.generic import *
+</span><span class='line'>from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+</span><span class='line'>from django.contrib import messages
+</span><span class='line'>from django.contrib.auth.models import User
+</span><span class='line'>
+</span><span class='line'>class ResetPasswordRequestView(FormView):
+</span><span class='line'>    template_name = "account/test_template.html"    #code for template is given below the view's code
+</span><span class='line'>    success_url = '/account/login'
+</span><span class='line'>    form_class = PasswordResetRequestForm
+</span><span class='line'>
+</span><span class='line'>    @staticmethod
+</span><span class='line'>    def validate_email_address(email):
+</span><span class='line'>    '''
+</span><span class='line'>    This method here validates the if the input is an email address or not. Its return type is boolean, True if the input is a email address or False if its not.
+</span><span class='line'>    '''
+</span><span class='line'>        try:
+</span><span class='line'>            validate_email(email)
+</span><span class='line'>            return True
+</span><span class='line'>        except ValidationError:
+</span><span class='line'>            return False
+</span><span class='line'>
+</span><span class='line'>    def post(self, request, *args, **kwargs):
+</span><span class='line'>    '''
+</span><span class='line'>    A normal post request which takes input from field "email_or_username" (in ResetPasswordRequestForm). 
+</span><span class='line'>    '''
+</span><span class='line'>        form = self.form_class(request.POST)
+</span><span class='line'>        if form.is_valid():
+</span><span class='line'>            data= form.cleaned_data["email_or_username"]
+</span><span class='line'>        if self.validate_email_address(data) is True:                 #uses the method written above
+</span><span class='line'>            '''
+</span><span class='line'>            If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
+</span><span class='line'>            '''
+</span><span class='line'>            associated_users= User.objects.filter(email= data)
+</span><span class='line'>            if associated_users.exists():
+</span><span class='line'>                for user in associated_users:
+</span><span class='line'>                        c = {
+</span><span class='line'>                            'email': user.email,
+</span><span class='line'>                            'domain': request.META['HTTP_HOST'],
+</span><span class='line'>                            'site_name': 'your site',
+</span><span class='line'>                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+</span><span class='line'>                            'user': user.user,
+</span><span class='line'>                            'token': default_token_generator.make_token(user),
+</span><span class='line'>                            'protocol': 'http',
+</span><span class='line'>                            }
+</span><span class='line'>                        subject_template_name='registration/password_reset_subject.txt' 
+</span><span class='line'>                        # copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
+</span><span class='line'>                        email_template_name='registration/password_reset_email.html'    
+</span><span class='line'>                        # copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+</span><span class='line'>                        subject = loader.render_to_string(subject_template_name, c)
+</span><span class='line'>                        # Email subject *must not* contain newlines
+</span><span class='line'>                        subject = ''.join(subject.splitlines())
+</span><span class='line'>                        email = loader.render_to_string(email_template_name, c)
+</span><span class='line'>                        send_mail(subject, email, DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+</span><span class='line'>                result = self.form_valid(form)
+</span><span class='line'>                messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
+</span><span class='line'>                return result
+</span><span class='line'>            result = self.form_invalid(form)
+</span><span class='line'>            messages.error(request, 'No user is associated with this email address')
+</span><span class='line'>            return result
+</span><span class='line'>        else:
+</span><span class='line'>            '''
+</span><span class='line'>            If the input is an username, then the following code will lookup for users associated with that user. If found then an email will be sent to the user's address, else an error message will be printed on the screen.
+</span><span class='line'>            '''
+</span><span class='line'>            associated_users= User.objects.filter(username=data)
+</span><span class='line'>            if associated_users.exists():
+</span><span class='line'>                for user in associated_users:
+</span><span class='line'>                    c = {
+</span><span class='line'>                        'email': user.email,
+</span><span class='line'>                        'domain': 'myjita.info',
+</span><span class='line'>                        'site_name': 'myjita',
+</span><span class='line'>                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+</span><span class='line'>                        'user': user,
+</span><span class='line'>                        'token': default_token_generator.make_token(user),
+</span><span class='line'>                        'protocol': 'http',
+</span><span class='line'>                        }
+</span><span class='line'>                    subject_template_name='registration/password_reset_subject.txt'
+</span><span class='line'>                    email_template_name='registration/password_reset_email.html'
+</span><span class='line'>                    subject = loader.render_to_string(subject_template_name, c)
+</span><span class='line'>                    # Email subject *must not* contain newlines
+</span><span class='line'>                    subject = ''.join(subject.splitlines())
+</span><span class='line'>                    email = loader.render_to_string(email_template_name, c)
+</span><span class='line'>                    send_mail(subject, email, DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+</span><span class='line'>                result = self.form_valid(form)
+</span><span class='line'>                messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
+</span><span class='line'>                return result
+</span><span class='line'>            result = self.form_invalid(form)
+</span><span class='line'>            messages.error(request, 'This username does not exist in the system.')
+</span><span class='line'>            return result
+</span><span class='line'>        messages.error(request, 'Invalid Input')
+</span><span class='line'>        return self.form_invalid(form)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you see above, the code is fairly simple(although it looks long). An encoded user id has been generated here using <code>urlsafe_base64_encode(force_bytes(user.pk))</code> and a token by using <code>default_token_generator.make_token(user)</code>. This user id is going to be used later to get the user, the token will be used for checking validity of the url for that user and both the token and the user id is going to be used as unique reference for reset password url. <code>c</code> is a dictionary which has user id, token and other related data etc. This dictionary is going to be blent with the template &lsquo;registration/password_reset_email.html&rsquo; and sent to the user&rsquo;s email address.</p>
+
+<p>For displaying messages(if you are using messages framework of django-1.7, details: <a href='https://docs.djangoproject.com/en/dev/ref/contrib/messages/#displaying-messages'>source</a>), add this piece of code in your template:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{# test template #}
+</span><span class='line'>&lt;!-- code for displaying success or error message in template -->
+</span><span class='line'>{% if messages %}
+</span><span class='line'>&lt;ul class="messages">
+</span><span class='line'>    {% for message in messages %}
+</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    {% endfor %}
+</span><span class='line'>&lt;/ul>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- Form rendering code for template -->
+</span><span class='line'>&lt;form action="" method="post">
+</span><span class='line'>
+</span><span class='line'>    {% csrf_token %}
+</span><span class='line'>    {{ form.as_p }}
+</span><span class='line'>
+</span><span class='line'>    &lt;input type="submit" value="Submit" />
+</span><span class='line'>&lt;/form>
+</span><span class='line'>{% endif %}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Two more things before wrapping up sending email part. One, making a <b>url</b> for using this view.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns('',
+</span><span class='line'>                       # url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
+</span><span class='line'>                       # PS: url above is going to used for next section of implementation.
+</span><span class='line'>                       url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
+</span><span class='line'>                       )</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Two, editing the template of <code>registration/password_reset_email.html</code> or else you will get errors.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{% load i18n %}{% autoescape off %}
+</span><span class='line'>{% blocktrans %}You're receiving this email because you requested a password reset for your user account at {{ site_name }}.{% endblocktrans %}
+</span><span class='line'>
+</span><span class='line'>{% trans "Please go to the following page and choose a new password:" %}
+</span><span class='line'>    {% block reset_link %}
+</span><span class='line'>        {{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %} 
+</span><span class='line'>        &lt;!--This is the only change from ` django/contrib/admin/templates/registration/password_reset_subject.html`. the url name is commented out in urls.py section. The view associated with the url is going to described later in this post. -->
+</span><span class='line'>    {% endblock %}
+</span><span class='line'>{% trans "Your username, in case you've forgotten:" %} {{ user.get_username }}
+</span><span class='line'>
+</span><span class='line'>{% trans "Thanks for using our site!" %}
+</span><span class='line'>
+</span><span class='line'>{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+</span><span class='line'>
+</span><span class='line'>{% endautoescape %}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now run the server and you will see forms like the screen shots below: (This screenshots look cool because bootstrap theme has been used here.)
+(**Image sequence is according the implementation flow)</p>
+
+<p></br>(Rendered template for login)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/three.png" width="600" height="400" title="'Rendered template for login'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/five.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/one.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" ></p>
+
+<p></br>(Rendered template from PasswordResetRequestForm form with error messages)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/two.png" width="600" height="400" title="'Rendered template from PasswordResetRequestForm form with error messages'" ></p>
+
+<p></br>(Rendered template of login form with sent email confirmation message)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/four.png" width="600" height="400" title="'Rendered template of login form with sent email confirmation message'" ></p>
+
+<p></br>(Sent Email look)
+<img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/eight.PNG" width="600" height="400" title="'Rendered template of login form with sent email confirmation message'" ></p>
+
+<h2>Implemetation of clicking the reset url and entering new password for reset completation.</h2>
+
+<p>First, lets write a <b>form</b> which will have two fields new password and retype password field.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class SetPasswordForm(forms.Form):
+</span><span class='line'>    """
+</span><span class='line'>    A form that lets a user change set their password without entering the old
+</span><span class='line'>    password
+</span><span class='line'>    """
+</span><span class='line'>    error_messages = {
+</span><span class='line'>        'password_mismatch': ("The two password fields didn't match."),
+</span><span class='line'>        }
+</span><span class='line'>    new_password1 = forms.CharField(label=("New password"),
+</span><span class='line'>                                    widget=forms.PasswordInput)
+</span><span class='line'>    new_password2 = forms.CharField(label=("New password confirmation"),
+</span><span class='line'>                                    widget=forms.PasswordInput)
+</span><span class='line'>
+</span><span class='line'>    def clean_new_password2(self):
+</span><span class='line'>        password1 = self.cleaned_data.get('new_password1')
+</span><span class='line'>        password2 = self.cleaned_data.get('new_password2')
+</span><span class='line'>        if password1 and password2:
+</span><span class='line'>            if password1 != password2:
+</span><span class='line'>                raise forms.ValidationError(
+</span><span class='line'>                    self.error_messages['password_mismatch'],
+</span><span class='line'>                    code='password_mismatch',
+</span><span class='line'>                    )
+</span><span class='line'>        return password2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will take two password input and verify if they match, if those inputs match(in clean method), it will return password. Now using that form, we are going to write a <b>view</b>(reference for implementation:(<a href="https://github.com/django/django/blob/731f313d604a6cc141f36d8a1ba9a75790c70154/django/contrib/auth/views.py#L192">source</a>)).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class PasswordResetConfirmView(FormView):
+</span><span class='line'>    template_name = "account/test_template.html"
+</span><span class='line'>    success_url = '/account/login'
+</span><span class='line'>    form_class = SetPasswordForm
+</span><span class='line'>
+</span><span class='line'>    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
+</span><span class='line'>        """
+</span><span class='line'>        View that checks the hash in a password reset link and presents a
+</span><span class='line'>        form for entering a new password.
+</span><span class='line'>        """
+</span><span class='line'>        UserModel = get_user_model()
+</span><span class='line'>        form = self.form_class(request.POST)
+</span><span class='line'>        assert uidb64 is not None and token is not None  # checked by URLconf
+</span><span class='line'>        try:
+</span><span class='line'>            uid = urlsafe_base64_decode(uidb64)
+</span><span class='line'>            user = UserModel._default_manager.get(pk=uid)
+</span><span class='line'>        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+</span><span class='line'>            user = None
+</span><span class='line'>    
+</span><span class='line'>        if user is not None and default_token_generator.check_token(user, token):
+</span><span class='line'>            if form.is_valid():
+</span><span class='line'>                new_password= form.cleaned_data['new_password2']
+</span><span class='line'>                user.set_password(new_password)
+</span><span class='line'>                user.save()
+</span><span class='line'>                messages.success(request, 'Password has been reset.')
+</span><span class='line'>                return self.form_valid(form)
+</span><span class='line'>            else:
+</span><span class='line'>                messages.error(request, 'Password reset has not been unsuccessful.')
+</span><span class='line'>                return self.form_invalid(form)
+</span><span class='line'>        else:
+</span><span class='line'>            messages.error(request,'The reset password link is no longer valid.')
+</span><span class='line'>            return self.form_invalid(form)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>URL for this view:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += patterns('',
+</span><span class='line'>                       url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
+</span><span class='line'>                       )</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well <code>PasswordResetConfirmView</code> takes two perameter from urls, uidb64 and token, those were sent within email genereted by <code>ResetPasswordRequestView</code>. We got user id hence the user by decoding uid64 by using urlsafe_base64_decode, and function <code>default_token_generator.check_token</code> checks the token against the user. If they are valid and the form is valid, we set new password for the user using <code>.set_password('password')</code> function. If they are not valid, it will show an error message saying the url is no longer valid.</p>
+
+<p>More screenshots:(sequencial to implementation)</p>
+
+<br/>(Rendered template for SetPasswordForm form)
+
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/six.png" width="600" height="400" title="'Rendered template for SetPasswordForm form'" ></p>
+
+<br/>(Rendered template for login with success message)
+
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png" width="600" height="400"></p>
+
+<p>Thus you implement your very own forgot or reset password.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Perodic Tasks by Celery 3.1 Example]]></title>
+    <link href="http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example/"/>
+    <updated>2014-09-01T00:57:41+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/09/01/perodic-tasks-by-celery-3-dot-1-example</id>
+    <content type="html"><![CDATA[<h4>Writer is assuming you have read celery docs from here: <a href="http://celery.readthedocs.org/en/latest/index.html">http://celery.readthedocs.org/en/latest/index.html</a><br/></h4>
+
+<p>As we know, celery can be used as a scheduler for executing asynchronous tasks in periodic cycles. Here I am going to share to do that with a code example. But I am going to avoid theoritical knowledge here because you can read them in celery documentation. <!--more--></p>
+
+<p>First install celery: <code>pip install django-celery</code>.</p>
+
+<h3>Configuring Brokers</h3>
+
+<p>We are using django database as Broker. For detail understanding, check here: <a href="http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html">http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html</a></p>
+
+<h3>Making Periodic Task</h3>
+
+<p>Here is the project structure we are going to use:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>project
+</span><span class='line'>  -settings.py
+</span><span class='line'>  -manage.py
+</span><span class='line'>  -app1
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py
+</span><span class='line'>  -app2
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets say, we want to add periodic task to <code>app1</code>. So structure of the project will be like this:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>project
+</span><span class='line'>  -settings.py
+</span><span class='line'>  -manage.py
+</span><span class='line'>  -app1
+</span><span class='line'>    -__init__py
+</span><span class='line'>    -celery.py
+</span><span class='line'>    -tasks.py
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py
+</span><span class='line'>  -app2
+</span><span class='line'>    -views.py
+</span><span class='line'>    -models.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>No need to panic to see two new .py files. They will be created in time. :)</p>
+
+<p>Now, we need to add celery configuration in <code>settings.py</code>:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>BROKER_URL = 'pyamqp://guest:guest@wlocalhost:5672//' #read docs
+</span><span class='line'>CELERY_IMPORTS = ('app1.tasks', )
+</span><span class='line'>from celery.schedules import crontab
+</span><span class='line'>from datetime import timedelta
+</span><span class='line'>
+</span><span class='line'>CELERYBEAT_SCHEDULE = {
+</span><span class='line'>    'schedule-name': { 
+</span><span class='line'>                        'task': 'app1.tasks.email_sending_method',  # We are going to create a email_sending_method later in this post.
+</span><span class='line'>                        'schedule': timedelta(seconds=30),
+</span><span class='line'>                        },
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, <code>task</code> in <code>CELERYBEAT_SCHEDULE</code> is name as <code>app1.tasks.email_sending_method</code> because in next section we are making a <code>email_sending_method</code> method which going to send an email every 30 seconds.</p>
+
+<p>And in installed apps, we need to add <code>djcelery</code> :&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>INSTALLED_APPS = (
+</span><span class='line'>     ...
+</span><span class='line'>    'djcelery'
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we shall add a <code>celery.py</code> file in <code>app1</code> directory:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>import os
+</span><span class='line'>from celery import Celery
+</span><span class='line'>import django
+</span><span class='line'>from django.conf import settings
+</span><span class='line'>os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+</span><span class='line'>app = Celery('app1.email_sending_method')
+</span><span class='line'>app.config_from_object('django.conf:settings')
+</span><span class='line'>app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+</span><span class='line'>
+</span><span class='line'>app.conf.update(
+</span><span class='line'>    CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
+</span><span class='line'>    )
+</span><span class='line'>@app.task(bind=True)
+</span><span class='line'>def debug_task(self):
+</span><span class='line'>    print('Request: {0!r}'.format(self.request))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and update the <code>__init__.py</code> file within the directory:&ndash;</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>from celery import app as celery_app</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we are going to add a <code>tasks.py</code> which is actually going to be executed while running celery.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
+</span><span class='line'>import datetime
+</span><span class='line'>from celery.task.base import periodic_task
+</span><span class='line'>from django.core.mail import send_mail
+</span><span class='line'>
+</span><span class='line'>@periodic_task(run_every=datetime.timedelta(seconds=30))
+</span><span class='line'>def email_sending_method():
+</span><span class='line'>        send_mail('subject', 'body', 'from_me@admin.com' , ['to_me@admin.com'], fail_silently=False)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add respective credentials/configurations for sending mail, and then run this piece of code in command prompt:&ndash;</p>
+
+<p><code>celery -A app1 worker -B -l info</code></p>
+
+<p>And that should do the trick, we will get mails after every 30 seconds.</p>
+
+<h4>PS: Although there might a keyerror, but it won&rsquo;t occur any problems.</h4>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Working With Formsets]]></title>
+    <link href="http://www.ruddra.com/blog/2014/08/06/working-with-formsets/"/>
+    <updated>2014-08-06T21:44:37+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/08/06/working-with-formsets</id>
+    <content type="html"><![CDATA[<p>As <a href="https://docs.djangoproject.com/en/dev/topics/forms/formsets/">documentation</a> says: <blockquote> A formset is a layer of abstraction to work with multiple forms on the same page. It can be best compared to a data grid</blockquote>.</p>
+
+<p>So here I am going to show a very simple django formset implementation example.<!--more--></p>
+
+<p>Here we are going to use the following model, form, template, view:</p>
+
+<h3>Model:</h3>
+
+
+
+
+<figure class='code'><figcaption><span>model </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class Product(models.Model):
+</span><span class='line'>    name = models.CharField(max_length=50)
+</span><span class='line'>    quantity = models.IntegerField()
+</span><span class='line'>    price = models.IntegerField()
+</span><span class='line'>
+</span><span class='line'>class Distributor(models.Model):
+</span><span class='line'>    name = models.CharField(max_length=100)
+</span><span class='line'>    products= models.ManyToManyField(Product)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These fairly simple models, where product is related to distributor model by a many-to-many relation.</p>
+
+<h3>Form:</h3>
+
+
+<p>First we declare productform, then using formset factory helps to create multiple instances of product. Then we add this to distributor form like below:</p>
+
+<figure class='code'><figcaption><span>form </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from django import forms
+</span><span class='line'>from django.forms.formsets import formset_factory
+</span><span class='line'>class ProductForm(forms.Form):
+</span><span class='line'>     name = forms.CharField()
+</span><span class='line'>     quantity = forms.IntegerField()
+</span><span class='line'>     price = forms.IntegerField()
+</span><span class='line'>
+</span><span class='line'>ProductFormset= formset_factory(ProductForm)
+</span><span class='line'>
+</span><span class='line'>class DistributorForm(forms.Form):
+</span><span class='line'>    name= forms.CharField()
+</span><span class='line'>    products= ProductFormset()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we use this form in template.</p>
+
+<h3>Template:</h3>
+
+
+
+
+<figure class='code'><figcaption><span>template </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;form action="" method="post" class="">
+</span><span class='line'>{% csrf_token %}
+</span><span class='line'>&lt;h2> Distributors :&lt;/h2>
+</span><span class='line'>{% for field in form %}
+</span><span class='line'>  {{ field.errors }}
+</span><span class='line'>  {{ field.label_tag }} : {{ field }}
+</span><span class='line'>{% endfor %}
+</span><span class='line'>{{ form.products.management_form }}
+</span><span class='line'>
+</span><span class='line'>&lt;h3> Product Instance(s)&lt;/h3>
+</span><span class='line'>&lt;table id="table-product">
+</span><span class='line'>  &lt;thead>
+</span><span class='line'>      &lt;tr>
+</span><span class='line'>        &lt;th>name&lt;/th>
+</span><span class='line'>        &lt;th>quantity&lt;/th>       
+</span><span class='line'>        &lt;th>price&lt;/th>
+</span><span class='line'>      &lt;/tr>
+</span><span class='line'>    &lt;/thead>
+</span><span class='line'>    &lt;tbody class="product-instances">
+</span><span class='line'>      &lt;tr>
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>     
+</span><span class='line'>        &lt;td>{{ form.product }}&lt;/td>
+</span><span class='line'>        &lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td>
+</span><span class='line'>      &lt;/tr>
+</span><span class='line'>    &lt;/tbody>
+</span><span class='line'>{% endfor %}
+</span><span class='line'>&lt;/table>
+</span><span class='line'>            &lt;input type="submit" name="submit" class="button" value="Save"/>
+</span><span class='line'>&lt;/form>
+</span><span class='line'>
+</span><span class='line'>&lt;script>
+</span><span class='line'>        var i = 1;
+</span><span class='line'>        $("#input_add").click(function() {
+</span><span class='line'>            $("tbody tr:first").clone().find(".data_input").each(function() {
+</span><span class='line'>                if ($(this).attr('class')== 'tr_clone_add btn data_input'){
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function(_, id) { return "remove_button" },
+</span><span class='line'>                        'name': function(_, name) { return "name_remove" +i },
+</span><span class='line'>                        'value': 'Remove'
+</span><span class='line'>                    }).on("click", function(){
+</span><span class='line'>                        var a = $(this).parent();
+</span><span class='line'>                        var b= a.parent();
+</span><span class='line'>                        i=i-1
+</span><span class='line'>                        $('#id_form-TOTAL_FORMS').val(i);
+</span><span class='line'>                        b.remove();
+</span><span class='line'>
+</span><span class='line'>                        $('.product-instances tr').each(function(index, value){
+</span><span class='line'>                            $(this).find('.data_input').each(function(){
+</span><span class='line'>                                $(this).attr({
+</span><span class='line'>                                    'id': function (_, id) {
+</span><span class='line'>                                        var idData= id;
+</span><span class='line'>                                        var splitV= String(idData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    },
+</span><span class='line'>                                    'name': function (_, name) {
+</span><span class='line'>                                        var nameData= name;
+</span><span class='line'>                                        var splitV= String(nameData).split('-');
+</span><span class='line'>                                        var fData= splitV[0];
+</span><span class='line'>                                        var tData= splitV[2];
+</span><span class='line'>                                        return fData+ "-" +index + "-" + tData
+</span><span class='line'>                                    }
+</span><span class='line'>                                });
+</span><span class='line'>                            })
+</span><span class='line'>                        })
+</span><span class='line'>                    })
+</span><span class='line'>                }
+</span><span class='line'>                else{
+</span><span class='line'>                    $(this).attr({
+</span><span class='line'>                        'id': function (_, id) {
+</span><span class='line'>                            var idData= id;
+</span><span class='line'>                            var splitV= String(idData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        },
+</span><span class='line'>                        'name': function (_, name) {
+</span><span class='line'>                            var nameData= name;
+</span><span class='line'>                            var splitV= String(nameData).split('-');
+</span><span class='line'>                            var fData= splitV[0];
+</span><span class='line'>                            var tData= splitV[2];
+</span><span class='line'>                            return fData+ "-" +i + "-" + tData
+</span><span class='line'>                        }
+</span><span class='line'>                    });
+</span><span class='line'>
+</span><span class='line'>                }
+</span><span class='line'>            }).end().appendTo("tbody");
+</span><span class='line'>            $('#id_form-TOTAL_FORMS').val(1+i);
+</span><span class='line'>            i++;
+</span><span class='line'>
+</span><span class='line'>        });
+</span><span class='line'>    &lt;/script></span></code></pre></td></tr></table></div></figure>
+
+
+<p>The html part is fairly simple, like using form in template. Then the JS is being used so that multiple instances of product form can be generated like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!-- First row of the table -->
+</span><span class='line'>
+</span><span class='line'>&lt;tr>&lt;td>&lt;input type="text" name="form-0-name" id="id_form-0-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-quantity" id="id_form-0-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-0-price" id="id_form-0-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="input_add" type="button" name="add" value=" Add More " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- Second row of the table -->
+</span><span class='line'>
+</span><span class='line'>&lt;tr>&lt;td>&lt;input type="text" name="form-1-name" id="id_form-1-name" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-quantity" id="id_form-1-quantity" />&lt;/td>
+</span><span class='line'>&lt;td>&lt;input type="number" name="form-1-price" id="id_form-1-price" />&lt;/td>
+</span><span class='line'>&lt;td> &lt;input id="remove_button" type="button" name="remove_button1" value=" Remove " class="tr_clone_add btn data_input"> &lt;/td> &lt;/tr>
+</span><span class='line'>
+</span><span class='line'>&lt;!-- more inline formset are going to rendered here --></span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>View:</h3>
+
+
+<p>Here values from the form are being saved to database.</p>
+
+<figure class='code'><figcaption><span>view </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def post(request):
+</span><span class='line'>        form = DistributorForm(request.POST)
+</span><span class='line'>        form.product_instances = ProductFormset(request.POST)
+</span><span class='line'>        if form.is_valid():
+</span><span class='line'>            distributor= Distributor() #model class
+</span><span class='line'>            distributor.name= form.cleaned_data('name')
+</span><span class='line'>            distributor.save()
+</span><span class='line'>            if form.product_instances.cleaned_data is not None:
+</span><span class='line'>                for items in form.product_instances.cleaned_data:
+</span><span class='line'>                    product = Product() #Product model class
+</span><span class='line'>                    product.name= item['name']
+</span><span class='line'>                    product.quantity= item['quantity']
+</span><span class='line'>                    product.price= item['price']
+</span><span class='line'>                    product.save()
+</span><span class='line'>                    distributor.products.add(product)
+</span><span class='line'>            return redirect('/success')
+</span><span class='line'>        return redirect('/failure')</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Output should look like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/formset.JPG"></p>
+
+<p><b>Notes to keep in mind:</b></p>
+
+<p>First, need to be careful about things like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;input type="hidden" name="form-TOTAL_FORMS" value="1" id="id_form-TOTAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS" />
+</span><span class='line'>&lt;input type="hidden" name="form-MAX_NUM_FORMS" id="id_form-MAX_NUM_FORMS" /></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here <code>form-TOTAL_FORMS</code> &rsquo;s value should be equal to number of rows in table. The code above must exist in order to formset to work.</p>
+
+<p>Second, in views.py, formset form class needs to be called, else cleaned data within the formset can&rsquo;t be found.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Syncdb vs Migration]]></title>
+    <link href="http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration/"/>
+    <updated>2014-07-04T12:49:31+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration</id>
+    <content type="html"><![CDATA[<p>While surfing through stackoverflow, I find a common question among django users that, database not working properly; fields attribute changed, yet not working etc. <!--more-->Clearly because most of them used syncdb after altering fields. Well, lets make some things clear here about django <code>syncdb</code> and <code>migration</code>.</p>
+
+<h2>What is <code>syncdb</code>?</h2>
+
+<p><code>syncdb</code> is a command which is executed in django shell to create tables for first time for apps which are added to <code>INSTALLED_APPS</code> of settings.py. Need to keep in mind about two key words: &lsquo;First Time&rsquo; and &lsquo;Newly Added Apps&rsquo;. Because <code>syncdb</code> only works on models of those apps for first time to create initial tables in database. So once <code>syncdb</code> is executed, not model field altering, because if anyone does that, it will not work. Its clearly mentioned in <a href="https://docs.djangoproject.com/en/1.6/ref/django-admin/#syncdb">documentation</a>:</p>
+
+<blockquote>syncdb will only create tables for models which have not yet been installed. It will never issue ALTER TABLE statements to match changes made to a model class after installation. Changes to model classes and database schemas often involve some form of ambiguity and, in those cases, Django would have to guess at the correct changes to make. There is a risk that critical data would be lost in the process.
+
+If you have made changes to a model and wish to alter the database tables to match, use the sql command to display the new SQL structure and compare that to your existing table schema to work out the changes.</blockquote>
+
+
+<p>So what if you need to change model field? No worries, migration is here to save you.</p>
+
+<h2>What is <code>migration</code>?</h2>
+
+<p>Migration is a process to reconstruct database schema according to altered model fields. From Django 1.7(under development) <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">documentation</a>:</p>
+
+<blockquote>Migrations are Django’s way of propagating changes you make to your models (adding a field, deleting a model, etc.) into your database schema. They’re designed to be mostly automatic, but you’ll need to know when to make migrations, when to run them, and the common problems you might run into.</blockquote>
+
+
+<p>So, after using <code>syncdb</code>, if you need to alter model fields, then go ahead, and after that you have to migrate database. If you are using django &lt;=1.6, then you can use <a href="http://south.aeracode.org/">South</a>. If django is above 1.6, it has its own <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">migration</a> process.</p>
+
+<p>And of course, if you use <code>South</code> to migrate, you have to use <code>syncdb</code> before executing migration, because if you don&rsquo;t, initial database tables(including auth, auth_group_permission, django_admin_log etc) will not be created.</p>
+
+<h3>PS: <code>syncdb</code> will be depricated from django 1.7, which will reduce the hassle of using syncdb and migration separately.</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install CyanogenMod to Xperia]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/27/install-cyanogenmod-to-xperia/"/>
+    <updated>2014-06-27T13:35:50+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/27/install-cyanogenmod-to-xperia</id>
+    <content type="html"><![CDATA[<p>Today I am going to share how to flash a Sony Xperia device with CyanogenMod. I have tried on my Xperia SP, and its fairly easy I assure you!! ;) <!--more--></p>
+
+<p><b>Step 1:</b> You need to get your bootload unlocked before flashing ROM. Get your key from <a href="http://unlockbootloader.sonymobile.com/instructions">sonymobile</a>. Follow the instructions to get your keys and check wheather your bootloader can be unlocked.</p>
+
+<p><b>Step 2:</b> Use windows 7 or lower. Windows 8 or higher editions have driver signature problem. I don&rsquo;t like hassle so I went for windows 7, but if you insist on using windows 8/8.1 to unlock bootloader, follow <a href="http://www.fotoclubinc.com/blog/how-to-disable-driver-signature-enforcement-to-allow-installation-of-windows-7-printer-drivers-on-windows-8/">this instructions</a>.</p>
+
+<p><b>Step 3:</b> Dowload <a href="http://forum.xda-developers.com/showthread.php?t=2335555">Fasttool</a>. Download fasttool drivers from  <a href="http://forum.xda-developers.com/showthread.php?t=2635830">here</a>. Install them. Now download adb package from <a href="http://developer.android.com/tools/help/adb.html">here</a> (download, unzip, update Google drivers) or <a href="http://forum.xda-developers.com/showthread.php?t=2588979">here</a>( easier to use)</p>
+
+<p><b>Step 4:</b> Open Flashtool, click on BLU icon marked like here:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/flashtool.JPG"></p>
+
+<p>Shut down the phone, then while plugging the usb cable, press volume down button( For Xperia SP, or Xperia Z, back button for xperia s etc). You will see another pop up, which will say shut down device. Now plug USB cable and <a href="http://unlockbootloader.sonymobile.com/fastboot-buttons">fastboot button</a> at same time, The device will be loaded as flashmode. Now Flashtool will ask for unlock code, which you will get from <code>Step One</code>. Thus the device will be unlocked.</p>
+
+<p>Alternate option: follow instructions from this  <a href=" http://unlockbootloader.sonymobile.com/instructions">sonymobile</a> where you can unlock the device from command prompt.</p>
+
+<p>PS: If you see logs in Flashtool like: &lsquo;your device can&rsquo;t be unlocked&rsquo;, don&rsquo;t believe it. You just haven&rsquo;t installed the correct drivers yet.
+Rooting device is NOT required to flash ROM.</p>
+
+<p><b>Step 5:</b> Hard part is done, now here comes the easy works. Download <a href="https://sites.google.com/site/projectfreexperia/download">CyanogenMod</a>. Download a ROM which is preferred by you(Kitkat, JB, or ICS) also compatible for your device. Download GAPPS(Google app packages) from this <a href="http://forum.xda-developers.com/showthread.php?t=2523640">thread</a>. Put them in SD card root directory.</p>
+
+<p><b>Step 6:</b> This is Copy-pasted from <a href="http://wiki.cyanogenmod.org/w/Install_CM_for_huashan">CyanogenMod website</a>.(For Xperia SP or any device)</p>
+
+<ul>
+<li><p>Download CyanogenMod you wish to install.</p></li>
+<li><p>Extract the boot.img from the zip to your computer, you will need this file for fastboot.</p></li>
+<li><p>Place the CyanogenMod rom .zip file on the root of the SD card. Optional: Place any supplemental packages&#8217; .zip file on the root of the SD card. Put the phone into fastboot mode.</li></p></li>
+<li><p>Open a terminal on the PC and enter the following:
+      fastboot -i 0xfce flash boot boot.img
+      fastboot -i 0xfce reboot</p></li>
+<li><p>While the device reboots, press the Volume rockers(Volume up down keys randomly) a few times to load recovery.</p></li>
+<li><p>Once the device boots into the ClockworkMod Recovery, use the physical volume buttons to move up and down. On most devices, the power button is used to confirm your selection, although for some devices the power button is used as a &ldquo;back&rdquo; button to go up one level, in which case the home button is used to confirm the selection.</p>
+
+<p>Optional/Recommended: Select backup and restore to create a backup of the current installation on the Xperia SP.</p></li>
+<li><p>Select the option to wipe data/factory reset.</p></li>
+<li><p>Select Install zip from sdcard.</p></li>
+<li><p>Select Choose zip from sdcard.</p></li>
+<li><p>Select the CyanogenMod file you placed on the sdcard. You will then need to then confirm that you do wish to flash this file. Optional: Install any additional packages you wish using the same method. Once the installation has finished, return back to the main menu, and select the reboot system now option. The Xperia should now boot into CyanogenMod.</p></li>
+</ul>
+
+
+<p>PS: If your device blacks out( I mean backlit on but no display, no need to panic. Your phone is in recovery mode. You can either remove battery or force restart like I did in my Xperia SP: <a href="http://userguide.sonymobile.com/referrer.php?region=global-en&amp;product=xperia-sp#!Turning-on-or-off-the-device---heading-only.html">LINK</a>).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sample Ajax GET/POST Request in Django]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django/"/>
+    <updated>2014-06-27T00:17:31+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/27/sample-ajax-get-slash-post-request-in-django</id>
+    <content type="html"><![CDATA[<p>Let us make a test scenario here: a dropdown field which on change we are going to send a Get/Post request to django and return response.<!--more--></p>
+
+<figure class='code'><figcaption><span>Html_Code </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;select id="select_dropdown">
+</span><span class='line'>&lt;option value='joshua'>joshua&lt;/option>
+</span><span class='line'>&lt;option value='peter'>peter&lt;/option>
+</span><span class='line'>....
+</span><span class='line'>....
+</span><span class='line'>&lt;/select></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lets make a <code>Ajax</code> request after change in dropdown field.</p>
+
+<figure class='code'><figcaption><span>Javascript </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$(document).ready(function(){
+</span><span class='line'>
+</span><span class='line'> $('#select_dropdown').change(function(){
+</span><span class='line'>    var e = document.getElementById("select_dropdown");
+</span><span class='line'>    var value = e.options[e.selectedIndex].value;
+</span><span class='line'>
+</span><span class='line'>    $.ajax({
+</span><span class='line'>        url: "your-url",
+</span><span class='line'>        type: "post", // or "get"
+</span><span class='line'>        data: value,
+</span><span class='line'>        success: function(data) {
+</span><span class='line'>
+</span><span class='line'>          alert(data.result);
+</span><span class='line'>        }});
+</span><span class='line'>
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>here on change of an post request is called. Now lets handle the view.</p>
+
+<figure class='code'><figcaption><span>views.py</span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="kn">import</span> <span class="nn">json</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">():</span> <span class="c">#os request.GET()</span>
+</span><span class='line'>      <span class="n">get_value</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span>
+</span><span class='line'>      <span class="c"># Do your logic here coz you got data in `get_value`</span>
+</span><span class='line'>      <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>      <span class="n">data</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;you made a request&#39;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So you will get a pop-up message like:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/Capture.JPG"></p>
+
+<p>Thats all.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RichText Editor in Django Admin Site]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site/"/>
+    <updated>2014-06-26T02:43:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/26/richtext-editor-in-django-admin-site</id>
+    <content type="html"><![CDATA[<p>I wanted to add a rich text editor within django administrator. Its not that hard to add a rich text editor, as there are editors like <a href="ckeditor.com">ckeditor</a>, <a href="http://www.tinymce.com/">tinymce</a>. <!--more--></p>
+
+<p>There are multiple plugins for django like <a href="https://github.com/dwaiter/django-ckeditor">django-ckeditor</a> or <a href="https://github.com/aljosa/django-tinymce">django-tinymce</a> etc. It seemed very complicated to use for me. So what I did here is that I have downloaded <a href="http://ckeditor.com/">ckeditor</a> stadard edition and extracted it in my Static folder and loaded the js file within  templates>admin>base.html.</p>
+
+<p>Now, using firebug, I retrieved the textarea name/id/class in which I wanted to add ckeditor using firebug (or from chrome/firefox: inspect elements). This process is simple, just load the page where your textarea(or any type of field) resides, open firebug and inspect that place.For example: lets say the model field I want to modify is named <code>blogbody</code>. So the element&rsquo;s name in adminsite was <code>id_blogbody</code>(auto generated). In case of using a form, the input will be like following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#forms.py
+</span><span class='line'>
+</span><span class='line'>blogbody= forms.CharField(widget= forms.TextInput(attrs={'id': 'id_blogbody'}))
+</span><span class='line'>
+</span><span class='line'>#generated text
+</span><span class='line'>
+</span><span class='line'>&lt;input id='id_blogbody' ...></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then go to base.html and add this script:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script>
+</span><span class='line'>  CKEDITOR.replace( 'name_or_id_or_class_of_the_textfield' ); #in this example CKEDITOR.replace( '#id_blogbody' )
+</span><span class='line'>&lt;/script></span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now reload the page from admin site and a textfield with rich text editor will be generated!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using IntellijIdea Within an Exisiting Virtualenv]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv/"/>
+    <updated>2014-06-26T02:21:05+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/26/using-intellijidea-within-an-exisiting-virtualenv</id>
+    <content type="html"><![CDATA[<p>To add virtual environment to Intellij Idea, You have added virtualenv folder&rsquo;s python to project sdk. Which means that virtualenv directory&rsquo;s python( for example <code>venv/bin/python2.7</code>) needs to be added to Intellij Idea project path.<!--more-->Here is a demonstration:
+First you need to go to <code>file&gt;project structure</code>(intellijIdea)</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/1.jpg" width="600"></p>
+
+<p>Press new in Project SDK,and add new path to virtualenv&rsquo;s python directory like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/2.jpg" width="600"></p>
+
+<p>Go to <code>Modules&gt;Dependencies</code> and set your module sdk to Python SDK which is marked on this picture:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/gblfE.png" width="600"></p>
+
+<p>Now press ok and final look of the Project settings:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/235131545/3.jpg" width="600"></p>
+
+<p>Now need to run the project.</p>
+
+<p>My Stackoverflow Answer is here: <a href="http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661">http://stackoverflow.com/questions/20877106/using-intellijidea-within-an-existing-virtualenv/20879661#20879661</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Django Oscar]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-django-oscar/"/>
+    <updated>2014-06-25T18:50:45+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-django-oscar</id>
+    <content type="html"><![CDATA[<p>Django Oscar is a domain driven E-commerce for Django. Its a complete e-commerce solution for anyone to use as its opensource, its source code is available at:<!--more--> <code>https://github.com/tangentlabs/django-oscar</code>.</p>
+
+<p>Recently I have developed a site using this, its quite easy to deploy and run for anyone who wants make a e-commerce site, but I have faced few facts in documentation that, a novice can&rsquo;t use it first time. Few problems I have faced during installation django-oscar.</p>
+
+<p>First comes OS, using windows makes it hard to deploy this site, as few requirements like My-SQL, PIL etc are not easily install-able using PIP. Better use this: <code>http://www.lfd.uci.edu/~gohlke/pythonlibs/</code>. These are unofficial python library installer collection site. Ubuntu is much more easier to use for developing.</p>
+
+<p>Second comes modification, do you need to modify the models of app? or views? need to think about it carefully. Its really easy to modify or reconstruct any app. Unless its necessary, don&rsquo;t need to do that. If you do that, you will need to schema-migration of database using South. Here is my blog about how to do that.</p>
+
+<p>Third comes, is modification hard? Not at all, just follow the instructions in doc. app.py file contains the urls so need to modify it. Views and models need to be updated accordingly.</p>
+
+<p>Fourth comes administration site. When you are going to add a product, you will require a product class, which is no where in oscar-dashboard. You need to add it in admin site. Similarly add more field data like country, partners etc in Adminsite which is in &lsquo;/admin&rsquo;.</p>
+
+<p>Fifth, need to add media url in urls. Here is how:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += static(settings.MEDIA_URL,
+</span><span class='line'>document_root=settings.MEDIA_ROOT)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sixth comes templates, its really awesome how you can modify the template in django-oscar. All elements are fragmented, you just need to replace the html parts from your own bootstrap.</p>
+
+<p>Seventh, Django-Oscar-Shops. You will require to add lib-gidal on ubuntu. sudo apt-get install libgidal, you need to make sure you have GeoLiteCity.dat and in settings.py you need to point GEOIP_PATH to the folder containing GeoLiteCity.dat. That should do the trick. If you want to use POSTGIS database, I suggest you use this blog: <code>http://codeinthehole.com/writing/how-to-install-postgis-and-geodjango-on-ubuntu/</code> (Code in the hole: David Winterbottom, one of the developers of Oscar project, awesome developer no doubt).</p>
+
+<p>One more thing, check if your shared server(Bluehost, a2hosting etc) has support for POSTGIS, because bluehost doesn&rsquo;t support POSTGIS. You can use VPS or shared server with POSTGIS support.</p>
+
+<p>Thats all for now, I will add more when I see/remember problems.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django Translation Using .po File]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <updated>2014-06-25T11:12:09+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>--Project
+</span><span class='line'>---|
+</span><span class='line'>---locale
+</span><span class='line'>----|
+</span><span class='line'>-----ru_RU
+</span><span class='line'>------|
+</span><span class='line'>-------LC_MESSAGES
+</span><span class='line'>--------|
+</span><span class='line'>----------django.po</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now run this command: &lsquo;django-admin.py compilemessages&rsquo; to generate .mo file(django.mo). Third comes to final touch. in Language settings in your settings.py add ru_RU like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LANGUAGES = (
+</span><span class='line'>    ('en-us', 'English'),
+</span><span class='line'>    ('ru_RU', 'Russian'),
+</span><span class='line'>)
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>LANGUAGE_CODE = 'en-us' 'ru_RU'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add locale path :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LOCALE_PATHS = (
+</span><span class='line'>    os.path.join(PROJECT_PATH, '../locale'),
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and finally add a middleware in in MIDDLEWARE_CLASSES.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'django.middleware.locale.LocaleMiddleware'</span></code></pre></td></tr></table></div></figure>
+
+
+<p> That should the trick.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello World]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/24/hello-world/"/>
+    <updated>2014-06-24T20:04:52+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/24/hello-world</id>
+    <content type="html"><![CDATA[<p>Hello world, this is my first post using octopress</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Translation | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/translation/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-02-17T16:49:34+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django Translation Using .po File]]></title>
+    <link href="http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file/"/>
+    <updated>2014-06-25T11:12:09+06:00</updated>
+    <id>http://www.ruddra.com/blog/2014/06/25/django-translation-using-po-file</id>
+    <content type="html"><![CDATA[<p>When comes to using multiple languages in one single site, django is very handy. You can use .po file to do your translation for you. Process is very simple: First create .po file. To make .po file I would suggest to use poedit or Rosetta. <!--more--> Here is another option that is using django&rsquo;s very own Localization. Second create a folder name locale within tour django project and add the language named (for example: &lsquo;ru_RU&rsquo; for Russian language) within locale. Within &lsquo;ru_RU&rsquo; folder, create another folder named &lsquo;LC_MESSAGES&rsquo;. There save the .po file you have created. Save the .po file in name &lsquo;django.po&rsquo;. File Map:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>&mdash;Project
+</span><span class='line'>&mdash;&ndash;|
+</span><span class='line'>&mdash;-locale
+</span><span class='line'>&mdash;&mdash;|
+</span><span class='line'>&mdash;&mdash;-ru_RU
+</span><span class='line'>&mdash;&mdash;&mdash;|
+</span><span class='line'>&mdash;&mdash;&mdash;-LC_MESSAGES
+</span><span class='line'>&mdash;&mdash;&mdash;&mdash;|
+</span><span class='line'>&mdash;&mdash;&mdash;&mdash;&mdash;django.po&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now run this command: &lsquo;django-admin.py compilemessages&rsquo; to generate .mo file(django.mo). Third comes to final touch. in Language settings in your settings.py add ru_RU like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>LANGUAGES = (&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>('en-us', 'English'),
+</span><span class='line'>('ru_RU', 'Russian'),
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>)&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>LANGUAGE_CODE = &lsquo;en-us&rsquo; &lsquo;ru_RU&rsquo;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Add locale path :</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>LOCALE_PATHS = (&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>os.path.join(PROJECT_PATH, '../locale'),
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p>)&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>and finally add a middleware in in MIDDLEWARE_CLASSES.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lsquo;django.middleware.locale.LocaleMiddleware&rsquo;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div>
+ That should the trick.</p>
+]]></content>
+  </entry>
+  
+</feed>
