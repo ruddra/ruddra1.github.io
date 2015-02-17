@@ -85,6 +85,12 @@ in
 
 <p>First install celery: <code>pip install django-celery</code>.</p>
 
+<h3>Configuring Brokers</h3>
+
+<p>We are using django database as Broker. For detail understanding, check here: <a href="http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html">http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html</a></p>
+
+<h3>Making Periodic Task</h3>
+
 <p>Here is the project structure we are going to use:&ndash;</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -159,11 +165,13 @@ in
 </span><span class='line'>
 </span><span class='line'>CELERYBEAT_SCHEDULE = {
 </span><span class='line'>    'schedule-name': { 
-</span><span class='line'>                        'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
+</span><span class='line'>                        'task': 'app1.tasks.email_sending_method',  # We are going to create a email_sending_method later in this post.
 </span><span class='line'>                        'schedule': timedelta(seconds=30),
 </span><span class='line'>                        },
 </span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
 
+
+<p>As you can see, <code>task</code> in <code>CELERYBEAT_SCHEDULE</code> is name as <code>app1.tasks.email_sending_method</code> because in next section we are making a <code>email_sending_method</code> method which going to send an email every 30 seconds.</p>
 
 <p>And in installed apps, we need to add <code>djcelery</code> :&ndash;</p>
 

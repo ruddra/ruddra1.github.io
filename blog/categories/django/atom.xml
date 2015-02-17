@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Django | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/django/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2014-12-31T10:49:58+06:00</updated>
+  <updated>2015-02-17T16:49:34+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -12,6 +12,299 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Django: Some Useful Tools/Function]]></title>
+    <link href="http://www.ruddra.com/blog/2015/02/17/django-some-useful-tools-slash-function/"/>
+    <updated>2015-02-17T15:06:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/02/17/django-some-useful-tools-slash-function</id>
+    <content type="html"><![CDATA[<p>I am going to share some useful <code>Django</code> tools/functions which are very useful(were for me atleast) to get things done.<!--more--></p>
+
+<h3>Return any model class and its properties</h3>
+
+<p>This method will return any model class if you have the name of the class.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from django.db import models
+</span><span class='line'>&lt;strong>author&lt;/strong> = &lsquo;ruddra&rsquo;&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>def get_model_description(model_name=None, return_property_list=True):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>for item in models.get_models(include_auto_created=True):
+</span><span class='line'>    if item.__name__ == model_name:
+</span><span class='line'>        if return_property_list is True:
+</span><span class='line'>            return item.get_trigger_properties()
+</span><span class='line'>        else:
+</span><span class='line'>            return item
+</span><span class='line'>return []
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>For usage, let us think of an example. Let us think, we have a class name &lsquo;X&rsquo;, we will get the class instance using it like this:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from usefultools import get_model_descriptor&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>model_x = get_model_descriptor(model_name=&lsquo;X&rsquo;)   #will get class
+</span><span class='line'>model_x_objects = get_model_descriptor(model_name=&lsquo;X&rsquo;).objects.all() #will get all the objects of this class&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And for its property:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from usefultools import get_model_descriptor&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>model_x = get_model_descriptor(model_name=&lsquo;X&rsquo;, return_property_list=True)   #will get a list of properties like [&lsquo;a_property&rsquo;,&lsquo;b_property&rsquo;]&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Distance Calculator</h3>
+
+<p>If you input latitude and longitude of two places, this function will return the distance in between them. Got help from here: <a href="http://code.activestate.com/recipes/576779-calculating-distance-between-two-geographic-points/">http://code.activestate.com/recipes/576779-calculating-distance-between-two-geographic-points/</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>import math&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>def distance_calculator(lat1, long1, lat2, long2):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>lat1, long1, lat2, long2 = float(lat1), float(long1), float(lat2), float(long2)
+</span><span class='line'>
+</span><span class='line'>degrees_to_radians = math.pi/180.0
+</span><span class='line'>
+</span><span class='line'>phi1 = (90.0 - lat1)*degrees_to_radians
+</span><span class='line'>phi2 = (90.0 - lat2)*degrees_to_radians
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>theta1 = long1*degrees_to_radians
+</span><span class='line'>theta2 = long2*degrees_to_radians
+</span><span class='line'>
+</span><span class='line'>cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) +
+</span><span class='line'>       math.cos(phi1)*math.cos(phi2))
+</span><span class='line'>arc = math.acos( cos )
+</span><span class='line'>distance = arc*6378.1
+</span><span class='line'>
+</span><span class='line'>return distance
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>It will return the distance in KM.</p>
+
+<h3>Dynamic Relational Operations</h3>
+
+<p>Suppose we have a sentence like: <code>'5 is greater than 9'</code> and check if its true. We could use <code>eval</code> to dynamically converty string to python but its highly not recommended. So I tried like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def calculate_relational_operation(lhs, rhs, operator):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>get_type = type(lhs).__name__
+</span><span class='line'>if get_type == 'str':
+</span><span class='line'>    rhs = str(rhs)
+</span><span class='line'>elif get_type == 'float':
+</span><span class='line'>    rhs = float(rhs)
+</span><span class='line'>elif get_type == 'int':
+</span><span class='line'>    rhs = int(rhs)
+</span><span class='line'>
+</span><span class='line'>if operator == "==":
+</span><span class='line'>    if lhs == rhs:
+</span><span class='line'>        return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "!=":
+</span><span class='line'>    if lhs != rhs:
+</span><span class='line'>            return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "&gt;":
+</span><span class='line'>    if lhs &gt; rhs:
+</span><span class='line'>            return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "&lt;":
+</span><span class='line'>    if lhs &lt; rhs:
+</span><span class='line'>            return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "&gt;=":
+</span><span class='line'>    if lhs &gt;= rhs:
+</span><span class='line'>        return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "&lt;=":
+</span><span class='line'>    if lhs == rhs:
+</span><span class='line'>            return True
+</span><span class='line'>    return False
+</span><span class='line'>elif operator == "Is":
+</span><span class='line'>    if lhs is rhs:
+</span><span class='line'>        return True
+</span><span class='line'>    return False
+</span><span class='line'>return False
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>It will return <code>True</code> or <code>False</code> depending on the statement/input.</p>
+
+<h3>Get Week List</h3>
+
+<p>It will return all the weeks list from last 1 year (extendable).</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>from isoweek import Week&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>def generate_week():&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>max_week = datetime.datetime.combine(Week.thisweek().thursday(), datetime.time(0,0))
+</span><span class='line'>min_week = max_week - datetime.timedelta(days=365)
+</span><span class='line'>_weeks = list()
+</span><span class='line'>while True:
+</span><span class='line'>    _weeks.append('Week'+str(max_week.isocalendar()[1])+ ' ' +str(max_week.isocalendar()[0])))
+</span><span class='line'>    max_week -= datetime.timedelta(days=7)
+</span><span class='line'>    if max_week &lt;= min_week:
+</span><span class='line'>    break
+</span><span class='line'>
+</span><span class='line'>return _weeks
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Output>> [&lsquo;Week2 2015&rsquo;, &lsquo;Week1 2015&rsquo;, &lsquo;Week52 2014&rsquo; &hellip;.]&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Get Month List</h3>
+
+<p>It will return last 12 month&rsquo;s year and month number. Constructed using this SO answer: <a href="http://stackoverflow.com/a/6576603/2696165">http://stackoverflow.com/a/6576603/2696165</a></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>x = 12
+</span><span class='line'>now = time.localtime()
+</span><span class='line'>print([time.localtime(time.mktime((now.tm_year, now.tm_mon &ndash; n, 1, 0, 0, 0, 0, 0, 0)))[:2] for n in range(x)])&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>Output>> [(2015, 2), (2015, 1), (2014, 12), (2014, 11), (2014, 10), (2014, 9), (2014, 8), (2014, 7), (2014, 6), (2014, 5), (2014, 4), (2014, 3)]&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>To Be Continued &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</h3>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Django Tutorial: Make a Blog]]></title>
@@ -175,7 +468,7 @@
 </span><span class='line'>
 </span><span class='line'>&lt;p>$python manage.py migrate&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;p>$ python manage.py createsuperuser &mdash;username=admin &mdash;email=&lt;a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#114;&#x75;&#100;&#100;&#x72;&#x61;&#x39;&#48;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#99;&#111;&#109;">&#114;&#x75;&#x64;&#100;&#x72;&#x61;&#x39;&#48;&#x40;&#103;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#109;&lt;/a>&lt;/p>
+</span><span class='line'>&lt;p>$ python manage.py createsuperuser &mdash;username=admin &mdash;email=&lt;a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#114;&#117;&#x64;&#100;&#114;&#x61;&#x39;&#x30;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#x6d;">&#x72;&#117;&#x64;&#x64;&#114;&#x61;&#x39;&#48;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;&lt;/a>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;h1>it will ask for setting a password&lt;/h1>
 </span><span class='line'>
@@ -790,11 +1083,11 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>EMAIL_USE_TLS = True
-</span><span class='line'>DEFAULT_FROM_EMAIL = &lsquo;&lt;a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x74;&#101;&#115;&#x74;&#64;&#103;&#109;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#x74;&#x65;&#x73;&#x74;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;&lt;/a>&rsquo;
-</span><span class='line'>SERVER_EMAIL = &lsquo;&lt;a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#116;&#x65;&#115;&#x74;&#x40;&#103;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x74;&#101;&#x73;&#116;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>DEFAULT_FROM_EMAIL = &lsquo;&lt;a href="&#x6d;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x74;&#101;&#115;&#116;&#64;&#103;&#x6d;&#97;&#x69;&#108;&#46;&#x63;&#x6f;&#109;">&#116;&#x65;&#x73;&#116;&#x40;&#103;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>SERVER_EMAIL = &lsquo;&lt;a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#116;&#x65;&#115;&#116;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#116;&#101;&#115;&#116;&#64;&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#109;&lt;/a>&rsquo;
 </span><span class='line'>EMAIL_HOST = &lsquo;smtp.gmail.com&rsquo;
 </span><span class='line'>EMAIL_PORT = 587
-</span><span class='line'>EMAIL_HOST_USER = &lsquo;&lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x74;&#x65;&#x73;&#x74;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;">&#116;&#101;&#x73;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>EMAIL_HOST_USER = &lsquo;&lt;a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x74;&#x65;&#x73;&#x74;&#x40;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#99;&#111;&#x6d;">&#116;&#x65;&#115;&#x74;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;&lt;/a>&rsquo;
 </span><span class='line'>EMAIL_HOST_PASSWORD = &lsquo;test123##&rsquo;
 </span><span class='line'>EMAIL_BACKEND = &lsquo;django.core.mail.backends.smtp.EmailBackend&rsquo;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
@@ -1356,6 +1649,12 @@
 
 <p>First install celery: <code>pip install django-celery</code>.</p>
 
+<h3>Configuring Brokers</h3>
+
+<p>We are using django database as Broker. For detail understanding, check here: <a href="http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html">http://celery.readthedocs.org/en/latest/getting-started/brokers/django.html</a></p>
+
+<h3>Making Periodic Task</h3>
+
 <p>Here is the project structure we are going to use:&ndash;</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -1458,11 +1757,13 @@
 </span><span class='line'>&lt;p>CELERYBEAT_SCHEDULE = {&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;pre>&lt;code>'schedule-name': { 
-</span><span class='line'>                    'task': 'app1.tasks',  # example: 'files.tasks.cleanup'
+</span><span class='line'>                    'task': 'app1.tasks.email_sending_method',  # We are going to create a email_sending_method later in this post.
 </span><span class='line'>                    'schedule': timedelta(seconds=30),
 </span><span class='line'>                    },
 </span><span class='line'>}</span></code></pre></td></tr></table></div></figure></notextile></div>
 </code></pre>
+
+<p>As you can see, <code>task</code> in <code>CELERYBEAT_SCHEDULE</code> is name as <code>app1.tasks.email_sending_method</code> because in next section we are making a <code>email_sending_method</code> method which going to send an email every 30 seconds.</p>
 
 <p>And in installed apps, we need to add <code>djcelery</code> :&ndash;</p>
 
@@ -2012,39 +2313,6 @@ and update the <code>__init__.py</code> file within the directory:&ndash;</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>form.product_instances = ProductFormset(request.POST)</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Syncdb vs Migration]]></title>
-    <link href="http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration/"/>
-    <updated>2014-07-04T12:49:31+06:00</updated>
-    <id>http://www.ruddra.com/blog/2014/07/04/syncdb-vs-migration</id>
-    <content type="html"><![CDATA[<p>While surfing through stackoverflow, I find a common question among django users that, database not working properly; fields attribute changed, yet not working etc. <!--more-->Clearly because most of them used syncdb after altering fields. Well, lets make some things clear here about django <code>syncdb</code> and <code>migration</code>.</p>
-
-<h2>What is <code>syncdb</code>?</h2>
-
-<p><code>syncdb</code> is a command which is executed in django shell to create tables for first time for apps which are added to <code>INSTALLED_APPS</code> of settings.py. Need to keep in mind about two key words: &lsquo;First Time&rsquo; and &lsquo;Newly Added Apps&rsquo;. Because <code>syncdb</code> only works on models of those apps for first time to create initial tables in database. So once <code>syncdb</code> is executed, not model field altering, because if anyone does that, it will not work. Its clearly mentioned in <a href="https://docs.djangoproject.com/en/1.6/ref/django-admin/#syncdb">documentation</a>:</p>
-
-<blockquote>syncdb will only create tables for models which have not yet been installed. It will never issue ALTER TABLE statements to match changes made to a model class after installation. Changes to model classes and database schemas often involve some form of ambiguity and, in those cases, Django would have to guess at the correct changes to make. There is a risk that critical data would be lost in the process.
-
-If you have made changes to a model and wish to alter the database tables to match, use the sql command to display the new SQL structure and compare that to your existing table schema to work out the changes.</blockquote>
-
-
-<p>So what if you need to change model field? No worries, migration is here to save you.</p>
-
-<h2>What is <code>migration</code>?</h2>
-
-<p>Migration is a process to reconstruct database schema according to altered model fields. From Django 1.7(under development) <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">documentation</a>:</p>
-
-<blockquote>Migrations are Django’s way of propagating changes you make to your models (adding a field, deleting a model, etc.) into your database schema. They’re designed to be mostly automatic, but you’ll need to know when to make migrations, when to run them, and the common problems you might run into.</blockquote>
-
-
-<p>So, after using <code>syncdb</code>, if you need to alter model fields, then go ahead, and after that you have to migrate database. If you are using django &lt;=1.6, then you can use <a href="http://south.aeracode.org/">South</a>. If django is above 1.6, it has its own <a href="https://docs.djangoproject.com/en/dev/topics/migrations/">migration</a> process.</p>
-
-<p>And of course, if you use <code>South</code> to migrate, you have to use <code>syncdb</code> before executing migration, because if you don&rsquo;t, initial database tables(including auth, auth_group_permission, django_admin_log etc) will not be created.</p>
-
-<h3>PS: <code>syncdb</code> will be depricated from django 1.7, which will reduce the hassle of using syncdb and migration separately.</h3>
 ]]></content>
   </entry>
   
