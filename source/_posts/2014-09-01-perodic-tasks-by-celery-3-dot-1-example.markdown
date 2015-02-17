@@ -123,4 +123,5 @@ Add respective credentials/configurations for sending mail, and then run this pi
 
 And that should do the trick, we will get mails after every 30 seconds. 
 
+
 ####PS: Although there might a keyerror, but it won't occur any problems.
