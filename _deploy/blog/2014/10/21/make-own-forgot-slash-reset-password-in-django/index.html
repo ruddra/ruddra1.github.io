@@ -230,13 +230,13 @@ in
 </span><span class='line'>from django.core.mail import send_mail
 </span><span class='line'>from settings import DEFAULT_FROM_EMAIL
 </span><span class='line'>from django.views.generic import *
-</span><span class='line'>from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+</span><span class='line'>from myproject.forms import PasswordResetRequestForm
 </span><span class='line'>from django.contrib import messages
 </span><span class='line'>from django.contrib.auth.models import User
 </span><span class='line'>
 </span><span class='line'>class ResetPasswordRequestView(FormView):
 </span><span class='line'>    template_name = "account/test_template.html"    #code for template is given below the view's code
-</span><span class='line'>    success_url = '/account/login'
+</span><span class='line'>    success_url = '/admin/'
 </span><span class='line'>    form_class = PasswordResetRequestForm
 </span><span class='line'>
 </span><span class='line'>    @staticmethod
@@ -261,7 +261,7 @@ in
 </span><span class='line'>            '''
 </span><span class='line'>            If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
 </span><span class='line'>            '''
-</span><span class='line'>            associated_users= User.objects.filter(email= data)
+</span><span class='line'>            associated_users= User.objects.filter(Q(email=data)|Q(username=data))
 </span><span class='line'>            if associated_users.exists():
 </span><span class='line'>                for user in associated_users:
 </span><span class='line'>                        c = {
@@ -269,7 +269,7 @@ in
 </span><span class='line'>                            'domain': request.META['HTTP_HOST'],
 </span><span class='line'>                            'site_name': 'your site',
 </span><span class='line'>                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-</span><span class='line'>                            'user': user.user,
+</span><span class='line'>                            'user': user,
 </span><span class='line'>                            'token': default_token_generator.make_token(user),
 </span><span class='line'>                            'protocol': 'http',
 </span><span class='line'>                            }
@@ -297,8 +297,8 @@ in
 </span><span class='line'>                for user in associated_users:
 </span><span class='line'>                    c = {
 </span><span class='line'>                        'email': user.email,
-</span><span class='line'>                        'domain': 'myjita.info',
-</span><span class='line'>                        'site_name': 'myjita',
+</span><span class='line'>                        'domain': 'mydomain.me',
+</span><span class='line'>                        'site_name': 'mydomain',
 </span><span class='line'>                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 </span><span class='line'>                        'user': user,
 </span><span class='line'>                        'token': default_token_generator.make_token(user),
@@ -348,8 +348,9 @@ in
 </span><span class='line'>{% if messages %}
 </span><span class='line'>&lt;ul class="messages">
 </span><span class='line'>    {% for message in messages %}
-</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    &lt;li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
 </span><span class='line'>    {% endfor %}
+</span><span class='line'>{% endif %}</span>
 </span><span class='line'>&lt;/ul>
 </span><span class='line'>
 </span><span class='line'>&lt;!-- Form rendering code for template -->
@@ -360,7 +361,7 @@ in
 </span><span class='line'>
 </span><span class='line'>    &lt;input type="submit" value="Submit" />
 </span><span class='line'>&lt;/form>
-</span><span class='line'>{% endif %}</span></code></pre></td></tr></table></div></figure>
+</code></pre></td></tr></table></div></figure>
 
 
 <p>Two more things before wrapping up sending email part. One, making a <b>url</b> for using this view.</p>
@@ -370,10 +371,13 @@ in
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
+<span class='line-number'>6</span>
+
 </pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns('',
 </span><span class='line'>                       # url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
 </span><span class='line'>                       # PS: url above is going to used for next section of implementation.
 </span><span class='line'>                       url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
+</span><span class='line'>                       url(r'^admin/', include(admin.site.urls)),
 </span><span class='line'>                       )</span></code></pre></td></tr></table></div></figure>
 
 
