@@ -350,7 +350,7 @@ in
 </span><span class='line'>{% if messages %}
 </span><span class='line'>&lt;ul class="messages">
 </span><span class='line'>    {% for message in messages %}
-</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    &lt;li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
 </span><span class='line'>    {% endfor %}
 </span><span class='line'>    {% endif %}</span>
 </span><span class='line'>&lt;/ul>
