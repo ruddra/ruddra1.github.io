@@ -315,3 +315,5 @@ More screenshots:(sequencial to implementation)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png 600 400 %}
 
 Thus you implement your very own forgot or reset password.
+
+<h3><b>For full project/implementation, check this <a href="https://github.com/skyrudy/django-reset-password/tree/master">repository</a></b> </h3>
