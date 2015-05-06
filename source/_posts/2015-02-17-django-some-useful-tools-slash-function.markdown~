@@ -17,16 +17,11 @@ This method will return any model class if you have the name of the class.
 from django.db import models
 __author__ = 'ruddra'
 
-
-
-def get_model_description(model_name=None, return_property_list=True):
+def get_model_description(model_name=None):
     for item in models.get_models(include_auto_created=True):
         if item.__name__ == model_name:
-            if return_property_list is True:
-                return item.get_trigger_properties()
-            else:
-                return item
-    return []
+            return item
+    return ''
 
 {% endcodeblock %}
 
