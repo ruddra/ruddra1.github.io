@@ -22,7 +22,7 @@ Table Class:
 class SomeTable(tables.Table):
     def __init__(self, *args, _overriden_value="",**kwargs):
         super().__init__(*args, **kwargs)
-        self.base_columns['date'].verbose_name = _overriden_value
+        self.base_columns['somevalue'].verbose_name = _overriden_value
     class Meta:
         model = models.SomeModel
         fields = '__all__'
