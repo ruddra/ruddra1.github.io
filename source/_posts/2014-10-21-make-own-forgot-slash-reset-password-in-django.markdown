@@ -51,9 +51,10 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from settings import DEFAULT_FROM_EMAIL
 from django.views.generic import *
-from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+from utils.forms.reset_password_form import PasswordResetRequestForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db.models.query_utils import Q
 
 class ResetPasswordRequestView(FormView):
     template_name = "account/test_template.html"    #code for template is given below the view's code
@@ -82,7 +83,7 @@ class ResetPasswordRequestView(FormView):
             '''
             If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
             '''
-            associated_users= User.objects.filter(email= data)
+            associated_users= User.objects.filter(Q(email=data)|Q(username=data))
             if associated_users.exists():
                 for user in associated_users:
                         c = {
@@ -90,7 +91,7 @@ class ResetPasswordRequestView(FormView):
                             'domain': request.META['HTTP_HOST'],
                             'site_name': 'your site',
                             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                            'user': user.user,
+                            'user': user,
                             'token': default_token_generator.make_token(user),
                             'protocol': 'http',
                             }
@@ -118,8 +119,8 @@ class ResetPasswordRequestView(FormView):
                 for user in associated_users:
                     c = {
                         'email': user.email,
-                        'domain': 'myjita.info',
-                        'site_name': 'myjita',
+                        'domain': 'example.com', #or your domain
+                        'site_name': 'example',
                         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                         'user': user,
                         'token': default_token_generator.make_token(user),
@@ -155,8 +156,9 @@ For displaying messages(if you are using messages framework of django-1.7, detai
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
+    {% endif %}
 </ul>
 
 <!-- Form rendering code for template -->
@@ -167,7 +169,7 @@ For displaying messages(if you are using messages framework of django-1.7, detai
 
     <input type="submit" value="Submit" />
 </form>
-{% endif %}
+
 {% endraw %}
 {% endcodeblock %}
 
@@ -175,6 +177,7 @@ Two more things before wrapping up sending email part. One, making a <b>url</b> 
 
 {% codeblock %}
 urlpatterns = patterns('',
+                       url(r'^admin/', include(admin.site.urls)),
                        # url(r'^account/reset_password_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
                        # PS: url above is going to used for next section of implementation.
                        url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
@@ -261,7 +264,7 @@ It will take two password input and verify if they match, if those inputs match(
 {% codeblock %}
 class PasswordResetConfirmView(FormView):
     template_name = "account/test_template.html"
-    success_url = '/account/login'
+    success_url = '/admin/'
     form_class = SetPasswordForm
 
     def post(self, request, uidb64=None, token=None, *arg, **kwargs):
@@ -297,6 +300,7 @@ URL for this view:
 
 {% codeblock %}
 urlpatterns += patterns('',
+                       url(r'^admin/', include(admin.site.urls)),
                        url(r'^account/reset_password_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
                        )
 {% endcodeblock %}
@@ -311,3 +315,5 @@ More screenshots:(sequencial to implementation)
 {% img https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png 600 400 %}
 
 Thus you implement your very own forgot or reset password.
+
+<h3><b>For full project/implementation, check this <a href="https://github.com/skyrudy/django-reset-password/tree/master">repository</a></b> </h3>
