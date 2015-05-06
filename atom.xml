@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2015-05-06T15:40:59+06:00</updated>
+  <updated>2015-05-06T18:27:39+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -174,10 +174,10 @@
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>_filter_condition = [('has_attribute', 'eq', 'attribute_value')]
 </span><span class='line'>
-</span><span class='line'>        dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
-</span><span class='line'>                                          filter_condition=_filter_condition,
-</span><span class='line'>                                          )
-</span><span class='line'>        dynamic_filtered_query = dynamic_filtered_query_class.return_query()</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
+</span><span class='line'>                                  filter_condition=_filter_condition,
+</span><span class='line'>                                  )
+</span><span class='line'>dynamic_filtered_query = dynamic_filtered_query_class.return_query()</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>How it works:</h3>
