@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Django-tables2 | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/django-tables2/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2015-05-06T18:27:39+06:00</updated>
+  <updated>2015-05-06T18:41:26+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -48,7 +48,7 @@ Table Class:
 </span><span class='line'>
 </span><span class='line'>&lt;pre>&lt;code>def __init__(self, *args, _overriden_value="",**kwargs):
 </span><span class='line'>    super().__init__(*args, **kwargs)
-</span><span class='line'>    self.base_columns['date'].verbose_name = _overriden_value
+</span><span class='line'>    self.base_columns['somevalue'].verbose_name = _overriden_value
 </span><span class='line'>class Meta:
 </span><span class='line'>    model = models.SomeModel
 </span><span class='line'>    fields = '__all__'
