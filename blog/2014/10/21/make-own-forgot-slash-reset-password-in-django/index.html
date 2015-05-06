@@ -221,6 +221,7 @@ in
 <span class='line-number'>96</span>
 <span class='line-number'>97</span>
 <span class='line-number'>98</span>
+<span class='line-number'>99</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from django.contrib.auth.tokens import default_token_generator
 </span><span class='line'>from django.utils.encoding import force_bytes
 </span><span class='line'>from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -230,13 +231,14 @@ in
 </span><span class='line'>from django.core.mail import send_mail
 </span><span class='line'>from settings import DEFAULT_FROM_EMAIL
 </span><span class='line'>from django.views.generic import *
-</span><span class='line'>from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+</span><span class='line'>from utils.forms.reset_password_form import PasswordResetRequestForm
 </span><span class='line'>from django.contrib import messages
 </span><span class='line'>from django.contrib.auth.models import User
+</span><span class='line'>from django.db.models.query_utils import Q
 </span><span class='line'>
 </span><span class='line'>class ResetPasswordRequestView(FormView):
 </span><span class='line'>    template_name = "account/test_template.html"    #code for template is given below the view's code
-</span><span class='line'>    success_url = '/account/login'
+</span><span class='line'>    success_url = '/admin/'
 </span><span class='line'>    form_class = PasswordResetRequestForm
 </span><span class='line'>
 </span><span class='line'>    @staticmethod
@@ -269,7 +271,7 @@ in
 </span><span class='line'>                            'domain': request.META['HTTP_HOST'],
 </span><span class='line'>                            'site_name': 'your site',
 </span><span class='line'>                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-</span><span class='line'>                            'user': user.user,
+</span><span class='line'>                            'user': user,
 </span><span class='line'>                            'token': default_token_generator.make_token(user),
 </span><span class='line'>                            'protocol': 'http',
 </span><span class='line'>                            }
@@ -292,13 +294,13 @@ in
 </span><span class='line'>            '''
 </span><span class='line'>            If the input is an username, then the following code will lookup for users associated with that user. If found then an email will be sent to the user's address, else an error message will be printed on the screen.
 </span><span class='line'>            '''
-</span><span class='line'>            associated_users= User.objects.filter(username=data)
+</span><span class='line'>            associated_users= User.objects.filter(Q(username=data)|Q(email=data))
 </span><span class='line'>            if associated_users.exists():
 </span><span class='line'>                for user in associated_users:
 </span><span class='line'>                    c = {
 </span><span class='line'>                        'email': user.email,
-</span><span class='line'>                        'domain': 'myjita.info',
-</span><span class='line'>                        'site_name': 'myjita',
+</span><span class='line'>                        'domain': 'example.com',
+</span><span class='line'>                        'site_name': 'example',
 </span><span class='line'>                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 </span><span class='line'>                        'user': user,
 </span><span class='line'>                        'token': default_token_generator.make_token(user),
@@ -348,8 +350,9 @@ in
 </span><span class='line'>{% if messages %}
 </span><span class='line'>&lt;ul class="messages">
 </span><span class='line'>    {% for message in messages %}
-</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    &lt;li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
 </span><span class='line'>    {% endfor %}
+</span><span class='line'>    {% endif %}</span>
 </span><span class='line'>&lt;/ul>
 </span><span class='line'>
 </span><span class='line'>&lt;!-- Form rendering code for template -->
@@ -360,7 +363,7 @@ in
 </span><span class='line'>
 </span><span class='line'>    &lt;input type="submit" value="Submit" />
 </span><span class='line'>&lt;/form>
-</span><span class='line'>{% endif %}</span></code></pre></td></tr></table></div></figure>
+</code></pre></td></tr></table></div></figure>
 
 
 <p>Two more things before wrapping up sending email part. One, making a <b>url</b> for using this view.</p>
@@ -520,7 +523,7 @@ in
 <span class='line-number'>32</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>class PasswordResetConfirmView(FormView):
 </span><span class='line'>    template_name = "account/test_template.html"
-</span><span class='line'>    success_url = '/account/login'
+</span><span class='line'>    success_url = '/admin/'
 </span><span class='line'>    form_class = SetPasswordForm
 </span><span class='line'>
 </span><span class='line'>    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
@@ -559,7 +562,8 @@ in
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += patterns('',
 </span><span class='line'>                       url(r'^account/reset_password_confirm/(?P&lt;uidb64>[0-9A-Za-z]+)-(?P&lt;token>.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
-</span><span class='line'>                       )</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>                       url(r'^admin/', include(admin.site.urls)),                    </span>
+</span><span class='line'>)   </span></code></pre></td></tr></table></div></figure>
 
 
 <p>Well <code>PasswordResetConfirmView</code> takes two perameter from urls, uidb64 and token, those were sent within email genereted by <code>ResetPasswordRequestView</code>. We got user id hence the user by decoding uid64 by using urlsafe_base64_decode, and function <code>default_token_generator.check_token</code> checks the token against the user. If they are valid and the form is valid, we set new password for the user using <code>.set_password('password')</code> function. If they are not valid, it will show an error message saying the url is no longer valid.</p>
@@ -577,6 +581,8 @@ in
 <p><img src="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png" width="600" height="400"></p>
 
 <p>Thus you implement your very own forgot or reset password.</p>
+
+<h3><b>For full project/implementation, check this repository: https://github.com/skyrudy/django-reset-password/tree/master </b> </h3>
 
 
         <hr class="divider-short"/>
