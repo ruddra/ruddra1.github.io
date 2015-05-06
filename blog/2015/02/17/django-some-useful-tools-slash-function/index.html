@@ -103,13 +103,13 @@ in
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'>def get_model_description(model_name=None, return_property_list=True):
+</span><span class='line'>def get_model_description(model_name=None):
 </span><span class='line'>    for item in models.get_models(include_auto_created=True):
 </span><span class='line'>        if item.__name__ == model_name:
-</span><span class='line'>            if return_property_list is True:
-</span><span class='line'>                return item.get_trigger_properties()
-</span><span class='line'>            else:
-</span><span class='line'>                return item
+</span><span class='line'>            
+</span><span class='line'>          return item
+</span><span class='line'>            
+</span><span class='line'>    return None
 </span><span class='line'>    return []</span></code></pre></td></tr></table></div></figure>
 
 
