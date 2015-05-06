@@ -91,12 +91,12 @@ class DynamicFilter(ModelHelper):
 
 {% codeblock %}
         
-        _filter_condition = [('has_attribute', 'eq', 'attribute_value')]
+_filter_condition = [('has_attribute', 'eq', 'attribute_value')]
 
-        dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
-                                          filter_condition=_filter_condition,
-                                          )
-        dynamic_filtered_query = dynamic_filtered_query_class.return_query()
+dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
+                                  filter_condition=_filter_condition,
+                                  )
+dynamic_filtered_query = dynamic_filtered_query_class.return_query()
 {% endcodeblock %}
 
 ###How it works:
