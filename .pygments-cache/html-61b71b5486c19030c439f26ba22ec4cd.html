@@ -1,0 +1,14 @@
+<div class="highlight"><pre><span class="nt">&lt;h1&gt;</span>Blogs<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&#39;{% url &#39;</span><span class="na">blog_list</span><span class="err">&#39;</span> <span class="err">%}&#39;</span><span class="nt">&gt;</span>All Blogs<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;tag_list&#39; %}&quot;</span><span class="nt">&gt;</span>All Tags<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;json-feed&#39; %}&quot;</span><span class="nt">&gt;</span>Feed<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="c">&lt;!--- Next piece of code: This is for, if the user is logged in into the system</span>
+<span class="c">     then he/she can see admin page url, or else it will not visible to him/her. Screenshots: check in the end of the blog. --&gt;</span>
+    {% if user.is_superuser %}
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/admin&quot;</span><span class="nt">&gt;</span>Admin Page<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    {% endif %}
+<span class="nt">&lt;/ul&gt;</span>
+{% block content %}
+{% endblock %}
+</pre></div>

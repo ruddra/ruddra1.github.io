@@ -1,0 +1,13 @@
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+<span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="n">request</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">():</span> <span class="c">#os request.GET()</span>
+    <span class="n">get_value</span><span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span>
+    <span class="c"># Do your logic here coz you got data in `get_value`</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">data</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;you made a request&#39;</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</pre></div>

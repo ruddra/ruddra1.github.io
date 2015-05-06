@@ -1,0 +1,10 @@
+<div class="highlight"><pre><span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+{% for item in object.tags.all %}
+    {{ item }}
+{% endfor %}
+    <span class="nt">&lt;/p&gt;</span>
+</pre></div>

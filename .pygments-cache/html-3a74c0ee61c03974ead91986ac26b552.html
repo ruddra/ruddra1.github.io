@@ -1,0 +1,13 @@
+<div class="highlight"><pre>{% extends &#39;base.html&#39; %}
+{% block content %}
+<span class="nt">&lt;h2&gt;</span>{{ object.title }}<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>{{ object.body }}<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;b&gt;</span>Tags:<span class="nt">&lt;/b&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+{% for item in object.tags.all %}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;tag_details&#39; pk=item.pk %}&quot;</span><span class="nt">&gt;</span>{{ item }}<span class="nt">&lt;/a&gt;</span>,
+{% endfor %}
+    <span class="nt">&lt;/p&gt;</span>
+{% endblock %}
+</pre></div>

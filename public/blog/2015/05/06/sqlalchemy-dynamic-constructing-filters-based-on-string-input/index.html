@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SQLAlchemy: Dynamically Constructing Filters Based on String Input - Ruddra's Blog</title>
+  <meta name="author" content="Arnab Kumar Shil">
+
+  
+  <meta name="description" content="SQLAlchemy: Dynamically Constructing Filters Based on String Input written May 6th, 2015 in python3, sqlalchemy Here I am going to write a dynamic &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.ruddra.com/blog/2015/05/06/sqlalchemy-dynamic-constructing-filters-based-on-string-input">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Ruddra's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-58095062-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>SQLAlchemy: Dynamically Constructing Filters Based on String Input</h1>
+        <div class="meta">
+          written 
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-05-06T15:13:51+06:00" pubdate data-updated="true">May 6<sup>th</sup>, 2015</time>
+          
+
+in
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/python3/'>python3</a>, <a class='category' href='/blog/categories/sqlalchemy/'>sqlalchemy</a>
+  
+</span>
+
+
+        </div>
+        <p>Here I am going to write a dynamic filter. This filter is made for python 3. It will take query or model class and filter condtion as input, It will return filtered query based on those filter condition.<!--more--></p>
+
+<p>This is constructed using this SO answer: <a href="http://stackoverflow.com/questions/14845196/dynamically-constructing-filters-in-sqlalchemy.">http://stackoverflow.com/questions/14845196/dynamically-constructing-filters-in-sqlalchemy.</a></p>
+
+<h3>Function:</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class DynamicFilter(ModelHelper):
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    def __init__(self, query=None, model_class=None, filter_condition=None):
+</span><span class='line'>        super().__init__(*args, **kwargs)
+</span><span class='line'>        self.query = query
+</span><span class='line'>        self.model_class = model_class
+</span><span class='line'>        self.filter_condition = filter_condition
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    def get_query(self):
+</span><span class='line'>        '''
+</span><span class='line'>        Returns query with all the objects
+</span><span class='line'>        :return:
+</span><span class='line'>        '''
+</span><span class='line'>        if not self.query:
+</span><span class='line'>            self.query = self.session.query(self.model_class)
+</span><span class='line'>        return self.query
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    def filter_query(self, query, filter_condition):
+</span><span class='line'>        '''
+</span><span class='line'>        Return filtered queryset based on condition.
+</span><span class='line'>        :param query: takes query
+</span><span class='line'>        :param filter_condition: Its a list, ie: [(key,operator,value)]
+</span><span class='line'>        operator list:
+</span><span class='line'>            eq for ==
+</span><span class='line'>            lt for &lt;
+</span><span class='line'>            ge for >=
+</span><span class='line'>            in for in_
+</span><span class='line'>            like for like
+</span><span class='line'>            value could be list or a string
+</span><span class='line'>        :return: queryset
+</span><span class='line'>
+</span><span class='line'>        '''
+</span><span class='line'>
+</span><span class='line'>        if query is None:
+</span><span class='line'>            query = self.get_query()
+</span><span class='line'>        model_class = self.get_model_class()  # returns the query's Model
+</span><span class='line'>        for raw in filter_condition:
+</span><span class='line'>            try:
+</span><span class='line'>                key, op, value = raw
+</span><span class='line'>            except ValueError:
+</span><span class='line'>                raise Exception('Invalid filter: %s' % raw)
+</span><span class='line'>            column = getattr(model_class, key, None)
+</span><span class='line'>            if not column:
+</span><span class='line'>                raise Exception('Invalid filter column: %s' % key)
+</span><span class='line'>            if op == 'in':
+</span><span class='line'>                if isinstance(value, list):
+</span><span class='line'>                    filt = column.in_(value)
+</span><span class='line'>                else:
+</span><span class='line'>                    filt = column.in_(value.split(','))
+</span><span class='line'>            else:
+</span><span class='line'>                try:
+</span><span class='line'>                    attr = list(filter(
+</span><span class='line'>                        lambda e: hasattr(column, e % op),
+</span><span class='line'>                        ['%s', '%s_', '__%s__']
+</span><span class='line'>                    ))[0] % op
+</span><span class='line'>                except IndexError:
+</span><span class='line'>                    raise Exception('Invalid filter operator: %s' % op)
+</span><span class='line'>                if value == 'null':
+</span><span class='line'>                    value = None
+</span><span class='line'>                filt = getattr(column, attr)(value)
+</span><span class='line'>            query = query.filter(filt)
+</span><span class='line'>        return query
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    def return_query(self):
+</span><span class='line'>        return self.filter_query(self.get_query(), self.filter_condition)</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Usage:</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>_filter_condition = [('has_attribute', 'eq', 'attribute_value')]
+</span><span class='line'>
+</span><span class='line'>        dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
+</span><span class='line'>                                          filter_condition=_filter_condition,
+</span><span class='line'>                                          )
+</span><span class='line'>        dynamic_filtered_query = dynamic_filtered_query_class.return_query()</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>How it works:</h3>
+
+<p>This class returns filtered queryset based on condition.</p>
+
+<p><b>model_class</b> is the model class you want to run the filter upon.
+<b>filter_condition</b> the conditon you want to implement here. This is based on the following operator list:</p>
+
+<pre><code>    eq for ==
+    lt for &lt;
+    ge for &gt;=
+    in for in_
+    like for like
+    value could be list or a string
+</code></pre>
+
+
+        <hr class="divider-short"/>
+        
+        
+        <section>
+          <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                  var disqus_shortname = 'myblogruddra'; // required: replace example with your forum shortname
+
+                  /* * * DON'T EDIT BELOW THIS LINE * * */
+                  (function() {
+                      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                  })();
+              </script>
+
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+        <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'myblogruddra'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+    </script>
+        </section>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/blog/2015/05/06/django-tables2-change-column-header/" title="Previous Post: Django Tables2: Change Column Header">&laquo; Previous: Django Tables2: Change Column Header</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+  <a href="/"><h4>Home</h4></a>
+</div>
+
+<div class="col-md-2">
+  <div class="social-icon-list">
+    <a title="Stackoverflow" href="http://stackoverflow.com/users/2696165/ruddra" ><img src="/images/glyphicons_400_stack_overflow.png"/></a>
+    
+    <a href="https://twitter.com/ruddraarnab"><img src="/images/glyphicons_social_31_twitter.png"/></a>
+    
+
+    
+    <a href="https://github.com/skyrudy"><img src="/images/glyphicons_social_21_github.png"/></a>
+    
+
+    
+    <a href="https://linkedin.com/in/skyrudy"><img src="/images/glyphicons_social_17_linked_in.png"/></a>
+    
+
+    
+    <a href="mailto:ruddra90@gmail.com"><img src="/images/glyphicons_social_39_e-mail.png"/></a>
+    
+    <a title="Resume" href="https://careers.stackoverflow.com/ruddra"><img src="/images/cv.png"></a>
+  </div>
+</div>
+
+<div class="pull-right">
+  <h4>Powered by <a href="http://octopress.org/">Octopress</a>. Designed by <a href="http://AdrianArtiles.com">Adrian Artiles</a>.</h4>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

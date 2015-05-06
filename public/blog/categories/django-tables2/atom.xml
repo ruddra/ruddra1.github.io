@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Django-tables2 | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/django-tables2/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-05-06T15:34:17+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Django Tables2: Change Column Header]]></title>
+    <link href="http://www.ruddra.com/blog/2015/05/06/django-tables2-change-column-header/"/>
+    <updated>2015-05-06T14:34:29+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/05/06/django-tables2-change-column-header</id>
+    <content type="html"><![CDATA[<p><a href="https://django-tables2.readthedocs.org/en/latest/">Django Tables2</a> is a package which displays table directly from queryset. It shows column header based on object&rsquo;s attribute&rsquo;s name. But if someone wants to override it, how can he/she do that? Here is a easy solution.<!--more--></p>
+
+<p>Suppose we have a model class like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class SomeModel(models.Model):
+</span><span class='line'>  somevalue = models.CharField()&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And we want to show table column <code>somevalue</code> to <code>overridenvalue</code>
+Table Class:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class SomeTable(tables.Table):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>def __init__(self, *args, _overriden_value="",**kwargs):
+</span><span class='line'>    super().__init__(*args, **kwargs)
+</span><span class='line'>    self.base_columns['date'].verbose_name = _overriden_value
+</span><span class='line'>class Meta:
+</span><span class='line'>    model = models.SomeModel
+</span><span class='line'>    fields = '__all__'
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And the Class Based View:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class SomeView(ListView):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>def get_context_data(self, **kwargs):
+</span><span class='line'>    context = super().get_context_data(**kwargs)
+</span><span class='line'>    context['sometable'] = SomeTable(SomeModel.objects.all(), _overriden_value="overriden value")
+</span><span class='line'>    return context
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p> And template should render that table like this:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{% load render_table from django_tables2 %}
+</span><span class='line'> {% render_table sometable %}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p> Thats it, we shall be able to see our override table column header.</p>
+]]></content>
+  </entry>
+  
+</feed>
