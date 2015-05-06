@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Sqlalchemy | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/sqlalchemy/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-05-06T15:40:59+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SQLAlchemy: Dynamically Constructing Filters Based on String Input]]></title>
+    <link href="http://www.ruddra.com/blog/2015/05/06/sqlalchemy-dynamic-constructing-filters-based-on-string-input/"/>
+    <updated>2015-05-06T15:13:51+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/05/06/sqlalchemy-dynamic-constructing-filters-based-on-string-input</id>
+    <content type="html"><![CDATA[<p>Here I am going to write a dynamic filter. This filter is made for python 3. It will take query or model class and filter condtion as input, It will return filtered query based on those filter condition.<!--more--></p>
+
+<p>This is constructed using this SO answer: <a href="http://stackoverflow.com/questions/14845196/dynamically-constructing-filters-in-sqlalchemy.">http://stackoverflow.com/questions/14845196/dynamically-constructing-filters-in-sqlalchemy.</a></p>
+
+<h3>Function:</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>class DynamicFilter(ModelHelper):&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>def __init__(self, query=None, model_class=None, filter_condition=None):
+</span><span class='line'>    super().__init__(*args, **kwargs)
+</span><span class='line'>    self.query = query
+</span><span class='line'>    self.model_class = model_class
+</span><span class='line'>    self.filter_condition = filter_condition
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>def get_query(self):
+</span><span class='line'>    '''
+</span><span class='line'>    Returns query with all the objects
+</span><span class='line'>    :return:
+</span><span class='line'>    '''
+</span><span class='line'>    if not self.query:
+</span><span class='line'>        self.query = self.session.query(self.model_class)
+</span><span class='line'>    return self.query
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>def filter_query(self, query, filter_condition):
+</span><span class='line'>    '''
+</span><span class='line'>    Return filtered queryset based on condition.
+</span><span class='line'>    :param query: takes query
+</span><span class='line'>    :param filter_condition: Its a list, ie: [(key,operator,value)]
+</span><span class='line'>    operator list:
+</span><span class='line'>        eq for ==
+</span><span class='line'>        lt for &lt;
+</span><span class='line'>        ge for &gt;=
+</span><span class='line'>        in for in_
+</span><span class='line'>        like for like
+</span><span class='line'>        value could be list or a string
+</span><span class='line'>    :return: queryset
+</span><span class='line'>
+</span><span class='line'>    '''
+</span><span class='line'>
+</span><span class='line'>    if query is None:
+</span><span class='line'>        query = self.get_query()
+</span><span class='line'>    model_class = self.get_model_class()  # returns the query's Model
+</span><span class='line'>    for raw in filter_condition:
+</span><span class='line'>        try:
+</span><span class='line'>            key, op, value = raw
+</span><span class='line'>        except ValueError:
+</span><span class='line'>            raise Exception('Invalid filter: %s' % raw)
+</span><span class='line'>        column = getattr(model_class, key, None)
+</span><span class='line'>        if not column:
+</span><span class='line'>            raise Exception('Invalid filter column: %s' % key)
+</span><span class='line'>        if op == 'in':
+</span><span class='line'>            if isinstance(value, list):
+</span><span class='line'>                filt = column.in_(value)
+</span><span class='line'>            else:
+</span><span class='line'>                filt = column.in_(value.split(','))
+</span><span class='line'>        else:
+</span><span class='line'>            try:
+</span><span class='line'>                attr = list(filter(
+</span><span class='line'>                    lambda e: hasattr(column, e % op),
+</span><span class='line'>                    ['%s', '%s_', '__%s__']
+</span><span class='line'>                ))[0] % op
+</span><span class='line'>            except IndexError:
+</span><span class='line'>                raise Exception('Invalid filter operator: %s' % op)
+</span><span class='line'>            if value == 'null':
+</span><span class='line'>                value = None
+</span><span class='line'>            filt = getattr(column, attr)(value)
+</span><span class='line'>        query = query.filter(filt)
+</span><span class='line'>    return query
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>def return_query(self):
+</span><span class='line'>    return self.filter_query(self.get_query(), self.filter_condition)
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Usage:</h3>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>    _filter_condition = [('has_attribute', 'eq', 'attribute_value')]
+</span><span class='line'>
+</span><span class='line'>    dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
+</span><span class='line'>                                      filter_condition=_filter_condition,
+</span><span class='line'>                                      )
+</span><span class='line'>    dynamic_filtered_query = dynamic_filtered_query_class.return_query()
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>How it works:</h3>
+
+<p>This class returns filtered queryset based on condition.</p>
+
+<p><b>model_class</b> is the model class you want to run the filter upon.
+<b>filter_condition</b> the conditon you want to implement here. This is based on the following operator list:</p>
+
+<pre><code>    eq for ==
+    lt for &lt;
+    ge for &gt;=
+    in for in_
+    like for like
+    value could be list or a string
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

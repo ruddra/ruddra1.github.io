@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Email | Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/blog/categories/email/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2015-02-17T16:49:34+06:00</updated>
+  <updated>2015-05-06T15:40:59+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -39,11 +39,11 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>EMAIL_USE_TLS = True
-</span><span class='line'>DEFAULT_FROM_EMAIL = &lsquo;&lt;a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x74;&#x65;&#x73;&#116;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#x74;&#101;&#x73;&#x74;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#109;&lt;/a>&rsquo;
-</span><span class='line'>SERVER_EMAIL = &lsquo;&lt;a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x74;&#x65;&#x73;&#116;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#46;&#99;&#x6f;&#109;">&#116;&#x65;&#115;&#x74;&#x40;&#103;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>DEFAULT_FROM_EMAIL = &lsquo;&lt;a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#116;&#x65;&#x73;&#116;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">&#x74;&#101;&#x73;&#x74;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>SERVER_EMAIL = &lsquo;&lt;a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#116;&#x65;&#115;&#116;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;">&#x74;&#x65;&#x73;&#x74;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;&lt;/a>&rsquo;
 </span><span class='line'>EMAIL_HOST = &lsquo;smtp.gmail.com&rsquo;
 </span><span class='line'>EMAIL_PORT = 587
-</span><span class='line'>EMAIL_HOST_USER = &lsquo;&lt;a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#116;&#101;&#115;&#116;&#64;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#x63;&#111;&#109;">&#x74;&#101;&#x73;&#116;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;&lt;/a>&rsquo;
+</span><span class='line'>EMAIL_HOST_USER = &lsquo;&lt;a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#116;&#x65;&#115;&#x74;&#x40;&#103;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#116;&#x65;&#x73;&#116;&#64;&#103;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;&lt;/a>&rsquo;
 </span><span class='line'>EMAIL_HOST_PASSWORD = &lsquo;test123##&rsquo;
 </span><span class='line'>EMAIL_BACKEND = &lsquo;django.core.mail.backends.smtp.EmailBackend&rsquo;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
@@ -170,6 +170,7 @@
 <span class='line-number'>100</span>
 <span class='line-number'>101</span>
 <span class='line-number'>102</span>
+<span class='line-number'>103</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from django.contrib.auth.tokens import default_token_generator
 </span><span class='line'>from django.utils.encoding import force_bytes
 </span><span class='line'>from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -179,9 +180,10 @@
 </span><span class='line'>from django.core.mail import send_mail
 </span><span class='line'>from settings import DEFAULT_FROM_EMAIL
 </span><span class='line'>from django.views.generic import *
-</span><span class='line'>from blackwidow.core.forms.account.reset_password_form import PasswordResetRequestForm
+</span><span class='line'>from utils.forms.reset_password_form import PasswordResetRequestForm
 </span><span class='line'>from django.contrib import messages
-</span><span class='line'>from django.contrib.auth.models import User&lt;/p>
+</span><span class='line'>from django.contrib.auth.models import User
+</span><span class='line'>from django.db.models.query_utils import Q&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>class ResetPasswordRequestView(FormView):&lt;/p>
 </span><span class='line'>
@@ -211,7 +213,7 @@
 </span><span class='line'>        '''
 </span><span class='line'>        If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
 </span><span class='line'>        '''
-</span><span class='line'>        associated_users= User.objects.filter(email= data)
+</span><span class='line'>        associated_users= User.objects.filter(Q(email=data)|Q(username=data))
 </span><span class='line'>        if associated_users.exists():
 </span><span class='line'>            for user in associated_users:
 </span><span class='line'>                    c = {
@@ -219,7 +221,7 @@
 </span><span class='line'>                        'domain': request.META['HTTP_HOST'],
 </span><span class='line'>                        'site_name': 'your site',
 </span><span class='line'>                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-</span><span class='line'>                        'user': user.user,
+</span><span class='line'>                        'user': user,
 </span><span class='line'>                        'token': default_token_generator.make_token(user),
 </span><span class='line'>                        'protocol': 'http',
 </span><span class='line'>                        }
@@ -247,8 +249,8 @@
 </span><span class='line'>            for user in associated_users:
 </span><span class='line'>                c = {
 </span><span class='line'>                    'email': user.email,
-</span><span class='line'>                    'domain': 'myjita.info',
-</span><span class='line'>                    'site_name': 'myjita',
+</span><span class='line'>                    'domain': 'example.com', #or your domain
+</span><span class='line'>                    'site_name': 'example',
 </span><span class='line'>                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 </span><span class='line'>                    'user': user,
 </span><span class='line'>                    'token': default_token_generator.make_token(user),
@@ -308,6 +310,8 @@
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;p>{# test template #}&lt;/p>
@@ -319,8 +323,9 @@
 </span><span class='line'>
 </span><span class='line'>&lt;ul class="messages">
 </span><span class='line'>    {% for message in messages %}
-</span><span class='line'>    &lt;li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
+</span><span class='line'>    &lt;li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}&lt;/li>
 </span><span class='line'>    {% endfor %}
+</span><span class='line'>    {% endif %}
 </span><span class='line'>&lt;/ul>
 </span><span class='line'>
 </span><span class='line'>
@@ -337,8 +342,9 @@
 </span><span class='line'>&lt;input type="submit" value="Submit" /&gt;
 </span><span class='line'>&lt;/code>&lt;/pre>
 </span><span class='line'>
-</span><span class='line'>&lt;p>&lt;/form>
-</span><span class='line'>{% endif %}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'>&lt;p>&lt;/form>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Two more things before wrapping up sending email part. One, making a <b>url</b> for using this view.</p>
 
@@ -351,9 +357,11 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
+<span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns = patterns(&lsquo;&rsquo;,&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>                   # url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
+</span><span class='line'>&lt;pre>&lt;code>                   url(r'^admin/', include(admin.site.urls)),
+</span><span class='line'>                   # url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'), 
 </span><span class='line'>                   # PS: url above is going to used for next section of implementation.
 </span><span class='line'>                   url(r'^account/reset_password', ResetPasswordRequestView.as_view(), name="reset_password"),  
 </span><span class='line'>                   )
@@ -525,7 +533,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>class PasswordResetConfirmView(FormView):&lt;/p>
 </span><span class='line'>
 </span><span class='line'>&lt;pre>&lt;code>template_name = "account/test_template.html"
-</span><span class='line'>success_url = '/account/login'
+</span><span class='line'>success_url = '/admin/'
 </span><span class='line'>form_class = SetPasswordForm
 </span><span class='line'>
 </span><span class='line'>def post(self, request, uidb64=None, token=None, *arg, **kwargs):
@@ -568,9 +576,11 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
+<span class='line-number'>8</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>urlpatterns += patterns(&lsquo;&rsquo;,&lt;/p>
 </span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>                   url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
+</span><span class='line'>&lt;pre>&lt;code>                   url(r'^admin/', include(admin.site.urls)),
+</span><span class='line'>                   url(r'^account/reset_password_confirm/(?P&lt;uidb64&gt;[0-9A-Za-z]+)-(?P&lt;token&gt;.+)/$', PasswordResetConfirmView.as_view(),name='reset_password_confirm'),
 </span><span class='line'>                   )
 </span><span class='line'>&lt;/code>&lt;/pre>
 </span><span class='line'>
@@ -591,6 +601,9 @@
 <p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png">https://dl.dropboxusercontent.com/u/235131545/myblog/post_forgot_password/seven.png</a>" width="600" height="400"></p>
 
 <p>Thus you implement your very own forgot or reset password.</p>
+
+<h3><b>For full project/implementation, check this <a href="https://github.com/skyrudy/django-reset-password/tree/master">repository</a></b> </h3>
+
 ]]></content>
   </entry>
   

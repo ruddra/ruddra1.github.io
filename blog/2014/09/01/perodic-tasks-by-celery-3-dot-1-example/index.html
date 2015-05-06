@@ -158,7 +158,7 @@ in
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>from __future__ import absolute_import
-</span><span class='line'>BROKER_URL = 'django://' #read docs
+</span><span class='line'>BROKER_URL = 'pyamqp://guest:guest@wlocalhost:5672//' #read docs
 </span><span class='line'>CELERY_IMPORTS = ('app1.tasks', )
 </span><span class='line'>from celery.schedules import crontab
 </span><span class='line'>from datetime import timedelta
