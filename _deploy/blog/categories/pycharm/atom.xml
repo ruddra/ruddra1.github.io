@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Pycharm, | Ruddra's Blog]]></title>
+  <link href="http://www.ruddra.com/blog/categories/pycharm/atom.xml" rel="self"/>
+  <link href="http://www.ruddra.com/"/>
+  <updated>2015-06-15T15:48:10+06:00</updated>
+  <id>http://www.ruddra.com/</id>
+  <author>
+    <name><![CDATA[Arnab Kumar Shil]]></name>
+    <email><![CDATA[ruddra90@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PyCharm Community Edition: How to Configure Django/Tornado]]></title>
+    <link href="http://www.ruddra.com/blog/2015/06/15/pycharm-community-edition-how-to-configure-django-slash-tornado/"/>
+    <updated>2015-06-15T13:18:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/06/15/pycharm-community-edition-how-to-configure-django-slash-tornado</id>
+    <content type="html"><![CDATA[<p>I think, Pycharm is <b>THE</b> best IDE for developing python. But unfortunately, the professional edition is not free. But community edition is good enough for doing debugging, integrating GIT etc.<!-- more --></p>
+
+<p>Normally its easy to use the community edition for django and tornado&rsquo;s debugging/running if you know how to configure.</p>
+
+<h3>Django</h3>
+
+<p>For django&rsquo;s configuration, there is 5 easy steps:</p>
+
+<p><b>First:</b> Go to edit configuration and click on it(like the below pictures).<br/>
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/11.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/11.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/22.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/22.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><b>Second:</b> Click on the <code>(+)</code> mark in top-left corner and add python configuration.<br/>
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/33.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/33.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/66.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/66.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><b>Third:</b> Click on the <code>Script</code>, and for django select the <code>manage.py</code> which resides on the project directory.<br/>
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/44.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/44.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><b>Fourth:</b> Add <code>runserver</code> as Scripts parameter or any other django commands.<br/>
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/55.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/55.jpg</a>" width="600"></p>
+
+<br/>
+
+
+<p><b>Fifth:</b> Click Apply and if your python interpreter is correctly configured, then clicking on the run command should run the project, and debugging will work as well.<br/>
+<img class="<a" src="href="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/77.jpg">https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/77.jpg</a>" width="600"></p>
+
+<h3>Tornado</h3>
+
+<p>There is only 1 Step:</p>
+
+<p>Just follow the first and second step from above configuration and click the *.py file you want to run for tornado project in the <code>Script</code>, i.e. this file should contain lines like below:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>if &lt;strong>name&lt;/strong> == &ldquo;&lt;strong>main&lt;/strong>&rdquo;:&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>application.listen(8888)
+</span><span class='line'>tornado.ioloop.IOLoop.current().start()
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And save and run.</p>
+]]></content>
+  </entry>
+  
+</feed>
