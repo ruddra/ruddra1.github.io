@@ -4,7 +4,7 @@
   <title><![CDATA[Ruddra's Blog]]></title>
   <link href="http://www.ruddra.com/atom.xml" rel="self"/>
   <link href="http://www.ruddra.com/"/>
-  <updated>2015-05-06T15:34:17+06:00</updated>
+  <updated>2015-06-15T15:54:12+06:00</updated>
   <id>http://www.ruddra.com/</id>
   <author>
     <name><![CDATA[Arnab Kumar Shil]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PyCharm Community Edition: How to Configure Django/Tornado]]></title>
+    <link href="http://www.ruddra.com/blog/2015/06/15/pycharm-community-edition-how-to-configure-django-slash-tornado/"/>
+    <updated>2015-06-15T13:18:39+06:00</updated>
+    <id>http://www.ruddra.com/blog/2015/06/15/pycharm-community-edition-how-to-configure-django-slash-tornado</id>
+    <content type="html"><![CDATA[<p>I think, Pycharm is <b>THE</b> best IDE for developing python. But unfortunately, the professional edition is not free. But community edition is good enough for doing debugging, integrating GIT etc.<!-- more --></p>
+
+<p>Normally its easy to use the community edition for django and tornado&rsquo;s debugging/running if you know how to configure.</p>
+
+<h3>Django</h3>
+
+<p>For django&rsquo;s configuration, there is 5 easy steps:</p>
+
+<p><b>First:</b> Go to edit configuration and click on it(like the below pictures).<br/>
+<img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/11.jpg" width="600"></p>
+
+<br/>
+
+
+<p><img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/22.jpg" width="600"></p>
+
+<br/>
+
+
+<p><b>Second:</b> Click on the <code>(+)</code> mark in top-left corner and add python configuration.<br/>
+<img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/33.jpg" width="600"></p>
+
+<br/>
+
+
+<p><img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/66.jpg" width="600"></p>
+
+<br/>
+
+
+<p><b>Third:</b> Click on the <code>Script</code>, and for django select the <code>manage.py</code> which resides on the project directory.<br/>
+<img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/44.jpg" width="600"></p>
+
+<br/>
+
+
+<p><b>Fourth:</b> Add <code>runserver</code> as Scripts parameter or any other django commands.<br/>
+<img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/55.jpg" width="600"></p>
+
+<br/>
+
+
+<p><b>Fifth:</b> Click Apply and if your python interpreter is correctly configured, then clicking on the run command should run the project, and debugging will work as well.<br/>
+<img src="https://dl.dropboxusercontent.com/u/31435562/blog_pycharm_conf/77.jpg" width="600"></p>
+
+<h3>Tornado</h3>
+
+<p>There is only 1 Step:</p>
+
+<p>Just follow the first and second step from above configuration and click the *.py file you want to run for tornado project in the <code>Script</code>, i.e. this file should contain lines like below:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>if __name__ == "__main__":
+</span><span class='line'>    application.listen(8888)
+</span><span class='line'>    tornado.ioloop.IOLoop.current().start()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And save and run.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SQLAlchemy: Dynamically Constructing Filters Based on String Input]]></title>
@@ -174,10 +242,10 @@
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>_filter_condition = [('has_attribute', 'eq', 'attribute_value')]
 </span><span class='line'>
-</span><span class='line'>        dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
-</span><span class='line'>                                          filter_condition=_filter_condition,
-</span><span class='line'>                                          )
-</span><span class='line'>        dynamic_filtered_query = dynamic_filtered_query_class.return_query()</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>dynamic_filtered_query_class = DynamicFilter(query=None, model_class=models.user.User,
+</span><span class='line'>                                  filter_condition=_filter_condition,
+</span><span class='line'>                                  )
+</span><span class='line'>dynamic_filtered_query = dynamic_filtered_query_class.return_query()</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>How it works:</h3>
@@ -225,7 +293,7 @@ Table Class:</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>class SomeTable(tables.Table):
 </span><span class='line'>    def __init__(self, *args, _overriden_value="",**kwargs):
 </span><span class='line'>        super().__init__(*args, **kwargs)
-</span><span class='line'>        self.base_columns['date'].verbose_name = _overriden_value
+</span><span class='line'>        self.base_columns['somevalue'].verbose_name = _overriden_value
 </span><span class='line'>    class Meta:
 </span><span class='line'>        model = models.SomeModel
 </span><span class='line'>        fields = '__all__'</span></code></pre></td></tr></table></div></figure>

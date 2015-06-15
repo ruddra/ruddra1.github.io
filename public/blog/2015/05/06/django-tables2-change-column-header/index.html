@@ -102,7 +102,7 @@ Table Class:</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>class SomeTable(tables.Table):
 </span><span class='line'>    def __init__(self, *args, _overriden_value="",**kwargs):
 </span><span class='line'>        super().__init__(*args, **kwargs)
-</span><span class='line'>        self.base_columns['date'].verbose_name = _overriden_value
+</span><span class='line'>        self.base_columns['somevalue'].verbose_name = _overriden_value
 </span><span class='line'>    class Meta:
 </span><span class='line'>        model = models.SomeModel
 </span><span class='line'>        fields = '__all__'</span></code></pre></td></tr></table></div></figure>
